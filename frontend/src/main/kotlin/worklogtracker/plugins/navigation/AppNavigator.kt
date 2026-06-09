@@ -11,7 +11,6 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import worklogtracker.data.local.AuthManager
 import androidx.compose.material3.Text
-import worklogtracker.presentation.project.ProjectScreen
 import worklogtracker.presentation.user.account.AccountScreen
 import worklogtracker.presentation.user.notification.NotificationScreen
 import worklogtracker.presentation.user.login.LoginScreen
@@ -49,12 +48,12 @@ fun AppNavigator() {
                 when (screen) {
                     is Screen.Login -> LoginScreen(backStack,screen.targetScreen)
                     is Screen.Signup -> SignupScreen(backStack, screen.targetScreen)
-                    is Screen.Projects -> ProjectScreen(backStack)
                     is Screen.Tasks -> Text("Tasks Screen")
                     is Screen.WorkLogs -> Text("WorkLogs Screen")
                     is Screen.Account -> AccountScreen(backStack)
                     is Screen.Address -> AddressScreen(backStack)
                     is Screen.Notification -> NotificationScreen(backStack)
+                    else -> {}
                 }
             }
         }

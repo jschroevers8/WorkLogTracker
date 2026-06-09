@@ -1,5 +1,7 @@
 package worklogtracker.presentation.user.signup
 
+import worklogtracker.presentation.framework.viewmodel.BaseViewModel
+import worklogtracker.repositories.UserRepository
 import worklogtracker.shared.dto.auth.RegisterUserRequest
 
 class SignupViewModel(

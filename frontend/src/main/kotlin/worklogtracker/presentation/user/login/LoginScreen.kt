@@ -14,8 +14,6 @@ fun LoginScreen(backStack: NavBackStack<NavKey>, previousScreen: NavKey?) {
     viewModel.onLoginSuccess = {
         if (previousScreen != null) {
             backStack.add(previousScreen)
-        } else {
-            backStack.add(Screen.AvailableAdvertisements)
         }
     }
 

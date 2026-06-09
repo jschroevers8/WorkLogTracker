@@ -14,8 +14,6 @@ fun SignupScreen(backStack: NavBackStack<NavKey>, previousScreen: NavKey?) {
     viewModel.onSuccess = {
         if (previousScreen != null) {
             backStack.add(previousScreen)
-        } else {
-            backStack.add(Screen.AvailableAdvertisements)
         }
     }
 

@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.data.remote.user.UserType
 import worklogtracker.plugins.navigation.Screen
 import worklogtracker.presentation.framework.components.ConfirmDialog
 import worklogtracker.presentation.framework.components.WltScreen
@@ -31,9 +30,9 @@ fun AccountScreenContent(
     var showRequestRenterRollDialog by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
-    viewModel.onLogoutSuccess = {
-        backStack.add(Screen.Homepage)
-    }
+//    viewModel.onLogoutSuccess = {
+//        backStack.add(Screen.Homepage)
+//    }
 
     LaunchedEffect(Unit) {
         viewModel.loadUser()
@@ -82,25 +81,6 @@ fun AccountScreenContent(
 
         AccountRow("Add address","add_address" , Icons.Default.Edit) { backStack.add(Screen.Address) }
 
-        RequestRenterRollSection(
-            state = state,
-            showDialog = showRequestRenterRollDialog,
-            onShowDialog = { showRequestRenterRollDialog = true },
-            onDismissDialog = { showRequestRenterRollDialog = false },
-            onConfirm = {
-                showRequestRenterRollDialog = false
-                viewModel.requestRenterRoll()
-            }
-        )
-
-        if (state.userType == UserType.ADMIN) {
-            AccountRow("Renter aanvragen", "renter_request",Icons.Default.AdminPanelSettings) {
-                backStack.add(Screen.AdminRenterRequests)
-            }
-        }
-
-        AccountRow("My cars", "my_cars", Icons.Default.DirectionsCar) { backStack.add(Screen.PersonalCars) }
-        AccountRow("My rentals", "my_rentals", Icons.Default.Receipt) { backStack.add(Screen.MyRentals) }
         AccountRow("Favorites", "favorites", Icons.Default.Favorite) { /* TODO */ }
         AccountRow("Settings", "settings", Icons.Default.Settings) { /* TODO */ }
         AccountRow("Help & support", "help_support", Icons.Default.Help) { /* TODO */ }

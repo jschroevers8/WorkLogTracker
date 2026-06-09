@@ -13,7 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import worklogtracker.data.remote.user.UserType
 import worklogtracker.presentation.framework.components.ConfirmDialog
 import worklogtracker.presentation.user.account.AccountUiState
 
@@ -25,10 +24,6 @@ fun RequestRenterRollSection(
     onDismissDialog: () -> Unit,
     onConfirm: () -> Unit
 ) {
-    if (state.userType != UserType.CUSTOMER) {
-        return
-    }
-
     if (state.renterRightsRequested) {
         return
     }

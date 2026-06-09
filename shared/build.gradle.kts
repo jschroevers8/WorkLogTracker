@@ -1,21 +1,21 @@
 plugins {
-    kotlin("jvm") version "2.2.21"
+    kotlin("jvm")
+    alias(libs.plugins.ktlint)
+    kotlin("plugin.serialization")
 }
 
-group = "wl"
-version = "unspecified"
+group = "worklogtracker"
+version = "0.0.1"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     testImplementation(kotlin("test"))
 }
 
-tasks.test {
-    useJUnitPlatform()
-}
 kotlin {
     jvmToolchain(24)
 }

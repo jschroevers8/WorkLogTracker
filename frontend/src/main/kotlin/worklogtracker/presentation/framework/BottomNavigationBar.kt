@@ -4,7 +4,6 @@ import worklogtracker.plugins.navigation.Screen
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.produceState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -19,30 +18,13 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import org.koin.compose.koinInject
 import worklogtracker.data.local.AuthManagerInterface
-import worklogtracker.data.remote.user.UserType
 import worklogtracker.repositories.UserRepository
 
 @Composable
 fun BottomNavigationBar(
     backStack: NavBackStack<NavKey>,
-    authManager: AuthManagerInterface = koinInject(),
-    userRepository: UserRepository = koinInject(),
     onItemSelected: (Screen) -> Unit
 ) {
-    val token by authManager.authTokenFlow.collectAsState(initial = null)
-
-    val userType by produceState<UserType?>(initialValue = null, key1 = token) {
-        value = if (token != null) {
-            try {
-                userRepository.getUser().userType
-            } catch (e: Exception) {
-                null
-            }
-        } else {
-            null
-        }
-    }
-
     val items = mutableListOf(
         Screen.Projects to Icons.Default.Folder,
         Screen.Tasks to Icons.Default.Assignment,

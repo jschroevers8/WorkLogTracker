@@ -8,11 +8,11 @@ plugins {
 }
 
 android {
-    namespace = "frontend"
+    namespace = "frontend.worklogtracker"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "frontend"
+        applicationId = "frontend.worklogtracker"
         minSdk = 28
         targetSdk = 36
         versionCode = 1

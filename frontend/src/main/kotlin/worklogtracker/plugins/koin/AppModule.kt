@@ -6,7 +6,6 @@ import worklogtracker.data.local.AuthManager
 import worklogtracker.data.local.AuthManagerInterface
 import worklogtracker.data.remote.ApiClient
 import worklogtracker.data.remote.KtorApi
-import worklogtracker.presentation.project.ProjectViewModel
 import worklogtracker.presentation.user.account.AccountViewModel
 import worklogtracker.presentation.user.address.AddressViewModel
 import worklogtracker.presentation.user.login.LoginViewModel
@@ -28,5 +27,4 @@ val appModule = module {
     viewModel { SignupViewModel(get()) }
     viewModel { AddressViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
-    viewModel { ProjectViewModel(get()) }
 }
