@@ -5,7 +5,9 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
+import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.attributes.placeholder
+import org.jetbrains.compose.web.attributes.value
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.w3c.dom.CanvasRenderingContext2D
@@ -15,6 +17,8 @@ import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.shared.dto.worklog.CreateWorkLogRequest
 import worklogtracker.webapp.ApiClient
 import kotlin.js.Date
+import kotlinx.browser.window
+
 
 @Composable
 fun WorkLogRegistrationScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
@@ -74,32 +78,39 @@ fun WorkLogRegistrationScreen(api: ApiClient, scope: kotlinx.coroutines.Coroutin
         // Notities
         Div {
             Label(forId = "notes") { Text("Notities") }
-            TextArea({
-                id("notes")
-                value(notes)
-                onInput { event -> notes = event.value }
-                placeholder("Wat heb je gedaan?")
-                style {
-                    width(100.percent)
-                    padding(8.px)
-                    borderRadius(6.px)
-                    border(1.px, LineStyle.Solid, Styles.Border)
-                    minHeight(80.px)
-                }
-            })
+//            TextArea({
+//                id("notes")
+//                value(notes)
+//                onInput { event -> notes = event.value }
+//                placeholder("Wat heb je gedaan?")
+//                style {
+//                    width(100.percent)
+//                    padding(8.px)
+//                    borderRadius(6.px)
+//                    border(1.px, LineStyle.Solid, Styles.Border)
+//                    minHeight(80.px)
+//                }
+//            }.toString())
         }
 
         // GPS Locatie
         Div {
             Button({
                 onClick {
-                    window.navigator.geolocation.getCurrentPosition({ pos ->
-                        latitude = pos.coords.latitude
-                        longitude = pos.coords.longitude
-                        statusMessage = "Locatie opgehaald!"
-                    }, { err ->
-                        statusMessage = "Locatie fout: ${err.message}"
-                    })
+                    val geo = window.navigator.asDynamic().geolocation
+
+                    geo.getCurrentPosition(
+                        success = { pos: dynamic ->
+                            val coords = pos.coords
+
+                            latitude = coords.latitude
+                            longitude = coords.longitude
+                            statusMessage = "Locatie opgehaald!"
+                        },
+                        error = { err: dynamic ->
+                            statusMessage = "Locatie fout: ${err.message}"
+                        }
+                    )
                 }
                 style {
                     padding(8.px, 16.px)
@@ -156,7 +167,9 @@ fun WorkLogRegistrationScreen(api: ApiClient, scope: kotlinx.coroutines.Coroutin
 
         // Submit
         Button({
-            disabled(loading || selectedTaskId == null)
+            if (loading || selectedTaskId == null) {
+                disabled()
+            }
             onClick {
                 scope.launch {
                     loading = true
@@ -164,7 +177,7 @@ fun WorkLogRegistrationScreen(api: ApiClient, scope: kotlinx.coroutines.Coroutin
                         val now = Date()
                         val startTime = now.toISOString()
                         val endTime = now.toISOString() // Simpel voor nu: start=eind
-                        
+
                         api.createWorkLog(
                             CreateWorkLogRequest(
                                 taskId = selectedTaskId!!,

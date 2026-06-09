@@ -12,6 +12,7 @@ import worklogtracker.webapp.ApiClient
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.attributes.placeholder
+import org.jetbrains.compose.web.attributes.selected
 
 @Composable
 fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
@@ -140,9 +141,16 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
                 onInput { selectedUserIdForTask = it.value?.toIntOrNull() }
                 style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
             }) {
-                Option("", { selected(selectedUserIdForTask == null) }) { Text("Selecteer een medewerker") }
+                Option("", {
+                    if (selectedUserIdForTask == null) selected()
+                }) {
+                    Text("Selecteer een medewerker")
+                }
+
                 users.forEach { user ->
-                    Option(user.id.toString(), { selected(selectedUserIdForTask == user.id) }) {
+                    Option(user.id.toString(), {
+                        if (selectedUserIdForTask?.toLong() == user.id) selected()
+                    }) {
                         Text("${user.firstName} ${user.lastName}")
                     }
                 }

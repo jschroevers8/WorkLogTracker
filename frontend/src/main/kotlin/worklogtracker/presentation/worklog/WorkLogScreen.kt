@@ -25,6 +25,7 @@ import org.koin.androidx.compose.koinViewModel
 import worklogtracker.presentation.framework.BottomNavigationBar
 import java.io.ByteArrayOutputStream
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkLogScreen(
     backStack: NavBackStack<NavKey>,

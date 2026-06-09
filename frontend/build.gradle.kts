@@ -55,6 +55,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:4.1.1")
     implementation("io.insert-koin:koin-android:4.1.1")
     implementation("io.insert-koin:koin-androidx-compose:4.1.1")
+    implementation("com.google.android.gms:play-services-location:21.3.0")
 
     // Frontend
     implementation("androidx.core:core-ktx:1.17.0")
