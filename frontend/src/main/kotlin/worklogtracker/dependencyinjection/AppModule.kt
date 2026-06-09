@@ -1,13 +1,12 @@
-package worklogtracker.plugins.koin
+package worklogtracker.dependencyinjection
 
 import org.koin.core.module.dsl.*
 import org.koin.dsl.module
-import worklogtracker.data.local.AuthManager
-import worklogtracker.data.local.AuthManagerInterface
+import worklogtracker.data.auth.AuthManager
+import worklogtracker.data.auth.AuthManagerInterface
 import worklogtracker.data.remote.ApiClient
 import worklogtracker.data.remote.KtorApi
 import worklogtracker.presentation.user.account.AccountViewModel
-import worklogtracker.presentation.user.address.AddressViewModel
 import worklogtracker.presentation.user.login.LoginViewModel
 import worklogtracker.presentation.user.notification.NotificationViewModel
 import worklogtracker.presentation.user.signup.SignupViewModel
@@ -19,6 +18,7 @@ import worklogtracker.repositories.TaskRepository
 import worklogtracker.repositories.UserRepository
 import worklogtracker.repositories.WorkLogRepository
 
+//TODO misschien opsplitten?
 val appModule = module {
     single { UserRepository(get()) }
     single { ProjectRepository(get()) }
@@ -29,7 +29,6 @@ val appModule = module {
 
     viewModel { AccountViewModel(get(), get()) }
     viewModel { SignupViewModel(get()) }
-    viewModel { AddressViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { NotificationViewModel() }
     viewModel { ProjectViewModel(get()) }

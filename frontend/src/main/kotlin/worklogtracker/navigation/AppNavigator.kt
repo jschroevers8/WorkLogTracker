@@ -1,4 +1,4 @@
-package worklogtracker.plugins.navigation
+package worklogtracker.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -9,12 +9,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
-import worklogtracker.data.local.AuthManager
-import androidx.compose.material3.Text
+import worklogtracker.data.auth.AuthManager
 import worklogtracker.presentation.user.account.AccountScreen
 import worklogtracker.presentation.user.notification.NotificationScreen
 import worklogtracker.presentation.user.login.LoginScreen
-import worklogtracker.presentation.user.address.AddressScreen
 import worklogtracker.presentation.user.signup.SignupScreen
 import worklogtracker.presentation.project.ProjectScreen
 import worklogtracker.presentation.task.TaskScreen
@@ -55,7 +53,6 @@ fun AppNavigator() {
                     is Screen.Tasks -> TaskScreen(backStack)
                     is Screen.WorkLogs -> WorkLogScreen(backStack)
                     is Screen.Account -> AccountScreen(backStack)
-                    is Screen.Address -> AddressScreen(backStack)
                     is Screen.Notification -> NotificationScreen(backStack)
                     else -> {}
                 }

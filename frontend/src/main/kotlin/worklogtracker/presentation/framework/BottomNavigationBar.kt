@@ -1,9 +1,7 @@
 package worklogtracker.presentation.framework
 
-import worklogtracker.plugins.navigation.Screen
+import worklogtracker.navigation.Screen
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,9 +14,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import org.koin.compose.koinInject
-import worklogtracker.data.local.AuthManagerInterface
-import worklogtracker.repositories.UserRepository
 
 @Composable
 fun BottomNavigationBar(

@@ -1,4 +1,4 @@
-package worklogtracker.plugins.navigation
+package worklogtracker.navigation
 
 import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.SerialName
@@ -34,8 +34,4 @@ sealed class Screen(val requiresAuth: Boolean = false) : NavKey {
     @Serializable
     @SerialName("account")
     object Account : Screen(requiresAuth = true)
-
-    @Serializable
-    @SerialName("address")
-    object Address : Screen(requiresAuth = true)
 }

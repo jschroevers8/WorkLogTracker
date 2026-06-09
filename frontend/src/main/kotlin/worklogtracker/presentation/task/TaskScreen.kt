@@ -6,14 +6,13 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import org.koin.androidx.compose.koinViewModel
 import worklogtracker.presentation.framework.BottomNavigationBar
-import worklogtracker.plugins.navigation.Screen
+import worklogtracker.navigation.Screen
 import org.koin.compose.koinInject
 import worklogtracker.presentation.worklog.WorkLogViewModel
 

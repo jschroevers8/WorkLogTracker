@@ -9,18 +9,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.plugins.navigation.Screen
+import worklogtracker.navigation.Screen
 import worklogtracker.presentation.framework.components.ConfirmDialog
 import worklogtracker.presentation.framework.components.WltScreen
 import worklogtracker.presentation.framework.theme.WltColors
-import worklogtracker.presentation.user.account.components.RequestRenterRollSection
 
 @Composable
 fun AccountScreenContent(
@@ -75,8 +73,6 @@ fun AccountScreenContent(
         }
 
         Spacer(Modifier.height(32.dp))
-
-        AccountRow("Add address","add_address" , Icons.Default.Edit) { backStack.add(Screen.Address) }
 
         AccountRow("Favorites", "favorites", Icons.Default.Favorite) { /* TODO */ }
         AccountRow("Settings", "settings", Icons.Default.Settings) { /* TODO */ }

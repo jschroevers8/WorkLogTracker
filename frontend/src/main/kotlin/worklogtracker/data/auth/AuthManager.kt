@@ -1,4 +1,4 @@
-package worklogtracker.data.local
+package worklogtracker.data.auth
 
 
 import android.content.Context

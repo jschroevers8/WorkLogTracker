@@ -1,6 +1,6 @@
 package worklogtracker.presentation.user.account
 
-import worklogtracker.data.local.AuthManagerInterface
+import worklogtracker.data.auth.AuthManagerInterface
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
 import worklogtracker.repositories.UserRepository
 

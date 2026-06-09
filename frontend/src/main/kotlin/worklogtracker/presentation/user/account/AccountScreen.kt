@@ -5,7 +5,7 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import org.koin.androidx.compose.koinViewModel
 
-import worklogtracker.plugins.navigation.Screen
+import worklogtracker.navigation.Screen
 
 @Composable
 fun AccountScreen(backStack: NavBackStack<NavKey>) {

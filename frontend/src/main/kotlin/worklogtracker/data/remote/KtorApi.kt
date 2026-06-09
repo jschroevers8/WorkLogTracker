@@ -14,7 +14,7 @@ import io.ktor.http.contentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
-import worklogtracker.data.local.AuthManagerInterface
+import worklogtracker.data.auth.AuthManagerInterface
 import kotlin.coroutines.cancellation.CancellationException
 
 class KtorApi(private val authManager: AuthManagerInterface) : ApiClient {
