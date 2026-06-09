@@ -101,7 +101,7 @@ fun SignupContent(
 
         val annotatedSignIn = buildAnnotatedString {
             append("Already have an account? ")
-            withStyle(SpanStyle(color = Color(0xFFD32F2F), fontWeight = FontWeight.Bold)) {
+            withStyle(SpanStyle(color = WltColors.Primary, fontWeight = FontWeight.Bold)) {
                 append("Login now!")
             }
             addStringAnnotation("LOGIN", "login", length - "Login now!".length, length)

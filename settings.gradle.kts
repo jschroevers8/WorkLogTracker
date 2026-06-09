@@ -18,3 +18,4 @@ rootProject.name = "WorkLogTracker"
 include("backend")
 include("frontend")
 include("shared")
+include("webapp")

@@ -17,12 +17,14 @@ import androidx.compose.ui.unit.dp
 import worklogtracker.presentation.framework.components.text.WltPrimaryText
 import worklogtracker.presentation.framework.components.text.WltSecondaryText
 
+import worklogtracker.presentation.framework.theme.WltColors
+
 @Composable
-fun NotificationCard(notification: NotificationUiState) {
+fun NotificationCard(notification: NotificationItemUiState) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(Color(0xFF2C2C2C), RoundedCornerShape(14.dp))
+            .background(WltColors.Surface, RoundedCornerShape(12.dp))
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {

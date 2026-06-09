@@ -9,6 +9,7 @@ import worklogtracker.data.remote.KtorApi
 import worklogtracker.presentation.user.account.AccountViewModel
 import worklogtracker.presentation.user.address.AddressViewModel
 import worklogtracker.presentation.user.login.LoginViewModel
+import worklogtracker.presentation.user.notification.NotificationViewModel
 import worklogtracker.presentation.user.signup.SignupViewModel
 import worklogtracker.repositories.ProjectRepository
 import worklogtracker.repositories.TaskRepository
@@ -27,4 +28,5 @@ val appModule = module {
     viewModel { SignupViewModel(get()) }
     viewModel { AddressViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
+    viewModel { NotificationViewModel() }
 }

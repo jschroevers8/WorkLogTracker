@@ -19,23 +19,20 @@ import androidx.navigation3.runtime.NavKey
 import worklogtracker.plugins.navigation.Screen
 import worklogtracker.presentation.framework.components.ConfirmDialog
 import worklogtracker.presentation.framework.components.WltScreen
+import worklogtracker.presentation.framework.theme.WltColors
 import worklogtracker.presentation.user.account.components.RequestRenterRollSection
 
 @Composable
 fun AccountScreenContent(
-    viewModel: AccountViewModel,
+    state: AccountUiState,
+    onLoadUser: () -> Unit,
+    onLogout: () -> Unit,
     backStack: NavBackStack<NavKey>
 ) {
-    val state = viewModel.uiState
-    var showRequestRenterRollDialog by remember { mutableStateOf(false) }
     var showLogoutDialog by remember { mutableStateOf(false) }
 
-//    viewModel.onLogoutSuccess = {
-//        backStack.add(Screen.Homepage)
-//    }
-
     LaunchedEffect(Unit) {
-        viewModel.loadUser()
+        onLoadUser()
     }
 
     WltScreen(backStack = backStack) {
@@ -48,13 +45,13 @@ fun AccountScreenContent(
             Box(
                 modifier = Modifier
                     .size(90.dp)
-                    .background(Color(0xFF2C2C2C), CircleShape),
+                    .background(WltColors.Surface, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
-                    tint = Color.White,
+                    tint = WltColors.Primary,
                     modifier = Modifier.size(48.dp)
                 )
             }
@@ -63,7 +60,7 @@ fun AccountScreenContent(
 
             Text(
                 text = "${state.firstName} ${state.lastName}".trim().ifEmpty { "Loading..." },
-                color = Color.White,
+                color = WltColors.TextPrimary,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
                 modifier = Modifier.testTag("AccountUserName")
@@ -71,7 +68,7 @@ fun AccountScreenContent(
 
             Text(
                 text = state.email,
-                color = Color.Gray,
+                color = WltColors.TextSecondary,
                 fontSize = 14.sp,
                 modifier = Modifier.testTag("AccountUserEmail")
             )
@@ -87,7 +84,7 @@ fun AccountScreenContent(
 
         Spacer(Modifier.weight(1f))
 
-        AccountRow("Log out", "log_out", Icons.Default.Logout, iconTint = Color.Red) { showLogoutDialog = true }
+        AccountRow("Log out", "log_out", Icons.Default.Logout, iconTint = WltColors.Error) { showLogoutDialog = true }
 
         if (showLogoutDialog) {
             ConfirmDialog(
@@ -95,7 +92,7 @@ fun AccountScreenContent(
                 message = "Weet je zeker dat je wilt uitloggen?",
                 onConfirm = {
                     showLogoutDialog = false
-                    viewModel.logout()
+                    onLogout()
                 },
                 onDismiss = { showLogoutDialog = false }
             )
@@ -103,7 +100,7 @@ fun AccountScreenContent(
 
         state.error?.let {
             Spacer(Modifier.height(16.dp))
-            Text(it, color = Color.Red)
+            Text(it, color = WltColors.Error)
         }
 
         Spacer(Modifier.height(16.dp))

@@ -5,8 +5,20 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import org.koin.androidx.compose.koinViewModel
 
+import worklogtracker.plugins.navigation.Screen
+
 @Composable
 fun AccountScreen(backStack: NavBackStack<NavKey>) {
     val viewModel: AccountViewModel = koinViewModel()
-    AccountScreenContent(viewModel = viewModel, backStack = backStack)
+
+    viewModel.onLogoutSuccess = {
+        backStack.add(Screen.Login())
+    }
+
+    AccountScreenContent(
+        state = viewModel.uiState,
+        onLoadUser = viewModel::loadUser,
+        onLogout = viewModel::logout,
+        backStack = backStack
+    )
 }

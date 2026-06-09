@@ -20,7 +20,6 @@ fun AddressScreen(
     previousScreen: NavKey? = null
 ) {
     val viewModel: AddressViewModel = koinViewModel()
-    val state = viewModel.uiState
 
     viewModel.onAddressSaved = {
         if (previousScreen != null) {
@@ -30,6 +29,29 @@ fun AddressScreen(
         }
     }
 
+    AddressScreenContent(
+        state = viewModel.uiState,
+        onStreetChange = viewModel.updateState { copy(street = it) },
+        onHouseNumberChange = viewModel.updateState { copy(houseNumber = it.filter { char -> char.isDigit() }) },
+        onSubHouseNumberChange = viewModel.updateState { copy(subHouseNumber = it.ifBlank { null }) },
+        onPostalCodeChange = viewModel.updateState { copy(postalCode = it) },
+        onCityChange = viewModel.updateState { copy(city = it) },
+        onSaveAddress = viewModel::saveAddress,
+        backStack = backStack
+    )
+}
+
+@Composable
+fun AddressScreenContent(
+    state: AddressUiState,
+    onStreetChange: (String) -> Unit,
+    onHouseNumberChange: (String) -> Unit,
+    onSubHouseNumberChange: (String) -> Unit,
+    onPostalCodeChange: (String) -> Unit,
+    onCityChange: (String) -> Unit,
+    onSaveAddress: () -> Unit,
+    backStack: NavBackStack<NavKey>
+) {
     WltScreen(backStack = backStack) {
 
         Spacer(modifier = Modifier.height(150.dp))
@@ -37,7 +59,7 @@ fun AddressScreen(
         WltTextField(
             state.street,
             "Street",
-            viewModel.updateState { value -> copy(street = value) }
+            onStreetChange
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -45,7 +67,7 @@ fun AddressScreen(
         WltTextField(
             state.houseNumber,
             "House number",
-            viewModel.updateState { value -> copy(houseNumber = value.filter { it.isDigit() }) }
+            onHouseNumberChange
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -53,7 +75,7 @@ fun AddressScreen(
         WltTextField(
             state.subHouseNumber ?: "",
             "Addition (optional)",
-            viewModel.updateState { value -> copy(subHouseNumber = value.ifBlank { null }) }
+            onSubHouseNumberChange
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -61,7 +83,7 @@ fun AddressScreen(
         WltTextField(
             state.postalCode,
             "Postal code",
-            viewModel.updateState { value -> copy(postalCode = value) }
+            onPostalCodeChange
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -69,7 +91,7 @@ fun AddressScreen(
         WltTextField(
             state.city,
             "City",
-            viewModel.updateState { value -> copy(city = value) }
+            onCityChange
         )
 
         Spacer(modifier = Modifier.height(28.dp))
@@ -77,7 +99,7 @@ fun AddressScreen(
         WltPrimaryButton(
             text = "Save address",
             loading = state.loading,
-            onClick = viewModel::saveAddress
+            onClick = onSaveAddress
         )
 
         state.error?.let {

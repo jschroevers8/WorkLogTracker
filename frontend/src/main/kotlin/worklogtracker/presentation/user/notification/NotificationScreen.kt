@@ -11,26 +11,14 @@ import androidx.navigation3.runtime.NavKey
 import worklogtracker.presentation.framework.components.WltScreen
 import worklogtracker.presentation.framework.components.text.HeaderText
 
-@Composable
-fun NotificationScreen(backStack: NavBackStack<NavKey>) {
+import org.koin.androidx.compose.koinViewModel
 
-    val notifications = listOf(
-        NotificationUiState(
-            title = "New favorite",
-            message = "Someone added your car to favorites.",
-            time = "2 min ago"
-        ),
-        NotificationUiState(
-            title = "New order",
-            message = "Your car has been booked successfully.",
-            time = "1 hour ago"
-        ),
-        NotificationUiState(
-            title = "Reminder",
-            message = "Your rental ends tomorrow.",
-            time = "Yesterday"
-        )
-    )
+@Composable
+fun NotificationScreen(
+    backStack: NavBackStack<NavKey>,
+    viewModel: NotificationViewModel = koinViewModel()
+) {
+    val state = viewModel.uiState
 
     WltScreen (backStack = backStack) {
         Spacer(Modifier.height(20.dp))
@@ -43,7 +31,7 @@ fun NotificationScreen(backStack: NavBackStack<NavKey>) {
             verticalArrangement = Arrangement.spacedBy(12.dp),
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
-            items(notifications) { notification ->
+            items(state.notifications) { notification ->
                 NotificationCard(notification)
             }
         }

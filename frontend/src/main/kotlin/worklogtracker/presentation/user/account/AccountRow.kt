@@ -13,20 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import worklogtracker.presentation.framework.theme.WltColors
 
 @Composable
 fun AccountRow(
     text: String,
     testText: String,
     icon: androidx.compose.ui.graphics.vector.ImageVector,
-    iconTint: Color = Color.White,
+    iconTint: Color = WltColors.Primary,
     onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .background(Color(0xFF2C2C2C), RoundedCornerShape(14.dp))
+            .background(WltColors.Surface, RoundedCornerShape(12.dp))
             .clickable { onClick() }
             .padding(16.dp)
             .testTag("AccountRow_$testText"),
@@ -34,6 +35,6 @@ fun AccountRow(
     ) {
         Icon(imageVector = icon, contentDescription = null, tint = iconTint)
         Spacer(Modifier.width(16.dp))
-        Text(text, color = iconTint, fontSize = 15.sp)
+        Text(text, color = WltColors.TextPrimary, fontSize = 15.sp)
     }
 }

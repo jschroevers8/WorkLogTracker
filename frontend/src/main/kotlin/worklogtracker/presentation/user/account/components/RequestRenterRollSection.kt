@@ -14,6 +14,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import worklogtracker.presentation.framework.components.ConfirmDialog
+import worklogtracker.presentation.framework.theme.WltColors
 import worklogtracker.presentation.user.account.AccountUiState
 
 @Composable
@@ -32,18 +33,18 @@ fun RequestRenterRollSection(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 6.dp)
-            .background(Color(0xFF2C2C2C), RoundedCornerShape(14.dp))
+            .background(WltColors.Surface, RoundedCornerShape(12.dp))
             .clickable { onShowDialog() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            imageVector = Icons.Default.RecordVoiceOver,
+            imageVector = Icons.Default.WorkHistory,
             contentDescription = null,
-            tint = Color.White
+            tint = WltColors.Primary
         )
         Spacer(Modifier.width(16.dp))
-        Text("Request Renter Roll", color = Color.White, fontSize = 15.sp)
+        Text("Request Renter Roll", color = WltColors.TextPrimary, fontSize = 15.sp)
     }
 
     if (showDialog) {
