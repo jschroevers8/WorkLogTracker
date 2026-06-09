@@ -39,21 +39,21 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
             style {
                 backgroundColor(Styles.Surface)
                 borderRadius(12.px)
-                boxShadow("0 1px 3px rgba(0,0,0,0.1)")
+//                boxShadow("0 1px 3px rgba(0,0,0,0.1)")
                 overflow("hidden")
             }
         }) {
             Table({
                 style {
                     width(100.percent)
-                    borderCollapse("collapse")
+//                    borderCollapse("collapse")
                 }
             }) {
                 Thead {
                     Tr({
                         style {
                             backgroundColor(Color("#F8FAFC"))
-                            borderBottom(1.px, LineStyle.Solid, Styles.Border)
+//                            borderBottom(1.px, LineStyle.Solid, Styles.Border)
                         }
                     }) {
                         Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Naam") }
@@ -66,8 +66,8 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
                     users.forEach { user ->
                         Tr({
                             style {
-                                borderBottom(1.px, LineStyle.Solid, Styles.Border)
-                                transition("background-color 0.2s")
+//                                borderBottom(1.px, LineStyle.Solid, Styles.Border)
+//                                transition("background-color 0.2s")
                             }
                         }) {
                             Td({ style { padding(16.px); color(Styles.TextPrimary) } }) { Text("${user.firstName} ${user.lastName}") }

@@ -29,7 +29,7 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                 padding(40.px)
                 backgroundColor(Styles.Surface)
                 borderRadius(12.px)
-                boxShadow("0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)")
+//                boxShadow("0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05)")
                 width(320.px)
                 display(DisplayStyle.Flex)
                 flexDirection(FlexDirection.Column)
@@ -115,9 +115,9 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                     borderRadius(8.px)
                     cursor(if (loading) "default" else "pointer")
                     fontWeight("600")
-                    transition("background-color 0.2s")
+//                    transition("background-color 0.2s")
                 }
-                disabled(loading)
+//                disabled(loading)
                 onClick {
                     if (email.isEmpty() || password.isEmpty()) {
                         error = "Vul alle velden in"

@@ -56,7 +56,7 @@ fun ProjectCard(project: ProjectResponse) {
             backgroundColor(Styles.Surface)
             padding(20.px)
             borderRadius(12.px)
-            boxShadow("0 1px 3px rgba(0,0,0,0.1)")
+//            boxShadow("0 1px 3px rgba(0,0,0,0.1)")
             display(DisplayStyle.Flex)
             flexDirection(FlexDirection.Column)
         }

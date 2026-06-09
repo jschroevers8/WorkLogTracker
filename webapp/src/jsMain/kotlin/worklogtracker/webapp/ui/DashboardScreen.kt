@@ -27,14 +27,14 @@ fun DashboardScreen() {
 }
 
 @Composable
-fun StatCard(title: String, value: String, accentColor: Color) {
+fun StatCard(title: String, value: String, accentColor: CSSColorValue) {
     Div({
         style {
             backgroundColor(Styles.Surface)
             padding(24.px)
             borderRadius(12.px)
-            boxShadow("0 1px 3px rgba(0,0,0,0.1)")
-            borderLeft(4.px, LineStyle.Solid, accentColor)
+//            boxShadow("0 1px 3px rgba(0,0,0,0.1)")
+//            borderLeft(4.px, LineStyle.Solid, accentColor)
         }
     }) {
         Div({
