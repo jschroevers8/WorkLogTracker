@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.worklog
+package worklogtracker.presentation.worklog
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -11,7 +11,7 @@ import worklogtracker.shared.dto.worklog.StartTimerRequest
 
 fun Route.startTimerRoute(startTimerUseCase: StartTimerUseCase) {
     authenticate {
-        post("/api/v1/worklogs/timer/start") {
+        post("/api/worklogs/timer/start") {
             val userId = call.getUserId()
             val request = call.receive<StartTimerRequest>()
             call.respond(HttpStatusCode.Created, startTimerUseCase(userId, TaskId(request.taskId)))

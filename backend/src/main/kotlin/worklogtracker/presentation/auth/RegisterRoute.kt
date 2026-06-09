@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.auth
+package worklogtracker.presentation.auth
 
 import io.ktor.http.*
 import io.ktor.server.request.*
@@ -8,7 +8,7 @@ import worklogtracker.application.usecases.auth.RegisterUserUseCase
 import worklogtracker.shared.dto.auth.RegisterUserRequest
 
 fun Route.registerRoute(registerUseCase: RegisterUserUseCase) {
-    post("/api/v1/auth/register") {
+    post("/api/auth/register") {
         val request = call.receive<RegisterUserRequest>()
 
         call.respond(

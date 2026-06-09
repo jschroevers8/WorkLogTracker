@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.task
+package worklogtracker.presentation.task
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -15,7 +15,7 @@ import java.time.LocalDateTime
 
 fun Route.createTaskRoute(createTaskUseCase: CreateTaskUseCase) {
     authenticate {
-        post("/api/v1/tasks") {
+        post("/api/tasks") {
             val userId = call.getUserId()
             val request = call.receive<CreateTaskRequest>()
             val response = createTaskUseCase(userId,

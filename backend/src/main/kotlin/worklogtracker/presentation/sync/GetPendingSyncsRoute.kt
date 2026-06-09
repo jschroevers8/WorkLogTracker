@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.sync
+package worklogtracker.presentation.sync
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -8,7 +8,7 @@ import worklogtracker.infrastructure.plugins.getUserId
 
 fun Route.getPendingSyncsRoute(getPendingSyncsUseCase: GetPendingSyncsUseCase) {
     authenticate {
-        get("/api/v1/sync/pending") {
+        get("/api/sync/pending") {
             val userId = call.getUserId()
             call.respond(HttpStatusCode.OK, getPendingSyncsUseCase(userId))
         }

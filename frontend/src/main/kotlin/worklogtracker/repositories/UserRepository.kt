@@ -15,8 +15,6 @@ class UserRepository(private val api: ApiClient) {
     suspend fun login(request: LoginRequest): String {
         val requestBody = json.encodeToString(request)
         val response = api.post("$baseUrl/auth/login", requestBody)
-        // De backend retourneert waarschijnlijk een JWT token als string of in een JSON object
-        // Voor nu nemen we aan dat het een token string is of we moeten een LoginResponse hebben
         return response.bodyAsText()
     }
 

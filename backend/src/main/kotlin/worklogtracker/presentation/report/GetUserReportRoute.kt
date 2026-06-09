@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.report
+package worklogtracker.presentation.report
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -12,7 +12,7 @@ import io.ktor.server.response.respond
 //TODO
 fun Route.getUserReportRoute(workLogRepository: WorkLogRepositoryInterface) {
     authenticate {
-        get("/api/v1/reports/user/{userId}") {
+        get("/api/reports/user/{userId}") {
             val requestedUserId = UserId(call.parameters["userId"]?.toInt() ?: error("User ID required"))
             val from = call.parameters["from"]?.let(LocalDateTime::parse)
             val to = call.parameters["to"]?.let(LocalDateTime::parse)

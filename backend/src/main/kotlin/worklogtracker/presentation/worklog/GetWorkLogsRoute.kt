@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.worklog
+package worklogtracker.presentation.worklog
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -10,7 +10,7 @@ import java.time.LocalDateTime
 
 fun Route.getWorkLogsRoute(getUserWorkLogsUseCase: GetUserWorkLogsUseCase) {
     authenticate {
-        get("/api/v1/worklogs") {
+        get("/api/worklogs") {
             val userId = call.getUserId()
 
             val from = call.parameters["from"]?.let(LocalDateTime::parse)

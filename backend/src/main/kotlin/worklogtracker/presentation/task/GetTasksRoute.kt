@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.task
+package worklogtracker.presentation.task
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -10,7 +10,7 @@ import worklogtracker.infrastructure.plugins.getUserId
 
 fun Route.getTasksRoute(listTasksUseCase: ListTasksUseCase) {
     authenticate {
-        get("/api/v1/tasks") {
+        get("/api/tasks") {
             val userId = call.getUserId()
             val projectId = call.parameters["projectId"]?.toInt()?.let(::ProjectId)
             val status = call.parameters["status"]?.let(TaskStatus::valueOf)

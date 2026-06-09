@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.report
+package worklogtracker.presentation.report
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -11,7 +11,7 @@ import io.ktor.server.response.respond
 //TODO
 fun Route.getProjectReportRoute(taskRepository: TaskRepositoryInterface) {
     authenticate {
-        get("/api/v1/reports/project/{projectId}") {
+        get("/api/reports/project/{projectId}") {
             val projectId = ProjectId(call.parameters["projectId"]?.toInt() ?: error("Project ID required"))
             val tasks = taskRepository.findByProject(projectId)
             val completed = tasks.count { it.status.name == "COMPLETED" }

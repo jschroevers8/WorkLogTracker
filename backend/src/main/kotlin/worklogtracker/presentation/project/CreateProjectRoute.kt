@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.project
+package worklogtracker.presentation.project
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -12,7 +12,7 @@ import java.time.LocalDate
 
 fun Route.createProjectRoute(createProjectUseCase: CreateProjectUseCase) {
     authenticate {
-        post("/api/v1/projects") {
+        post("/api/projects") {
             val userId = call.getUserId()
             val request = call.receive<CreateProjectRequest>()
             val response = createProjectUseCase(userId, request.name, request.description, request.startDate?.let(LocalDate::parse), request.endDate?.let(LocalDate::parse))

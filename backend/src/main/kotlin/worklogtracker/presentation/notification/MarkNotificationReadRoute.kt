@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.notification
+package worklogtracker.presentation.notification
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -10,7 +10,7 @@ import worklogtracker.infrastructure.plugins.getUserId
 
 fun Route.markNotificationReadRoute(markNotificationAsReadUseCase: MarkNotificationAsReadUseCase) {
     authenticate {
-        put("/api/v1/notifications/{id}/read") {
+        put("/api/notifications/{id}/read") {
             val notificationId = NotificationId(call.parameters["id"]?.toInt() ?: error("Notification ID required"))
 
             call.respond(

@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.project
+package worklogtracker.presentation.project
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -9,7 +9,7 @@ import worklogtracker.infrastructure.plugins.getUserId
 
 fun Route.getProjectsRoute(listProjectsUseCase: ListProjectsUseCase) {
     authenticate {
-        get("/api/v1/projects") {
+        get("/api/projects") {
             call.respond(
                 HttpStatusCode.OK,
                 listProjectsUseCase(call.getUserId()),

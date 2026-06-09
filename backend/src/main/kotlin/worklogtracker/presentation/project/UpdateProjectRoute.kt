@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.project
+package worklogtracker.presentation.project
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -13,7 +13,7 @@ import worklogtracker.shared.dto.project.UpdateProjectRequest
 
 fun Route.updateProjectRoute(updateProjectUseCase: UpdateProjectUseCase) {
     authenticate {
-        put("/api/v1/projects/{id}") {
+        put("/api/projects/{id}") {
             val userId = call.getUserId()
             val projectId = ProjectId(call.parameters["id"]?.toInt() ?: error("Project ID required"))
             val request = call.receive<UpdateProjectRequest>()

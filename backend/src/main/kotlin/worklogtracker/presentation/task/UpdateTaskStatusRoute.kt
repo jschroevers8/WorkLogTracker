@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.task
+package worklogtracker.presentation.task
 
 import io.ktor.http.*
 import io.ktor.server.auth.*
@@ -13,7 +13,7 @@ import worklogtracker.shared.dto.task.UpdateTaskStatusRequest
 
 fun Route.updateTaskStatusRoute(updateTaskStatusUseCase: UpdateTaskStatusUseCase) {
     authenticate {
-        put("/api/v1/tasks/{id}/status") {
+        put("/api/tasks/{id}/status") {
             val userId = call.getUserId()
             val taskId = TaskId(call.parameters["id"]?.toInt() ?: error("Task ID required"))
             val request = call.receive<UpdateTaskStatusRequest>()

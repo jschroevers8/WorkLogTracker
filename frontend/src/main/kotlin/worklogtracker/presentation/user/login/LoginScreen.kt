@@ -12,9 +12,7 @@ fun LoginScreen(backStack: NavBackStack<NavKey>, previousScreen: NavKey?) {
     val state = viewModel.uiState
 
     viewModel.onLoginSuccess = {
-        if (previousScreen != null) {
-            backStack.add(previousScreen)
-        }
+        backStack.add(Screen.Account)
     }
 
     LoginContent(

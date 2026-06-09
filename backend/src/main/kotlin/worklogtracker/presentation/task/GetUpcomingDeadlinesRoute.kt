@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.task
+package worklogtracker.presentation.task
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -7,7 +7,7 @@ import worklogtracker.application.usecases.task.GetUpcomingDeadlinesUseCase
 
 fun Route.getUpcomingDeadlinesRoute(getUpcomingDeadlinesUseCase: GetUpcomingDeadlinesUseCase) {
     authenticate {
-        get("/api/v1/tasks/upcoming-deadlines") {
+        get("/api/tasks/upcoming-deadlines") {
             val daysAhead = call.parameters["days"]?.toIntOrNull() ?: 7
             call.respond(HttpStatusCode.OK, getUpcomingDeadlinesUseCase(daysAhead))
         }

@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.sync
+package worklogtracker.presentation.sync
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.request.*
@@ -12,7 +12,7 @@ import io.ktor.server.response.respond
 import java.util.UUID
 fun Route.pushSyncRoute(addPendingSyncUseCase: AddPendingSyncUseCase) {
     authenticate {
-        post("/api/v1/sync/push") {
+        post("/api/sync/push") {
             val userId = call.getUserId()
             val request = call.receive<SyncPushRequest>()
             val results = request.items.map {

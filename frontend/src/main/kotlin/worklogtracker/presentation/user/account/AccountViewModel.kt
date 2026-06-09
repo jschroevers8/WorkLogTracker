@@ -12,7 +12,6 @@ class AccountViewModel(
     var onLogoutSuccess: (() -> Unit)? = null
 
     fun loadUser() {
-        // Mock loading for now as backend UserResponse might have changed
         launchWithErrorHandling {
             _uiState = uiState.copy(
                 firstName = "User",

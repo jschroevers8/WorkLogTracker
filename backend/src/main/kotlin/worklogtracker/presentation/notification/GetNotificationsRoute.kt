@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.notification
+package worklogtracker.presentation.notification
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -8,7 +8,7 @@ import worklogtracker.infrastructure.plugins.getUserId
 
 fun Route.getNotificationsRoute(getUserNotificationsUseCase: GetUserNotificationsUseCase) {
     authenticate {
-        get("/api/v1/notifications") {
+        get("/api/notifications") {
             call.respond(
                 HttpStatusCode.OK,
                 getUserNotificationsUseCase(

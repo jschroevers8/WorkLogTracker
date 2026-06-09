@@ -1,4 +1,4 @@
-package worklogtracker.presentation.routes.auth
+package worklogtracker.presentation.auth
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -8,7 +8,7 @@ import worklogtracker.domain.valueobjects.user.Email
 import worklogtracker.shared.dto.auth.LoginRequest
 
 fun Route.loginRoute(loginUseCase: LoginUserUseCase) {
-    post("/api/v1/auth/login") {
+    post("/api/auth/login") {
         val request = call.receive<LoginRequest>()
 
         call.respond(
