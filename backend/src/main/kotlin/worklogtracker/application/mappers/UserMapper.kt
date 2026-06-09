@@ -1,5 +1,6 @@
 package worklogtracker.application.mappers
 
+import worklogtracker.domain.entities.UserEntity
 import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.shared.dto.user.UserResponse
 
