@@ -9,7 +9,7 @@ import java.time.LocalDateTime
  * WorkLog Aggregate Root
  * 
  * Represents logged time against a task.
- * Inherits from RMC concept of "Rental" and "RentalTrip" (time-based tracking).
+ * Inherits from concept of "Rental" and "RentalTrip" (time-based tracking).
  * 
  * Domain Rules:
  * - EndTime must be after StartTime

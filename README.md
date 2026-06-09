@@ -258,7 +258,7 @@ POST   /api/v1/sync/push                  (Upload pending changes)
 
 ### Entity Mapping
 
-| RMC | WLT | Reason |
+| WLT | WorkLogTracker | New Domain |
 |-----|-----|--------|
 | `UserEntity` | `UserEntity` | Same authentication model |
 | `CarEntity` | `TaskEntity` | Both represent assignable work units |

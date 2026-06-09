@@ -5,7 +5,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import worklogtracker.domain.valueobjects.project.ProjectId
 import worklogtracker.domain.repositories.TaskRepositoryInterface
-import worklogtracker.presentation.dto.report.ProjectReportResponse
+import worklogtracker.shared.dto.report.ProjectReportResponse
 import io.ktor.server.response.respond
 
 //TODO

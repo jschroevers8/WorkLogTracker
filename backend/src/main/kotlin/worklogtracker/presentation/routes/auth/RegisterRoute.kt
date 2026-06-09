@@ -5,7 +5,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import worklogtracker.application.usecases.auth.RegisterUserUseCase
-import worklogtracker.presentation.dto.auth.RegisterUserRequest
+import worklogtracker.shared.dto.auth.RegisterUserRequest
 
 fun Route.registerRoute(registerUseCase: RegisterUserUseCase) {
     post("/api/v1/auth/register") {

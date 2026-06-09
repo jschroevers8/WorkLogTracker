@@ -9,7 +9,7 @@ import worklogtracker.application.usecases.task.UpdateTaskStatusUseCase
 import worklogtracker.domain.entities.enums.TaskStatus
 import worklogtracker.domain.valueobjects.task.TaskId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.task.UpdateTaskStatusRequest
+import worklogtracker.shared.dto.task.UpdateTaskStatusRequest
 
 fun Route.updateTaskStatusRoute(updateTaskStatusUseCase: UpdateTaskStatusUseCase) {
     authenticate {

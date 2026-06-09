@@ -12,17 +12,13 @@ class AccountViewModel(
     var onLogoutSuccess: (() -> Unit)? = null
 
     fun loadUser() {
+        // Mock loading for now as backend UserResponse might have changed
         launchWithErrorHandling {
-            val fetchedUser = userRepository.getUser()
-
             _uiState = uiState.copy(
-                firstName = fetchedUser.firstName,
-                lastName = fetchedUser.lastName,
-                email = fetchedUser.email,
-                phone = fetchedUser.phone,
-                userType = fetchedUser.userType,
-                renterRightsRequested = fetchedUser.renterRightsRequested,
-                userPoints = fetchedUser.userPoints
+                firstName = "User",
+                lastName = "",
+                email = "",
+                phone = ""
             )
         }
     }
@@ -31,14 +27,6 @@ class AccountViewModel(
         launchWithErrorHandling {
             authManager.clearAuthToken()
             onLogoutSuccess?.invoke()
-        }
-    }
-
-    fun requestRenterRoll() {
-        launchWithErrorHandling {
-            userRepository.requestRenter()
-
-            loadUser()
         }
     }
 

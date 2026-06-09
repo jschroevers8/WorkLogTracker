@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import worklogtracker.presentation.framework.theme.RmcColors
+import worklogtracker.presentation.framework.theme.WltColors
 
 @Composable
 fun HeaderText(
@@ -14,7 +14,7 @@ fun HeaderText(
     Text(
         text = text,
         style = TextStyle(
-            color = RmcColors.TextPrimary,
+            color = WltColors.TextPrimary,
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
         )

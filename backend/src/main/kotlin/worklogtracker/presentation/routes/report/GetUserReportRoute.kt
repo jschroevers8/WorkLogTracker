@@ -6,7 +6,7 @@ import io.ktor.server.routing.*
 import worklogtracker.domain.valueobjects.user.UserId
 import worklogtracker.domain.repositories.WorkLogRepositoryInterface
 import java.time.LocalDateTime
-import worklogtracker.presentation.dto.report.UserReportResponse
+import worklogtracker.shared.dto.report.UserReportResponse
 import io.ktor.server.response.respond
 
 //TODO

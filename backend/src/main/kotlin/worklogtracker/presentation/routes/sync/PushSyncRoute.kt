@@ -5,9 +5,9 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import worklogtracker.application.usecases.sync.AddPendingSyncUseCase
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.sync.SyncPushRequest
-import worklogtracker.presentation.dto.sync.SyncPushResponse
-import worklogtracker.presentation.dto.sync.SyncResult
+import worklogtracker.shared.dto.sync.SyncPushRequest
+import worklogtracker.shared.dto.sync.SyncPushResponse
+import worklogtracker.shared.dto.sync.SyncResult
 import io.ktor.server.response.respond
 import java.util.UUID
 fun Route.pushSyncRoute(addPendingSyncUseCase: AddPendingSyncUseCase) {

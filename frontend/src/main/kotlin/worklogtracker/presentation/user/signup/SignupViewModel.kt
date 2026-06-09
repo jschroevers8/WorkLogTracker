@@ -1,8 +1,6 @@
 package worklogtracker.presentation.user.signup
 
-import worklogtracker.data.remote.user.CreateUser
-import worklogtracker.presentation.framework.viewmodel.BaseViewModel
-import worklogtracker.repositories.UserRepository
+import worklogtracker.shared.dto.auth.RegisterUserRequest
 
 class SignupViewModel(
     private val userRepository: UserRepository
@@ -14,15 +12,14 @@ class SignupViewModel(
         if (uiState.validate(::setError)) {
             launchWithErrorHandling {
                 try {
-                    val user = CreateUser(
+                    val request = RegisterUserRequest(
                         email = uiState.email,
                         password = uiState.password,
                         firstName = uiState.firstName,
-                        lastName = uiState.lastName,
-                        phone = uiState.phoneNumber,
+                        lastName = uiState.lastName
                     )
 
-                    userRepository.signupUser(user)
+                    userRepository.register(request)
                     onSuccess?.invoke()
                     resetState()
                 } catch (e: Exception) {

@@ -8,11 +8,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import org.koin.androidx.compose.koinViewModel
-import worklogtracker.presentation.framework.components.RmcScreen
-import worklogtracker.presentation.framework.components.button.RmcPrimaryButton
-import worklogtracker.presentation.framework.components.input.RmcTextField
-import worklogtracker.presentation.framework.theme.RmcColors
-import worklogtracker.presentation.user.components.RmcLogoHeader
+import worklogtracker.presentation.framework.components.WltScreen
+import worklogtracker.presentation.framework.components.button.WltPrimaryButton
+import worklogtracker.presentation.framework.components.input.WltTextField
+import worklogtracker.presentation.framework.theme.WltColors
+import worklogtracker.presentation.user.components.WltLogoHeader
 
 @Composable
 fun AddressScreen(
@@ -30,11 +30,11 @@ fun AddressScreen(
         }
     }
 
-    RmcScreen(backStack = backStack) {
+    WltScreen(backStack = backStack) {
 
         Spacer(modifier = Modifier.height(150.dp))
 
-        RmcTextField(
+        WltTextField(
             state.street,
             "Street",
             viewModel.updateState { value -> copy(street = value) }
@@ -42,7 +42,7 @@ fun AddressScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.houseNumber,
             "House number",
             viewModel.updateState { value -> copy(houseNumber = value.filter { it.isDigit() }) }
@@ -50,7 +50,7 @@ fun AddressScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.subHouseNumber ?: "",
             "Addition (optional)",
             viewModel.updateState { value -> copy(subHouseNumber = value.ifBlank { null }) }
@@ -58,7 +58,7 @@ fun AddressScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.postalCode,
             "Postal code",
             viewModel.updateState { value -> copy(postalCode = value) }
@@ -66,7 +66,7 @@ fun AddressScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.city,
             "City",
             viewModel.updateState { value -> copy(city = value) }
@@ -74,7 +74,7 @@ fun AddressScreen(
 
         Spacer(modifier = Modifier.height(28.dp))
 
-        RmcPrimaryButton(
+        WltPrimaryButton(
             text = "Save address",
             loading = state.loading,
             onClick = viewModel::saveAddress
@@ -82,7 +82,7 @@ fun AddressScreen(
 
         state.error?.let {
             Spacer(modifier = Modifier.height(16.dp))
-            Text(it, color = RmcColors.Error)
+            Text(it, color = WltColors.Error)
         }
     }
 }

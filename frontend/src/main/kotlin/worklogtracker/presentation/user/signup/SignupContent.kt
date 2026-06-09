@@ -16,12 +16,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.presentation.framework.components.RmcScreen
-import worklogtracker.presentation.framework.components.button.RmcPrimaryButton
-import worklogtracker.presentation.framework.components.input.RmcTextField
-import worklogtracker.presentation.framework.components.text.RmcClickableText
-import worklogtracker.presentation.framework.theme.RmcColors
-import worklogtracker.presentation.user.components.RmcLogoHeader
+import worklogtracker.presentation.framework.components.WltScreen
+import worklogtracker.presentation.framework.components.button.WltPrimaryButton
+import worklogtracker.presentation.framework.components.input.WltTextField
+import worklogtracker.presentation.framework.components.text.WltClickableText
+import worklogtracker.presentation.framework.theme.WltColors
+import worklogtracker.presentation.user.components.WltLogoHeader
 import worklogtracker.presentation.user.components.TermsText
 
 @Composable
@@ -36,10 +36,10 @@ fun SignupContent(
     onLoginClick: () -> Unit,
     backStack: NavBackStack<NavKey>,
 ) {
-    RmcScreen(backStack = backStack) {
-        RmcLogoHeader()
+    WltScreen(backStack = backStack) {
+        WltLogoHeader()
 
-        RmcTextField(
+        WltTextField(
             state.firstName,
             "First Name",
             onFirstNameChange,
@@ -47,7 +47,7 @@ fun SignupContent(
         )
         Spacer(Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.lastName,
             "Last Name",
             onLastNameChange,
@@ -55,7 +55,7 @@ fun SignupContent(
         )
         Spacer(Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.email,
             "Email",
             onEmailChange,
@@ -63,7 +63,7 @@ fun SignupContent(
         )
         Spacer(Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.phoneNumber,
             "Phone Number",
             onPhoneNumberChange,
@@ -71,7 +71,7 @@ fun SignupContent(
         )
         Spacer(Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             state.password,
             "Password",
             onPasswordChange,
@@ -81,7 +81,7 @@ fun SignupContent(
 
         Spacer(Modifier.height(28.dp))
 
-        RmcPrimaryButton(
+        WltPrimaryButton(
             text = "Sign Up",
             loading = state.loading,
             onClick = onSignupClick,
@@ -90,7 +90,7 @@ fun SignupContent(
 
         state.error?.let {
             Spacer(Modifier.height(16.dp))
-            Text(it, color = RmcColors.Error, modifier = Modifier.testTag("errorMessage"))
+            Text(it, color = WltColors.Error, modifier = Modifier.testTag("errorMessage"))
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -107,7 +107,7 @@ fun SignupContent(
             addStringAnnotation("LOGIN", "login", length - "Login now!".length, length)
         }
 
-        RmcClickableText(
+        WltClickableText(
             text = annotatedSignIn,
             modifier = Modifier.fillMaxWidth().testTag("loginText"),
             onClick = { _ ->

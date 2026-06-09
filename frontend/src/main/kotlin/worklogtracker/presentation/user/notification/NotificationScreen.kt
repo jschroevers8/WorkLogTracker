@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.presentation.framework.components.RmcScreen
+import worklogtracker.presentation.framework.components.WltScreen
 import worklogtracker.presentation.framework.components.text.HeaderText
 
 @Composable
@@ -32,7 +32,7 @@ fun NotificationScreen(backStack: NavBackStack<NavKey>) {
         )
     )
 
-    RmcScreen (backStack = backStack) {
+    WltScreen (backStack = backStack) {
         Spacer(Modifier.height(20.dp))
 
         HeaderText("Notifications")

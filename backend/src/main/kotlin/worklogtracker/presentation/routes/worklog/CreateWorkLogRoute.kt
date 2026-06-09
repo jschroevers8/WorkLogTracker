@@ -8,7 +8,7 @@ import io.ktor.server.routing.*
 import worklogtracker.application.usecases.worklog.CreateManualWorkLogUseCase
 import worklogtracker.domain.valueobjects.task.TaskId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.worklog.CreateWorkLogRequest
+import worklogtracker.shared.dto.worklog.CreateWorkLogRequest
 import java.time.LocalDateTime
 
 fun Route.createWorkLogRoute(createManualWorkLogUseCase: CreateManualWorkLogUseCase) {

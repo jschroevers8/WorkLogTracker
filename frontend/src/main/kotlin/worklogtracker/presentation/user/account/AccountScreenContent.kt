@@ -19,7 +19,7 @@ import androidx.navigation3.runtime.NavKey
 import worklogtracker.data.remote.user.UserType
 import worklogtracker.plugins.navigation.Screen
 import worklogtracker.presentation.framework.components.ConfirmDialog
-import worklogtracker.presentation.framework.components.RmcScreen
+import worklogtracker.presentation.framework.components.WltScreen
 import worklogtracker.presentation.user.account.components.RequestRenterRollSection
 
 @Composable
@@ -39,7 +39,7 @@ fun AccountScreenContent(
         viewModel.loadUser()
     }
 
-    RmcScreen(backStack = backStack) {
+    WltScreen(backStack = backStack) {
         Spacer(Modifier.height(24.dp))
 
         Column(

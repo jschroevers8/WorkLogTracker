@@ -11,7 +11,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.sp
-import worklogtracker.presentation.framework.theme.RmcColors
+import worklogtracker.presentation.framework.theme.WltColors
 
 @Composable
 fun TermsText() {
@@ -24,7 +24,7 @@ fun TermsText() {
         },
         modifier = Modifier.fillMaxWidth(),
         style = TextStyle(
-            color = RmcColors.TextPrimary,
+            color = WltColors.TextPrimary,
             fontSize = 15.sp,
             lineHeight = 16.sp,
             textAlign = TextAlign.Center

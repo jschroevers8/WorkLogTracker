@@ -9,7 +9,7 @@ import worklogtracker.application.usecases.task.CreateTaskUseCase
 import worklogtracker.domain.entities.enums.Priority
 import worklogtracker.domain.valueobjects.project.ProjectId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.task.CreateTaskRequest
+import worklogtracker.shared.dto.task.CreateTaskRequest
 import java.math.BigDecimal
 import java.time.LocalDateTime
 

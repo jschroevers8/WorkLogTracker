@@ -5,7 +5,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import worklogtracker.application.usecases.auth.LoginUserUseCase
 import worklogtracker.domain.valueobjects.user.Email
-import worklogtracker.presentation.dto.auth.LoginRequest
+import worklogtracker.shared.dto.auth.LoginRequest
 
 fun Route.loginRoute(loginUseCase: LoginUserUseCase) {
     post("/api/v1/auth/login") {

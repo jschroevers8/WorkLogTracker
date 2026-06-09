@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 import worklogtracker.application.usecases.worklog.StopTimerUseCase
 import worklogtracker.domain.valueobjects.timer.TimerSessionId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.worklog.StopTimerRequest
+import worklogtracker.shared.dto.worklog.StopTimerRequest
 
 fun Route.stopTimerRoute(stopTimerUseCase: StopTimerUseCase) {
     authenticate {

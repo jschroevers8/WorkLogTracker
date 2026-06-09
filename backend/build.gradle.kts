@@ -6,7 +6,7 @@ plugins {
     id("application")
 }
 
-group = "rmc"
+group = "worklogtracker"
 version = "0.0.1"
 
 val exposedVersion = "0.61.0"
@@ -17,6 +17,9 @@ application {
 }
 
 dependencies {
+    // Shared
+    implementation(project(":shared"))
+
     // Backend
     implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")

@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 import worklogtracker.application.usecases.worklog.StartTimerUseCase
 import worklogtracker.domain.valueobjects.task.TaskId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.worklog.StartTimerRequest
+import worklogtracker.shared.dto.worklog.StartTimerRequest
 
 fun Route.startTimerRoute(startTimerUseCase: StartTimerUseCase) {
     authenticate {

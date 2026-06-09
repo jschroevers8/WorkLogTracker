@@ -10,30 +10,19 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import worklogtracker.data.local.AuthManager
-import worklogtracker.presentation.admin.renterrequests.AdminRenterRequestsScreen
+import androidx.compose.material3.Text
+import worklogtracker.presentation.project.ProjectScreen
 import worklogtracker.presentation.user.account.AccountScreen
-import worklogtracker.presentation.advertisement.overview.AvailableAdvertisementsScreen
-import worklogtracker.presentation.advertisement.create.CreateAdvertisementScreen
-import worklogtracker.presentation.car.create.CreateCarScreen
-import worklogtracker.presentation.car.recommended.RecommendedCarScreen
-import worklogtracker.presentation.dashboard.create.CreateDashboardScreen
-import worklogtracker.presentation.advertisement.overview.homepage.HomePageScreen
 import worklogtracker.presentation.user.notification.NotificationScreen
 import worklogtracker.presentation.user.login.LoginScreen
-import worklogtracker.presentation.advertisement.overview.show.ShowAdvertisementScreen
-import worklogtracker.presentation.rental.create.CreateReservationScreen
-import worklogtracker.presentation.rental.myrentals.MyRentalsScreen
-import worklogtracker.presentation.car.personal.edit.EditPersonalCarScreen
-import worklogtracker.presentation.car.personal.PersonalCarsScreen
 import worklogtracker.presentation.user.address.AddressScreen
 import worklogtracker.presentation.user.signup.SignupScreen
-import worklogtracker.plugins.navigation.Screen
 
 @Composable
 fun AppNavigator() {
     val context = LocalContext.current
     val authManager = remember { AuthManager(context) }
-    val backStack = rememberNavBackStack(Screen.Homepage)
+    val backStack = rememberNavBackStack(Screen.Projects)
 
     val token by authManager.authTokenFlow.collectAsState(initial = null)
 
@@ -60,21 +49,12 @@ fun AppNavigator() {
                 when (screen) {
                     is Screen.Login -> LoginScreen(backStack,screen.targetScreen)
                     is Screen.Signup -> SignupScreen(backStack, screen.targetScreen)
-                    is Screen.Homepage -> HomePageScreen(backStack)
-                    is Screen.AvailableAdvertisements -> AvailableAdvertisementsScreen(backStack)
-                    is Screen.ShowAdvertisement -> ShowAdvertisementScreen(backStack, screen.advertisementId)
-                    is Screen.CreateCar -> CreateCarScreen(backStack)
-                    is Screen.PersonalCars -> PersonalCarsScreen(backStack)
+                    is Screen.Projects -> ProjectScreen(backStack)
+                    is Screen.Tasks -> Text("Tasks Screen")
+                    is Screen.WorkLogs -> Text("WorkLogs Screen")
                     is Screen.Account -> AccountScreen(backStack)
                     is Screen.Address -> AddressScreen(backStack)
                     is Screen.Notification -> NotificationScreen(backStack)
-                    is Screen.CreateDashboard -> CreateDashboardScreen(backStack)
-                    is Screen.Advertisement -> CreateAdvertisementScreen(backStack)
-                    is Screen.EditPersonalCar -> EditPersonalCarScreen(backStack, screen.carId)
-                    is Screen.AdminRenterRequests -> AdminRenterRequestsScreen(backStack)
-                    is Screen.CreateReservation -> CreateReservationScreen(backStack, screen.advertisementId)
-                    is Screen.MyRentals -> MyRentalsScreen(backStack)
-                    is Screen.RecommendedCar -> RecommendedCarScreen(backStack)
                 }
             }
         }

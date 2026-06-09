@@ -13,7 +13,7 @@ import java.time.LocalDateTime
  * Task Aggregate Root
  * 
  * Represents a unit of work within a project.
- * Inherits from RMC concept of "Car" (assignable resource) and "Advertisement" (availability definition).
+ * Inherits from concept of "Car" (assignable resource) and "Advertisement" (availability definition).
  * 
  * Domain Rules:
  * - EstimatedHours must be positive

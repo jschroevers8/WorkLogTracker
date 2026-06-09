@@ -6,7 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import worklogtracker.application.usecases.project.CreateProjectUseCase
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.project.CreateProjectRequest
+import worklogtracker.shared.dto.project.CreateProjectRequest
 import io.ktor.server.response.respond
 import java.time.LocalDate
 

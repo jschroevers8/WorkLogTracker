@@ -9,7 +9,7 @@ import worklogtracker.application.usecases.project.UpdateProjectUseCase
 import worklogtracker.domain.entities.enums.ProjectStatus
 import worklogtracker.domain.valueobjects.project.ProjectId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.project.UpdateProjectRequest
+import worklogtracker.shared.dto.project.UpdateProjectRequest
 
 fun Route.updateProjectRoute(updateProjectUseCase: UpdateProjectUseCase) {
     authenticate {

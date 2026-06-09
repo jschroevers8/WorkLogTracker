@@ -4,6 +4,8 @@ import worklogtracker.data.local.AuthManagerInterface
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
 import worklogtracker.repositories.UserRepository
 
+import worklogtracker.shared.dto.auth.LoginRequest
+
 class LoginViewModel(
     private val userRepository: UserRepository,
     private val authManager: AuthManagerInterface
@@ -14,17 +16,16 @@ class LoginViewModel(
     fun login() {
         if (uiState.validate(::setError)) {
             launchWithErrorHandling {
-                val response = userRepository.loginUser(
-                    uiState.email,
-                    uiState.password
+                val token = userRepository.login(
+                    LoginRequest(uiState.email, uiState.password)
                 )
 
-                if (response.token != null) {
-                    authManager.saveAuthToken(response.token)
+                if (token.isNotEmpty()) {
+                    authManager.saveAuthToken(token)
                     onLoginSuccess?.invoke()
                     resetState()
                 } else {
-                    setError(response.error ?: "Login failed")
+                    setError("Login failed")
                 }
             }
         }

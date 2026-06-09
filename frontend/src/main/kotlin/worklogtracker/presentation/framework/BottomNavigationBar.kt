@@ -44,18 +44,12 @@ fun BottomNavigationBar(
     }
 
     val items = mutableListOf(
-        Screen.Homepage to Icons.Default.Home,
-        Screen.AvailableAdvertisements to Icons.Default.DirectionsCar,
+        Screen.Projects to Icons.Default.Folder,
+        Screen.Tasks to Icons.Default.Assignment,
+        Screen.WorkLogs to Icons.Default.Timeline,
+        Screen.Notification to Icons.Default.Notifications,
+        Screen.Account to Icons.Default.AccountCircle
     )
-
-    if (userType == UserType.RENTER) {
-        items.add(Screen.CreateDashboard to Icons.Default.AddCircle)
-    } else {
-        items.add(Screen.RecommendedCar to Icons.Default.Chat)
-    }
-
-    items.add(Screen.Notification to Icons.Default.Notifications)
-    items.add(Screen.Account to Icons.Default.AccountCircle)
 
     Row(
         modifier = Modifier
@@ -65,7 +59,7 @@ fun BottomNavigationBar(
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val currentScreen = backStack.lastOrNull() ?: Screen.AvailableAdvertisements
+        val currentScreen = backStack.lastOrNull() ?: Screen.Projects
 
         items.forEach { (screen, icon) ->
             Column(

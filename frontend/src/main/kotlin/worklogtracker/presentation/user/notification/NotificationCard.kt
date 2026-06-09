@@ -14,8 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import worklogtracker.presentation.framework.components.text.RmcPrimaryText
-import worklogtracker.presentation.framework.components.text.RmcSecondaryText
+import worklogtracker.presentation.framework.components.text.WltPrimaryText
+import worklogtracker.presentation.framework.components.text.WltSecondaryText
 
 @Composable
 fun NotificationCard(notification: NotificationUiState) {
@@ -29,11 +29,11 @@ fun NotificationCard(notification: NotificationUiState) {
         Spacer(Modifier.width(16.dp))
 
         Column(modifier = Modifier.weight(1f)) {
-            RmcPrimaryText(notification.title)
+            WltPrimaryText(notification.title)
             Spacer(Modifier.height(4.dp))
-            RmcSecondaryText(notification.message)
+            WltSecondaryText(notification.message)
         }
 
-        RmcSecondaryText(notification.time, 12)
+        WltSecondaryText(notification.time, 12)
     }
 }

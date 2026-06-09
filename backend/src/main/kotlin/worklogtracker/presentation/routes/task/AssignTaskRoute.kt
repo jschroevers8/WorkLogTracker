@@ -9,7 +9,7 @@ import worklogtracker.application.usecases.task.AssignTaskUseCase
 import worklogtracker.domain.valueobjects.task.TaskId
 import worklogtracker.domain.valueobjects.user.UserId
 import worklogtracker.infrastructure.plugins.getUserId
-import worklogtracker.presentation.dto.task.AssignTaskRequest
+import worklogtracker.shared.dto.task.AssignTaskRequest
 
 fun Route.assignTaskRoute(assignTaskUseCase: AssignTaskUseCase) {
     authenticate {

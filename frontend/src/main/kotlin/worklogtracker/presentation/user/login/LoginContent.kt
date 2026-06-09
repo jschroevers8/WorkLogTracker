@@ -14,12 +14,12 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.presentation.framework.components.RmcScreen
-import worklogtracker.presentation.framework.components.button.RmcPrimaryButton
-import worklogtracker.presentation.framework.components.input.RmcTextField
-import worklogtracker.presentation.framework.components.text.RmcClickableText
-import worklogtracker.presentation.framework.theme.RmcColors
-import worklogtracker.presentation.user.components.RmcLogoHeader
+import worklogtracker.presentation.framework.components.WltScreen
+import worklogtracker.presentation.framework.components.button.WltPrimaryButton
+import worklogtracker.presentation.framework.components.input.WltTextField
+import worklogtracker.presentation.framework.components.text.WltClickableText
+import worklogtracker.presentation.framework.theme.WltColors
+import worklogtracker.presentation.user.components.WltLogoHeader
 import worklogtracker.presentation.user.components.TermsText
 
 @Composable
@@ -31,10 +31,10 @@ fun LoginContent(
     onSignupClick: () -> Unit,
     backStack: NavBackStack<NavKey>
 ) {
-    RmcScreen(backStack = backStack) {
-        RmcLogoHeader()
+    WltScreen(backStack = backStack) {
+        WltLogoHeader()
 
-        RmcTextField(
+        WltTextField(
             value = state.email,
             placeholder = "Email",
             onValueChange = onEmailChange,
@@ -43,7 +43,7 @@ fun LoginContent(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        RmcTextField(
+        WltTextField(
             value = state.password,
             placeholder = "Password",
             onValueChange = onPasswordChange,
@@ -53,7 +53,7 @@ fun LoginContent(
 
         Spacer(modifier = Modifier.height(28.dp))
 
-        RmcPrimaryButton(
+        WltPrimaryButton(
             text = "Login",
             loading = state.loading,
             onClick = onLoginClick,
@@ -62,7 +62,7 @@ fun LoginContent(
 
         state.error?.let {
             Spacer(Modifier.height(16.dp))
-            Text(it, color = RmcColors.Error, modifier = Modifier.testTag("errorMessage"))
+            Text(it, color = WltColors.Error, modifier = Modifier.testTag("errorMessage"))
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -79,7 +79,7 @@ fun LoginContent(
             addStringAnnotation("SIGN_UP", "signup", length - "Sign up now!".length, length)
         }
 
-        RmcClickableText(
+        WltClickableText(
             text = annotatedSignUp,
             modifier = Modifier.fillMaxWidth().testTag("signupText"),
             onClick = { _ ->
