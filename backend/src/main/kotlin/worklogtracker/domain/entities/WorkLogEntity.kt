@@ -24,6 +24,9 @@ data class WorkLogEntity(
     val endTime: LocalDateTime?,
     val durationMinutes: Int?,
     val notes: String? = null,
+    val photoUrl: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
     val isSynced: Boolean = false,
     val createdAt: LocalDateTime,
     val updatedAt: LocalDateTime

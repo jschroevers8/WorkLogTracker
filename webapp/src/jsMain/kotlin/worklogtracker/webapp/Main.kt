@@ -8,7 +8,7 @@ import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.webapp.ui.*
 
 enum class Screen {
-    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL
+    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, WORK_LOGS
 }
 
 val apiClient = ApiClient()
@@ -62,6 +62,7 @@ fun main() {
                     NavLink("Dashboard", currentScreen == Screen.DASHBOARD) { currentScreen = Screen.DASHBOARD }
                     NavLink("Medewerkers", currentScreen == Screen.EMPLOYEES || currentScreen == Screen.EMPLOYEE_DETAIL) { currentScreen = Screen.EMPLOYEES }
                     NavLink("Projecten", currentScreen == Screen.PROJECTS) { currentScreen = Screen.PROJECTS }
+                    NavLink("Uren Registratie", currentScreen == Screen.WORK_LOGS) { currentScreen = Screen.WORK_LOGS }
 
                     Div({
                         style {
@@ -130,6 +131,7 @@ fun main() {
                             Screen.EMPLOYEE_DETAIL -> EmployeeDetailScreen(selectedUserId!!, apiClient, scope) {
                                 currentScreen = Screen.EMPLOYEES
                             }
+                            Screen.WORK_LOGS -> WorkLogRegistrationScreen(apiClient, scope)
                             else -> {}
                         }
                     }

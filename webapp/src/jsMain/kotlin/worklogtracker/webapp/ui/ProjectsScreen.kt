@@ -4,31 +4,162 @@ import androidx.compose.runtime.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
 import worklogtracker.shared.dto.project.ProjectResponse
+import worklogtracker.shared.dto.project.CreateProjectRequest
+import worklogtracker.shared.dto.task.CreateTaskRequest
+import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.web.attributes.InputType
+import org.jetbrains.compose.web.attributes.placeholder
 
 @Composable
 fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
     var projects by remember { mutableStateOf<List<ProjectResponse>>(emptyList()) }
+    var users by remember { mutableStateOf<List<UserResponse>>(emptyList()) }
     var loading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf("") }
+    
+    var showCreateProject by remember { mutableStateOf(false) }
+    var newProjectName by remember { mutableStateOf("") }
+    var newProjectDesc by remember { mutableStateOf("") }
+
+    var selectedProjectIdForTask by remember { mutableStateOf<Int?>(null) }
+    var newTaskTitle by remember { mutableStateOf("") }
+    var newTaskDesc by remember { mutableStateOf("") }
 
     LaunchedEffect(Unit) {
         try {
             projects = api.getProjects()
+            users = api.getUsers()
         } catch (e: Exception) {
-            error = "Fout bij ophalen projecten: ${e.message}"
+            error = "Fout bij ophalen data: ${e.message}"
         } finally {
             loading = false
         }
     }
 
-    H2({
+    Div({
         style {
-            color(Styles.TextPrimary)
+            display(DisplayStyle.Flex)
+            justifyContent(JustifyContent.SpaceBetween)
+            alignItems(AlignItems.Center)
             marginBottom(24.px)
         }
-    }) { Text("Projecten") }
+    }) {
+        H2({
+            style {
+                color(Styles.TextPrimary)
+                margin(0.px)
+            }
+        }) { Text("Projecten & Beheer") }
+
+        Button({
+            onClick { showCreateProject = !showCreateProject }
+            style {
+                padding(10.px, 20.px)
+                backgroundColor(Styles.Primary)
+                color(Color.white)
+                border(0.px)
+                borderRadius(8.px)
+                cursor("pointer")
+                fontWeight("600")
+            }
+        }) { Text(if (showCreateProject) "Annuleren" else "+ Nieuw Project") }
+    }
+
+    if (showCreateProject) {
+        Div({
+            style {
+                backgroundColor(Styles.Surface)
+                padding(20.px)
+                borderRadius(12.px)
+                marginBottom(24.px)
+                border(1.px, LineStyle.Solid, Styles.Border)
+            }
+        }) {
+            H3 { Text("Nieuw Project Aanmaken") }
+            Input(InputType.Text) {
+                placeholder("Projectnaam")
+                value(newProjectName)
+                onInput { newProjectName = it.value }
+                style { width(100.percent); padding(8.px); marginBottom(8.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
+            }
+            TextArea {
+                placeholder("Beschrijving")
+                value(newProjectDesc)
+                onInput { newProjectDesc = it.value }
+                style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
+            }
+            Button({
+                onClick {
+                    scope.launch {
+                        try {
+                            api.createProject(CreateProjectRequest(newProjectName, newProjectDesc))
+                            projects = api.getProjects()
+                            showCreateProject = false
+                            newProjectName = ""
+                            newProjectDesc = ""
+                        } catch (e: Exception) {
+                            error = "Fout bij aanmaken project: ${e.message}"
+                        }
+                    }
+                }
+                style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
+            }) { Text("Project Opslaan") }
+        }
+    }
+
+    if (selectedProjectIdForTask != null) {
+        Div({
+            style {
+                backgroundColor(Styles.Surface)
+                padding(20.px)
+                borderRadius(12.px)
+                marginBottom(24.px)
+                border(1.px, LineStyle.Solid, Styles.Border)
+            }
+        }) {
+            H3 { Text("Nieuwe Taak voor Project ID: $selectedProjectIdForTask") }
+            Input(InputType.Text) {
+                placeholder("Taak Titel")
+                value(newTaskTitle)
+                onInput { newTaskTitle = it.value }
+                style { width(100.percent); padding(8.px); marginBottom(8.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
+            }
+            TextArea {
+                placeholder("Beschrijving")
+                value(newTaskDesc)
+                onInput { newTaskDesc = it.value }
+                style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
+            }
+            Button({
+                onClick {
+                    scope.launch {
+                        try {
+                            api.createTask(CreateTaskRequest(
+                                projectId = selectedProjectIdForTask!!,
+                                title = newTaskTitle,
+                                description = newTaskDesc,
+                                estimatedHours = 0.0,
+                                priority = "MEDIUM"
+                            ))
+                            selectedProjectIdForTask = null
+                            newTaskTitle = ""
+                            newTaskDesc = ""
+                            // statusMessage = "Taak aangemaakt!" // Removed or replace with local state
+                        } catch (e: Exception) {
+                            error = "Fout bij aanmaken taak: ${e.message}"
+                        }
+                    }
+                }
+                style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
+            }) { Text("Taak Opslaan") }
+            Button({
+                onClick { selectedProjectIdForTask = null }
+                style { marginLeft(8.px); padding(8.px, 16.px); backgroundColor(Styles.Secondary); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
+            }) { Text("Annuleren") }
+        }
+    }
 
     if (loading) {
         P { Text("Laden...") }
@@ -43,14 +174,14 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
             }
         }) {
             projects.forEach { project ->
-                ProjectCard(project)
+                ProjectCard(project, onAddTask = { selectedProjectIdForTask = project.id })
             }
         }
     }
 }
 
 @Composable
-fun ProjectCard(project: ProjectResponse) {
+fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit) {
     Div({
         style {
             backgroundColor(Styles.Surface)
@@ -82,17 +213,22 @@ fun ProjectCard(project: ProjectResponse) {
             style {
                 marginTop(16.px)
                 display(DisplayStyle.Flex)
-                justifyContent(JustifyContent.SpaceBetween)
+                gap(8.px)
                 alignItems(AlignItems.Center)
             }
         }) {
-            Span({
+            Button({
+                onClick { onAddTask() }
                 style {
+                    padding(6.px, 12.px)
+                    backgroundColor(Styles.Accent)
+                    color(Color.white)
+                    border(0.px)
+                    borderRadius(6.px)
+                    cursor("pointer")
                     fontSize(0.8.em)
-                    color(Styles.Primary)
-                    fontWeight("600")
                 }
-            }) { Text("ID: ${project.id}") }
+            }) { Text("+ Taak") }
             
             Button({
                 style {

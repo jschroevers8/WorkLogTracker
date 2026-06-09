@@ -17,8 +17,18 @@ fun Route.createWorkLogRoute(createManualWorkLogUseCase: CreateManualWorkLogUseC
             val userId = call.getUserId()
             val request = call.receive<CreateWorkLogRequest>()
 
-            call.respond(HttpStatusCode.Created, createManualWorkLogUseCase(userId,
-                TaskId(request.taskId), LocalDateTime.parse(request.startTime), LocalDateTime.parse(request.endTime), request.notes))
+            call.respond(
+                HttpStatusCode.Created, createManualWorkLogUseCase(
+                    userId = userId,
+                    taskId = TaskId(request.taskId),
+                    startTime = LocalDateTime.parse(request.startTime),
+                    endTime = LocalDateTime.parse(request.endTime),
+                    notes = request.notes,
+                    photoUrl = request.photoBase64, // For now, storing base64 as URL string or handle upload
+                    latitude = request.latitude,
+                    longitude = request.longitude
+                )
+            )
         }
     }
 }

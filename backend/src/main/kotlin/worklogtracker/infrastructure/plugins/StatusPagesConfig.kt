@@ -3,7 +3,8 @@ package worklogtracker.infrastructure.plugins
 import io.ktor.server.application.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.http.HttpStatusCode
-import worklogtracker.application.dto.common.ErrorResponse
+import worklogtracker.shared.dto.common.ErrorResponse
+import worklogtracker.application.exceptions.UserAuthenticationFailedException
 import io.ktor.server.response.respond
 import worklogtracker.application.exceptions.ApplicationException
 import worklogtracker.domain.exceptions.ActiveTimerAlreadyExistsException
@@ -27,6 +28,17 @@ fun Application.configureStatusPages() {
                 ErrorResponse(
                     error = "USER_NOT_FOUND",
                     message = cause.message ?: "User not found",
+                    timestamp = LocalDateTime.now().toString()
+                )
+            )
+        }
+
+        exception<UserAuthenticationFailedException> { call, cause ->
+            call.respond(
+                HttpStatusCode.Unauthorized,
+                ErrorResponse(
+                    error = "INVALID_CREDENTIALS",
+                    message = cause.message ?: "Invalid email or password",
                     timestamp = LocalDateTime.now().toString()
                 )
             )

@@ -21,7 +21,10 @@ class CreateManualWorkLogUseCase(
         taskId: TaskId,
         startTime: LocalDateTime,
         endTime: LocalDateTime,
-        notes: String? = null
+        notes: String? = null,
+        photoUrl: String? = null,
+        latitude: Double? = null,
+        longitude: Double? = null
     ): WorkLogResponse {
         return try {
             val task = taskRepository.findById(taskId)
@@ -35,7 +38,10 @@ class CreateManualWorkLogUseCase(
                 userId = userId,
                 startTime = startTime,
                 endTime = endTime,
-                notes = notes
+                notes = notes,
+                photoUrl = photoUrl,
+                latitude = latitude,
+                longitude = longitude
             )
             
             workLogRepository.save(workLog).toResponse()

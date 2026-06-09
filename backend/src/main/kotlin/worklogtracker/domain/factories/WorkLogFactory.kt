@@ -13,7 +13,10 @@ class WorkLogFactory {
         userId: UserId,
         startTime: LocalDateTime,
         endTime: LocalDateTime? = null,
-        notes: String? = null
+        notes: String? = null,
+        photoUrl: String? = null,
+        latitude: Double? = null,
+        longitude: Double? = null
     ): WorkLogEntity {
         val durationMinutes = if (endTime != null) {
             ChronoUnit.MINUTES.between(startTime, endTime).toInt()
@@ -28,6 +31,9 @@ class WorkLogFactory {
             endTime = endTime,
             durationMinutes = durationMinutes,
             notes = notes,
+            photoUrl = photoUrl,
+            latitude = latitude,
+            longitude = longitude,
             isSynced = true,
             createdAt = LocalDateTime.now(),
             updatedAt = LocalDateTime.now()
