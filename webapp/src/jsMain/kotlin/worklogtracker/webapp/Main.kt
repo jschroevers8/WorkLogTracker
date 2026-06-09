@@ -44,8 +44,8 @@ fun main() {
                         padding(0.px, 24.px)
                         height(64.px)
                         alignItems(AlignItems.Center)
-                        boxShadow("0 1px 2px 0 rgba(0, 0, 0, 0.05)")
-                        zIndex(100)
+                        property("box-shadow", "0 1px 2px 0 rgba(0, 0, 0, 0.05)")
+                        property("z-index", 100)
                     }
                 }) {
                     Div({
@@ -150,9 +150,9 @@ fun NavLink(text: String, active: Boolean, onClick: () -> Unit) {
             fontWeight("500")
             color(if (active) Styles.Primary else Styles.TextSecondary)
             if (active) {
-                borderBottom(2.px, LineStyle.Solid, Styles.Primary)
+                property("border-bottom", "2px solid ${Styles.Primary}")
             }
-            transition("color 0.2s, border-bottom 0.2s")
+            property("transition", "color 0.2s, border-bottom 0.2s")
         }
         onClick { onClick() }
     }) { Text(text) }
