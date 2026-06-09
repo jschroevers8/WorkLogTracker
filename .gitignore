@@ -38,3 +38,10 @@ out/
 backend/.env
 
 local.properties
+
+# Kotlin / compiler caches
+.kotlin/
+**/.kotlin/
+
+# Kotlin JS store (vaak ook generated)
+kotlin-js-store/

@@ -9,8 +9,10 @@ version = "0.0.1"
 
 kotlin {
     jvm()
-    // Toevoegen van JS/Wasm target voor de webapp later indien nodig
-    // js(IR) { browser() } 
+
+    js(IR) {
+        browser()
+    }
 
     sourceSets {
         val commonMain by getting {
