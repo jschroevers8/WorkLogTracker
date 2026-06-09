@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.task
 
-import worklogtracker.application.dto.task.TaskResponse
+import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.application.mappers.toResponse
 import worklogtracker.domain.entities.enums.TaskStatus
 import worklogtracker.domain.repositories.TaskRepositoryInterface

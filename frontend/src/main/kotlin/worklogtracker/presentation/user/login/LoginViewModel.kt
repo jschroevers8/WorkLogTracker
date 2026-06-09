@@ -16,12 +16,12 @@ class LoginViewModel(
     fun login() {
         if (uiState.validate(::setError)) {
             launchWithErrorHandling {
-                val token = userRepository.login(
+                val authResponse = userRepository.login(
                     LoginRequest(uiState.email, uiState.password)
                 )
 
-                if (token.isNotEmpty()) {
-                    authManager.saveAuthToken(token)
+                if (authResponse.token.isNotEmpty()) {
+                    authManager.saveAuthToken(authResponse.token)
                     onLoginSuccess?.invoke()
                     resetState()
                 } else {

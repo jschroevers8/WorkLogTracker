@@ -2,10 +2,6 @@ package worklogtracker.presentation.project
 
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
 import worklogtracker.repositories.ProjectRepository
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 
 class ProjectViewModel(
     private val projectRepository: ProjectRepository
@@ -17,17 +13,14 @@ class ProjectViewModel(
 
     fun loadProjects() {
         launchWithErrorHandling {
-            val projectsJson = projectRepository.getProjects()
-            val json = Json { ignoreUnknownKeys = true }
-            val element = json.parseToJsonElement(projectsJson)
+            val projects = projectRepository.getProjects()
 
-            val projectList = element.jsonArray.map {
-                val obj = it.jsonObject
+            val projectList = projects.map { response ->
                 ProjectItem(
-                    id = obj["id"]?.jsonObject?.get("value")?.jsonPrimitive?.content ?: "",
-                    name = obj["name"]?.jsonPrimitive?.content ?: "",
-                    description = obj["description"]?.jsonPrimitive?.content ?: "",
-                    status = obj["status"]?.jsonPrimitive?.content ?: ""
+                    id = response.id?.toString() ?: "",
+                    name = response.name,
+                    description = response.description ?: "",
+                    status = response.status
                 )
             }
 

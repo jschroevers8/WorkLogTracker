@@ -2,10 +2,6 @@ package worklogtracker.presentation.task
 
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
 import worklogtracker.repositories.TaskRepository
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.jsonArray
-import kotlinx.serialization.json.jsonObject
-import kotlinx.serialization.json.jsonPrimitive
 
 class TaskViewModel(
     private val taskRepository: TaskRepository
@@ -17,18 +13,15 @@ class TaskViewModel(
 
     fun loadTasks() {
         launchWithErrorHandling {
-            val tasksJson = taskRepository.getTasks()
-            val json = Json { ignoreUnknownKeys = true }
-            val element = json.parseToJsonElement(tasksJson)
+            val tasks = taskRepository.getTasks()
 
-            val taskList = element.jsonArray.map {
-                val obj = it.jsonObject
+            val taskList = tasks.map { response ->
                 TaskItem(
-                    id = obj["id"]?.jsonObject?.get("value")?.jsonPrimitive?.content ?: "",
-                    title = obj["title"]?.jsonPrimitive?.content ?: "",
-                    description = obj["description"]?.jsonPrimitive?.content ?: "",
-                    status = obj["status"]?.jsonPrimitive?.content ?: "",
-                    priority = obj["priority"]?.jsonPrimitive?.content ?: ""
+                    id = response.id?.toString() ?: "",
+                    title = response.title,
+                    description = response.description ?: "",
+                    status = response.status,
+                    priority = response.priority
                 )
             }
 
