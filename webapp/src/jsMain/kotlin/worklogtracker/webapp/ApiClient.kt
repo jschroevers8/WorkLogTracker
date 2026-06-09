@@ -95,6 +95,14 @@ class ApiClient {
         }.body()
     }
 
+    suspend fun assignTask(taskId: Int, request: worklogtracker.shared.dto.task.AssignTaskRequest): HttpResponse {
+        return client.post("$baseUrl/tasks/$taskId/assign") {
+            header(HttpHeaders.Authorization, "Bearer $token")
+            contentType(ContentType.Application.Json)
+            setBody(request)
+        }
+    }
+
     suspend fun createWorkLog(request: CreateWorkLogRequest): WorkLogResponse {
         return client.post("$baseUrl/worklogs") {
             header(HttpHeaders.Authorization, "Bearer $token")

@@ -62,7 +62,6 @@ fun main() {
                     NavLink("Dashboard", currentScreen == Screen.DASHBOARD) { currentScreen = Screen.DASHBOARD }
                     NavLink("Medewerkers", currentScreen == Screen.EMPLOYEES || currentScreen == Screen.EMPLOYEE_DETAIL) { currentScreen = Screen.EMPLOYEES }
                     NavLink("Projecten", currentScreen == Screen.PROJECTS) { currentScreen = Screen.PROJECTS }
-                    NavLink("Uren Registratie", currentScreen == Screen.WORK_LOGS) { currentScreen = Screen.WORK_LOGS }
 
                     Div({
                         style {

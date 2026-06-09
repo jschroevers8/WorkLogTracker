@@ -1,5 +1,6 @@
 package worklogtracker.presentation.task
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -13,11 +14,14 @@ import androidx.navigation3.runtime.NavKey
 import org.koin.androidx.compose.koinViewModel
 import worklogtracker.presentation.framework.BottomNavigationBar
 import worklogtracker.plugins.navigation.Screen
+import org.koin.compose.koinInject
+import worklogtracker.presentation.worklog.WorkLogViewModel
 
 @Composable
 fun TaskScreen(
     backStack: NavBackStack<NavKey>,
-    viewModel: TaskViewModel = koinViewModel()
+    viewModel: TaskViewModel = koinViewModel(),
+    workLogViewModel: WorkLogViewModel = koinInject()
 ) {
     val uiState = viewModel.uiState
 
@@ -38,7 +42,7 @@ fun TaskScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Tasks",
+                text = "Mijn Taken",
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -51,7 +55,10 @@ fun TaskScreen(
             } else {
                 LazyColumn {
                     items(uiState.tasks) { task ->
-                        TaskCard(task)
+                        TaskCard(task) {
+                            workLogViewModel.setSelectedTask(task.id.toInt())
+                            backStack.add(Screen.WorkLogs)
+                        }
                     }
                 }
             }
@@ -60,11 +67,12 @@ fun TaskScreen(
 }
 
 @Composable
-fun TaskCard(task: TaskItem) {
+fun TaskCard(task: TaskItem, onClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
+            .clickable { onClick() }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text(text = task.title, style = MaterialTheme.typography.titleLarge)

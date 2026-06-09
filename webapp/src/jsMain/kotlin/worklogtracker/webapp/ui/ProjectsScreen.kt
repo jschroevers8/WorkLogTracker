@@ -6,6 +6,7 @@ import org.jetbrains.compose.web.css.*
 import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.shared.dto.project.CreateProjectRequest
 import worklogtracker.shared.dto.task.CreateTaskRequest
+import worklogtracker.shared.dto.task.AssignTaskRequest
 import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 import kotlinx.coroutines.launch
@@ -26,6 +27,7 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
     var selectedProjectIdForTask by remember { mutableStateOf<Int?>(null) }
     var newTaskTitle by remember { mutableStateOf("") }
     var newTaskDesc by remember { mutableStateOf("") }
+    var selectedUserIdForTask by remember { mutableStateOf<Int?>(null) }
 
     LaunchedEffect(Unit) {
         try {
@@ -132,28 +134,50 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
                 onInput { newTaskDesc = it.value }
                 style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
             }
+
+            H4 { Text("Toewijzen aan medewerker") }
+            Select({
+                onInput { selectedUserIdForTask = it.value?.toIntOrNull() }
+                style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
+            }) {
+                Option("", { selected(selectedUserIdForTask == null) }) { Text("Selecteer een medewerker") }
+                users.forEach { user ->
+                    Option(user.id.toString(), { selected(selectedUserIdForTask == user.id) }) {
+                        Text("${user.firstName} ${user.lastName}")
+                    }
+                }
+            }
+
             Button({
                 onClick {
                     scope.launch {
                         try {
-                            api.createTask(CreateTaskRequest(
-                                projectId = selectedProjectIdForTask!!,
+                            val pid = selectedProjectIdForTask!!
+                            val taskResponse = api.createTask(CreateTaskRequest(
+                                projectId = pid,
                                 title = newTaskTitle,
                                 description = newTaskDesc,
-                                estimatedHours = 0.0,
+                                estimatedHours = 8.0,
                                 priority = "MEDIUM"
                             ))
+                            
+                            val taskId = taskResponse.id
+                            if (taskId != null && selectedUserIdForTask != null) {
+                                api.assignTask(taskId, AssignTaskRequest(selectedUserIdForTask!!))
+                            }
+
+                            projects = api.getProjects()
                             selectedProjectIdForTask = null
                             newTaskTitle = ""
                             newTaskDesc = ""
-                            // statusMessage = "Taak aangemaakt!" // Removed or replace with local state
+                            selectedUserIdForTask = null
                         } catch (e: Exception) {
-                            error = "Fout bij aanmaken taak: ${e.message}"
+                            error = "Fout bij aanmaken/toewijzen taak: ${e.message}"
                         }
                     }
                 }
                 style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
-            }) { Text("Taak Opslaan") }
+            }) { Text("Taak Opslaan & Toewijzen") }
             Button({
                 onClick { selectedProjectIdForTask = null }
                 style { marginLeft(8.px); padding(8.px, 16.px); backgroundColor(Styles.Secondary); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }

@@ -133,10 +133,10 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                         try {
                             val response = api.login(LoginRequest(email, password))
 
-                            if (response.role == "ADMIN" || response.role == "TEAM_LEADER") {
+                            if (response.role == "ADMIN") {
                                 onLoginSuccess(response)
                             } else {
-                                error = "Toegang geweigerd: Je hebt niet de juiste rechten om in te loggen op het admin portaal."
+                                error = "Toegang geweigerd: Alleen Admins kunnen inloggen op het admin portaal."
                             }
                         } catch (e: Throwable) {
                             error = e.message ?: "Inloggen mislukt. Controleer je gegevens en probeer het opnieuw."
