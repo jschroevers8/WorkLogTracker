@@ -140,10 +140,10 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                                 onLoginSuccess(response)
                             } else {
                                 error = "Toegang geweigerd: Onvoldoende rechten"
-                                loading = false
                             }
-                        } catch (e: Exception) {
-                            error = "Inloggen mislukt: Controleer uw gegevens"
+                        } catch (e: Throwable) {
+                            error = "Inloggen mislukt: ${e.message ?: "Controleer uw gegevens"}"
+                        } finally {
                             loading = false
                         }
                     }

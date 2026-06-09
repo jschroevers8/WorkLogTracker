@@ -23,7 +23,7 @@ class ApiClient {
         }
     }
 
-    private val baseUrl = "http://10.0.2.2:8080/api"
+    private val baseUrl = "http://localhost:8080/api"
     private var token: String? = null
 
     fun setToken(newToken: String?) {
