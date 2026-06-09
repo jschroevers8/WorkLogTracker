@@ -7,6 +7,7 @@ import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.shared.dto.auth.LoginRequest
 import worklogtracker.webapp.ApiClient
 import kotlinx.coroutines.launch
+import org.jetbrains.compose.web.attributes.disabled
 
 @Composable
 fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLoginSuccess: (AuthResponse) -> Unit) {
@@ -106,6 +107,10 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
             }
 
             Button({
+                if (loading) {
+                    disabled()
+                }
+
                 style {
                     width(100.percent)
                     padding(12.px)
@@ -117,7 +122,6 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                     fontWeight("600")
                     property("transition", "background-color 0.2s")
                 }
-                disabled(loading)
                 onClick {
                     if (email.isEmpty() || password.isEmpty()) {
                         error = "Vul alle velden in"
@@ -128,6 +132,10 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                     scope.launch {
                         try {
                             val response = api.login(LoginRequest(email, password))
+
+                            println("test")
+                            print(response)
+
                             if (response.role == "ADMIN" || response.role == "TEAM_LEADER") {
                                 onLoginSuccess(response)
                             } else {
