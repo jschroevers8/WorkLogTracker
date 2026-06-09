@@ -1,16 +1,17 @@
-package worklogtracker.presentation.project
+package worklogtracker.presentation.task
 
 import worklogtracker.presentation.framework.viewmodel.BaseUiState
 
-data class ProjectUiState(
-    val projects: List<ProjectItem> = emptyList(),
+data class TaskUiState(
+    val tasks: List<TaskItem> = emptyList(),
     override val loading: Boolean = false,
     override val error: String? = null
 ) : BaseUiState
 
-data class ProjectItem(
+data class TaskItem(
     val id: String,
-    val name: String,
+    val title: String,
     val description: String,
-    val status: String
+    val status: String,
+    val priority: String
 )

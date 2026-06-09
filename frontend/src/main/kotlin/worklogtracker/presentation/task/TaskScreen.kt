@@ -1,4 +1,4 @@
-package worklogtracker.presentation.project
+package worklogtracker.presentation.task
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -16,9 +16,9 @@ import worklogtracker.presentation.framework.BottomNavigationBar
 import worklogtracker.plugins.navigation.Screen
 
 @Composable
-fun ProjectScreen(
+fun TaskScreen(
     backStack: NavBackStack<NavKey>,
-    viewModel: ProjectViewModel = koinViewModel()
+    viewModel: TaskViewModel = koinViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -39,7 +39,7 @@ fun ProjectScreen(
                 .padding(16.dp)
         ) {
             Text(
-                text = "Projects",
+                text = "Tasks",
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -51,8 +51,8 @@ fun ProjectScreen(
                 Text(text = "Error: ${uiState.error}", color = MaterialTheme.colorScheme.error)
             } else {
                 LazyColumn {
-                    items(uiState.projects) { project ->
-                        ProjectCard(project)
+                    items(uiState.tasks) { task ->
+                        TaskCard(task)
                     }
                 }
             }
@@ -61,16 +61,22 @@ fun ProjectScreen(
 }
 
 @Composable
-fun ProjectCard(project: ProjectItem) {
+fun TaskCard(task: TaskItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(text = project.name, style = MaterialTheme.typography.titleLarge)
-            Text(text = project.description, style = MaterialTheme.typography.bodyMedium)
-            Text(text = "Status: ${project.status}", style = MaterialTheme.typography.labelSmall)
+            Text(text = task.title, style = MaterialTheme.typography.titleLarge)
+            Text(text = task.description, style = MaterialTheme.typography.bodyMedium)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(text = "Status: ${task.status}", style = MaterialTheme.typography.labelSmall)
+                Text(text = "Priority: ${task.priority}", style = MaterialTheme.typography.labelSmall)
+            }
         }
     }
 }

@@ -1,37 +1,38 @@
-package worklogtracker.presentation.project
+package worklogtracker.presentation.task
 
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
-import worklogtracker.repositories.ProjectRepository
+import worklogtracker.repositories.TaskRepository
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 
-class ProjectViewModel(
-    private val projectRepository: ProjectRepository
-) : BaseViewModel<ProjectUiState>(ProjectUiState()) {
+class TaskViewModel(
+    private val taskRepository: TaskRepository
+) : BaseViewModel<TaskUiState>(TaskUiState()) {
 
     init {
-        loadProjects()
+        loadTasks()
     }
 
-    fun loadProjects() {
+    fun loadTasks() {
         launchWithErrorHandling {
-            val projectsJson = projectRepository.getProjects()
+            val tasksJson = taskRepository.getTasks()
             val json = Json { ignoreUnknownKeys = true }
-            val element = json.parseToJsonElement(projectsJson)
+            val element = json.parseToJsonElement(tasksJson)
 
-            val projectList = element.jsonArray.map {
+            val taskList = element.jsonArray.map {
                 val obj = it.jsonObject
-                ProjectItem(
+                TaskItem(
                     id = obj["id"]?.jsonObject?.get("value")?.jsonPrimitive?.content ?: "",
-                    name = obj["name"]?.jsonPrimitive?.content ?: "",
+                    title = obj["title"]?.jsonPrimitive?.content ?: "",
                     description = obj["description"]?.jsonPrimitive?.content ?: "",
-                    status = obj["status"]?.jsonPrimitive?.content ?: ""
+                    status = obj["status"]?.jsonPrimitive?.content ?: "",
+                    priority = obj["priority"]?.jsonPrimitive?.content ?: ""
                 )
             }
 
-            _uiState = uiState.copy(projects = projectList)
+            _uiState = uiState.copy(tasks = taskList)
         }
     }
 

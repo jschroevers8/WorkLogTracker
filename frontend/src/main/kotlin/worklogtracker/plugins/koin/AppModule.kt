@@ -11,6 +11,8 @@ import worklogtracker.presentation.user.address.AddressViewModel
 import worklogtracker.presentation.user.login.LoginViewModel
 import worklogtracker.presentation.user.notification.NotificationViewModel
 import worklogtracker.presentation.user.signup.SignupViewModel
+import worklogtracker.presentation.project.ProjectViewModel
+import worklogtracker.presentation.task.TaskViewModel
 import worklogtracker.repositories.ProjectRepository
 import worklogtracker.repositories.TaskRepository
 import worklogtracker.repositories.UserRepository
@@ -29,4 +31,6 @@ val appModule = module {
     viewModel { AddressViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { NotificationViewModel() }
+    viewModel { ProjectViewModel(get()) }
+    viewModel { TaskViewModel(get()) }
 }

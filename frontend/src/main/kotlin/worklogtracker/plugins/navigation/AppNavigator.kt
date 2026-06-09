@@ -16,6 +16,8 @@ import worklogtracker.presentation.user.notification.NotificationScreen
 import worklogtracker.presentation.user.login.LoginScreen
 import worklogtracker.presentation.user.address.AddressScreen
 import worklogtracker.presentation.user.signup.SignupScreen
+import worklogtracker.presentation.project.ProjectScreen
+import worklogtracker.presentation.task.TaskScreen
 
 @Composable
 fun AppNavigator() {
@@ -48,7 +50,8 @@ fun AppNavigator() {
                 when (screen) {
                     is Screen.Login -> LoginScreen(backStack,screen.targetScreen)
                     is Screen.Signup -> SignupScreen(backStack, screen.targetScreen)
-                    is Screen.Tasks -> Text("Tasks Screen")
+                    is Screen.Projects -> ProjectScreen(backStack)
+                    is Screen.Tasks -> TaskScreen(backStack)
                     is Screen.WorkLogs -> Text("WorkLogs Screen")
                     is Screen.Account -> AccountScreen(backStack)
                     is Screen.Address -> AddressScreen(backStack)
