@@ -1,0 +1,35 @@
+package worklogtracker.presentation.user.signup
+
+import androidx.compose.runtime.Composable
+import androidx.navigation3.runtime.NavBackStack
+import androidx.navigation3.runtime.NavKey
+import org.koin.androidx.compose.koinViewModel
+import worklogtracker.plugins.navigation.Screen
+
+@Composable
+fun SignupScreen(backStack: NavBackStack<NavKey>, previousScreen: NavKey?) {
+    val viewModel: SignupViewModel = koinViewModel()
+    val state = viewModel.uiState
+
+    viewModel.onSuccess = {
+        if (previousScreen != null) {
+            backStack.add(previousScreen)
+        } else {
+            backStack.add(Screen.AvailableAdvertisements)
+        }
+    }
+
+    SignupContent(
+        state = state,
+        onFirstNameChange = viewModel.updateState { value -> copy(firstName = value) },
+        onLastNameChange = viewModel.updateState { value -> copy(lastName = value) },
+        onEmailChange = viewModel.updateState { value -> copy(email = value) },
+        onPhoneNumberChange = viewModel.updateState { value -> copy(phoneNumber = value) },
+        onPasswordChange = viewModel.updateState { value -> copy(password = value) },
+        onSignupClick = viewModel::signup,
+        onLoginClick = {
+            backStack.add(Screen.Login(previousScreen as Screen?))
+        },
+        backStack = backStack
+    )
+}

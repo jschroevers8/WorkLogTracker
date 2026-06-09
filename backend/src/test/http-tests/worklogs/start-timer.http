@@ -1,0 +1,9 @@
+POST http://localhost:8080/api/v1/worklogs/timer/start
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "taskId": "{{taskId}}"
+}
+
+> {% client.global.set("timerSessionId", response.body.id) %}

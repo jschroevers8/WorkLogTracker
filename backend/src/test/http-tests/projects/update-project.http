@@ -1,0 +1,9 @@
+PUT http://localhost:8080/api/v1/projects/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTc4MDQ5NjU1MX0.iHK-bXs2MEIhelQjcdTWt6OmjdxyHrTND8yNCwmf2RA
+Content-Type: application/json
+
+{
+  "name": "Mobile App Migration v2",
+  "description": "Updated project scope",
+  "status": "ACTIVE"
+}

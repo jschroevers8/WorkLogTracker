@@ -1,0 +1,2 @@
+GET http://localhost:8080/api/v1/reports/user/4?from=2026-06-01T00:00:00&to=2026-06-30T23:59:59
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTc4MDQ5NjU1MX0.iHK-bXs2MEIhelQjcdTWt6OmjdxyHrTND8yNCwmf2RA

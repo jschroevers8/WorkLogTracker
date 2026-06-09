@@ -1,0 +1,48 @@
+package worklogtracker.presentation.framework.components.button
+
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import worklogtracker.presentation.framework.theme.RmcColors
+
+@Composable
+fun RmcPrimaryButton(
+    text: String,
+    modifier: Modifier = Modifier,
+    loading: Boolean = false,
+    onClick: () -> Unit
+) {
+    Button(
+        onClick = onClick,
+        enabled = !loading,
+        modifier = modifier
+            .fillMaxWidth()
+            .height(55.dp),
+        shape = RoundedCornerShape(14.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = RmcColors.Primary,
+            disabledContainerColor = RmcColors.Primary.copy(alpha = 0.4f)
+        )
+    ) {
+        if (loading) {
+            CircularProgressIndicator(
+                color = RmcColors.TextPrimary,
+                strokeWidth = 2.dp,
+                modifier = Modifier.height(22.dp)
+            )
+        } else {
+            Text(
+                text = text,
+                color = RmcColors.TextPrimary,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
