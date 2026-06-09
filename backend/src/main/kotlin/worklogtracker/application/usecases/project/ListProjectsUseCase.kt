@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.project
 
-import worklogtracker.application.dto.project.ProjectResponse
+import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.application.mappers.toResponse
 import worklogtracker.domain.entities.enums.UserRole
 import worklogtracker.domain.repositories.ProjectRepositoryInterface

@@ -1,4 +1,4 @@
-package worklogtracker.application.dto.auth
+package worklogtracker.shared.dto.auth
 
 import kotlinx.serialization.Serializable
 

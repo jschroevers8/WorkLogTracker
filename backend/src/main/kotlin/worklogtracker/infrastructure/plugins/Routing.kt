@@ -56,6 +56,7 @@ import worklogtracker.presentation.worklog.createWorkLogRoute
 import worklogtracker.presentation.worklog.getWorkLogsRoute
 import worklogtracker.presentation.worklog.startTimerRoute
 import worklogtracker.presentation.worklog.stopTimerRoute
+import worklogtracker.presentation.routes.user.getUsersRoute
 import io.ktor.server.application.*
 import io.ktor.server.routing.routing
 import worklogtracker.presentation.auth.loginRoute
@@ -143,5 +144,6 @@ fun Application.configureRouting() {
         pushSyncRoute(addPendingSyncUseCase)
         getUserReportRoute(workLogRepository)
         getProjectReportRoute(taskRepository)
+        getUsersRoute(userRepository)
     }
 }

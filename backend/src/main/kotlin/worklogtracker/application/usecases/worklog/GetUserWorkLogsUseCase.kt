@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.worklog
 
-import worklogtracker.application.dto.worklog.WorkLogResponse
+import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.application.mappers.toResponse
 import worklogtracker.domain.repositories.WorkLogRepositoryInterface
 import worklogtracker.domain.valueobjects.user.UserId

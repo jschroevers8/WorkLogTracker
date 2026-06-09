@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.project
 
-import worklogtracker.application.dto.project.ProjectResponse
+import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.application.exceptions.ProjectUpdateFailedException
 import worklogtracker.application.mappers.toResponse
 import worklogtracker.domain.entities.enums.ProjectStatus

@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.project
 
-import worklogtracker.application.dto.project.ProjectResponse
+import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.application.exceptions.ProjectCreationFailedException
 import worklogtracker.application.mappers.toResponse
 import worklogtracker.domain.exceptions.UnauthorizedException

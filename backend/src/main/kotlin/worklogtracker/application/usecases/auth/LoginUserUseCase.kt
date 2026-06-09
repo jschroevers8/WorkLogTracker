@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.auth
 
-import worklogtracker.application.dto.auth.AuthResponse
+import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.domain.auth.TokenGeneratorInterface
 import worklogtracker.application.exceptions.UserAuthenticationFailedException
 import worklogtracker.application.mappers.toResponse

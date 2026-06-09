@@ -1,6 +1,6 @@
 package worklogtracker.application.mappers
 
-import worklogtracker.application.dto.worklog.WorkLogResponse
+import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.domain.entities.WorkLogEntity
 import java.time.format.DateTimeFormatter
 
