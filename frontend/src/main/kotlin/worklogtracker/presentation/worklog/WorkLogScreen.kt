@@ -46,6 +46,14 @@ fun WorkLogScreen(
     }
 
     // Permission Launchers
+    val cameraPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted ->
+        if (isGranted) {
+            cameraLauncher.launch()
+        }
+    }
+
     val locationPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) { permissions ->
@@ -165,7 +173,9 @@ fun WorkLogScreen(
                     Text("Opnieuw")
                 }
             } else {
-                Button(onClick = { cameraLauncher.launch() }) {
+                Button(onClick = {
+                    cameraPermissionLauncher.launch(Manifest.permission.CAMERA)
+                }) {
                     Text("Foto maken met Camera")
                 }
             }
