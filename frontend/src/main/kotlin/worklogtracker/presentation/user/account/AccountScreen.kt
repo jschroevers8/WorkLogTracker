@@ -12,7 +12,7 @@ fun AccountScreen(backStack: NavBackStack<NavKey>) {
     val viewModel: AccountViewModel = koinViewModel()
 
     viewModel.onLogoutSuccess = {
-        backStack.add(Screen.Login())
+        backStack.add(Screen.Projects)
     }
 
     AccountScreenContent(
