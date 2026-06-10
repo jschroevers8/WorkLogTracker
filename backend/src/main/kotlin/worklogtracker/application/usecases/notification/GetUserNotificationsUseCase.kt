@@ -1,6 +1,6 @@
 package worklogtracker.application.usecases.notification
 
-import worklogtracker.application.dto.notification.NotificationResponse
+import worklogtracker.shared.dto.notification.NotificationResponse
 import worklogtracker.application.mappers.toResponse
 import worklogtracker.domain.repositories.NotificationRepositoryInterface
 import worklogtracker.domain.valueobjects.user.UserId

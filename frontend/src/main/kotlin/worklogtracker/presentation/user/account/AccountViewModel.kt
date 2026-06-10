@@ -1,5 +1,6 @@
 package worklogtracker.presentation.user.account
 
+import kotlinx.coroutines.flow.firstOrNull
 import worklogtracker.data.auth.AuthManagerInterface
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
 import worklogtracker.repositories.UserRepository
@@ -13,10 +14,11 @@ class AccountViewModel(
 
     fun loadUser() {
         launchWithErrorHandling {
+            val userData = authManager.userDataFlow.firstOrNull()
             _uiState = uiState.copy(
-                firstName = "User",
-                lastName = "",
-                email = "",
+                firstName = userData?.firstName ?: "User",
+                lastName = userData?.lastName ?: "",
+                email = userData?.email ?: "",
                 phone = ""
             )
         }
@@ -25,6 +27,7 @@ class AccountViewModel(
     fun logout() {
         launchWithErrorHandling {
             authManager.clearAuthToken()
+            authManager.clearUserData()
             onLogoutSuccess?.invoke()
         }
     }

@@ -1,6 +1,8 @@
 package worklogtracker.presentation.user.notification
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,15 +22,32 @@ import worklogtracker.presentation.framework.components.text.WltSecondaryText
 import worklogtracker.presentation.framework.theme.WltColors
 
 @Composable
-fun NotificationCard(notification: NotificationItemUiState) {
+fun NotificationCard(
+    notification: NotificationItemUiState,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(WltColors.Surface, RoundedCornerShape(12.dp))
+            .background(
+                if (notification.isRead) WltColors.Surface else Color(0xFFEFF6FF),
+                RoundedCornerShape(12.dp)
+            )
+            .clickable { if (!notification.isRead) onClick() }
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Spacer(Modifier.width(16.dp))
+        if (!notification.isRead) {
+            Box(
+                modifier = Modifier
+                    .width(8.dp)
+                    .height(8.dp)
+                    .background(WltColors.Primary, RoundedCornerShape(4.dp))
+            )
+            Spacer(Modifier.width(8.dp))
+        } else {
+            Spacer(Modifier.width(16.dp))
+        }
 
         Column(modifier = Modifier.weight(1f)) {
             WltPrimaryText(notification.title)

@@ -1,6 +1,7 @@
 package worklogtracker.presentation.user.login
 
 import worklogtracker.data.auth.AuthManagerInterface
+import worklogtracker.data.auth.UserData
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
 import worklogtracker.repositories.UserRepository
 
@@ -22,6 +23,14 @@ class LoginViewModel(
 
                 if (authResponse.token.isNotEmpty()) {
                     authManager.saveAuthToken(authResponse.token)
+                    authManager.saveUserData(
+                        UserData(
+                            firstName = authResponse.firstName,
+                            lastName = authResponse.lastName,
+                            email = authResponse.email,
+                            role = authResponse.role
+                        )
+                    )
                     onLoginSuccess?.invoke()
                     resetState()
                 } else {

@@ -17,6 +17,7 @@ import worklogtracker.repositories.ProjectRepository
 import worklogtracker.repositories.TaskRepository
 import worklogtracker.repositories.UserRepository
 import worklogtracker.repositories.WorkLogRepository
+import worklogtracker.repositories.NotificationRepository
 
 //TODO misschien opsplitten?
 val appModule = module {
@@ -24,13 +25,14 @@ val appModule = module {
     single { ProjectRepository(get()) }
     single { TaskRepository(get()) }
     single { WorkLogRepository(get()) }
+    single { NotificationRepository(get()) }
     single<ApiClient> { KtorApi(get()) }
     single<AuthManagerInterface> { AuthManager(get()) }
 
     viewModel { AccountViewModel(get(), get()) }
     viewModel { SignupViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
-    viewModel { NotificationViewModel() }
+    viewModel { NotificationViewModel(get()) }
     viewModel { ProjectViewModel(get()) }
     viewModel { TaskViewModel(get()) }
     viewModel { WorkLogViewModel(get(), get()) }

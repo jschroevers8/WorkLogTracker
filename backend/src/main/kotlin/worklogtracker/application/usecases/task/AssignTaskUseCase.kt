@@ -1,5 +1,7 @@
 package worklogtracker.application.usecases.task
 
+import worklogtracker.application.usecases.notification.CreateNotificationUseCase
+import worklogtracker.domain.entities.enums.NotificationType
 import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.application.exceptions.TaskAssignmentFailedException
 import worklogtracker.application.mappers.toResponse
@@ -11,7 +13,8 @@ import worklogtracker.domain.valueobjects.user.UserId
 
 class AssignTaskUseCase(
     private val taskRepository: TaskRepositoryInterface,
-    private val userRepository: UserRepositoryInterface
+    private val userRepository: UserRepositoryInterface,
+    private val createNotificationUseCase: CreateNotificationUseCase
 ) {
     
     suspend operator fun invoke(
@@ -32,6 +35,14 @@ class AssignTaskUseCase(
             
             task = task.assignTo(assignedUserId)
             taskRepository.update(task)
+
+            createNotificationUseCase(
+                userId = assignedUserId,
+                title = "Nieuwe taak toegewezen",
+                message = "Je bent toegewezen aan taak: ${task.title}",
+                type = NotificationType.TASK_ASSIGNED,
+                taskId = taskId
+            )
 
             task.toResponse()
         } catch (e: Exception) {

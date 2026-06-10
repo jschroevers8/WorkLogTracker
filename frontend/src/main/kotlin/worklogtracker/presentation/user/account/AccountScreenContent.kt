@@ -3,6 +3,7 @@ package worklogtracker.presentation.user.account
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
@@ -15,7 +16,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.navigation.Screen
 import worklogtracker.presentation.framework.components.ConfirmDialog
 import worklogtracker.presentation.framework.components.WltScreen
 import worklogtracker.presentation.framework.theme.WltColors
@@ -70,15 +70,24 @@ fun AccountScreenContent(
                 fontSize = 14.sp,
                 modifier = Modifier.testTag("AccountUserEmail")
             )
+
+            Spacer(Modifier.height(8.dp))
+
+            Surface(
+                color = WltColors.Primary.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text(
+                    text = "Worklog Tracker Profile",
+                    color = WltColors.Primary,
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Medium,
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                )
+            }
         }
 
         Spacer(Modifier.height(32.dp))
-
-        AccountRow("Favorites", "favorites", Icons.Default.Favorite) { /* TODO */ }
-        AccountRow("Settings", "settings", Icons.Default.Settings) { /* TODO */ }
-        AccountRow("Help & support", "help_support", Icons.Default.Help) { /* TODO */ }
-
-        Spacer(Modifier.weight(1f))
 
         AccountRow("Log out", "log_out", Icons.Default.Logout, iconTint = WltColors.Error) { showLogoutDialog = true }
 

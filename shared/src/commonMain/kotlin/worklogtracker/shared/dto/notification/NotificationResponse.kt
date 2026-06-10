@@ -1,4 +1,4 @@
-package worklogtracker.application.dto.notification
+package worklogtracker.shared.dto.notification
 
 import kotlinx.serialization.Serializable
 

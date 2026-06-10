@@ -1,35 +1,46 @@
 package worklogtracker.presentation.user.notification
 
 import worklogtracker.presentation.framework.viewmodel.BaseViewModel
+import worklogtracker.repositories.NotificationRepository
+import worklogtracker.shared.dto.notification.NotificationResponse
 
-class NotificationViewModel : BaseViewModel<NotificationListUiState>(NotificationListUiState()) {
+class NotificationViewModel(
+    private val notificationRepository: NotificationRepository
+) : BaseViewModel<NotificationListUiState>(NotificationListUiState()) {
 
     init {
         loadNotifications()
     }
 
-    private fun loadNotifications() {
+    fun loadNotifications() {
         launchWithErrorHandling {
-            // Mock data for now
-            val mockNotifications = listOf(
-                NotificationItemUiState(
-                    title = "New favorite",
-                    message = "Someone added your car to favorites.",
-                    time = "2 min ago"
-                ),
-                NotificationItemUiState(
-                    title = "New order",
-                    message = "Your car has been booked successfully.",
-                    time = "1 hour ago"
-                ),
-                NotificationItemUiState(
-                    title = "Reminder",
-                    message = "Your rental ends tomorrow.",
-                    time = "Yesterday"
-                )
+            val notifications = notificationRepository.getNotifications()
+            _uiState = uiState.copy(
+                notifications = notifications.map { it.toUiState() }.sortedByDescending { it.time }
             )
-            _uiState = uiState.copy(notifications = mockNotifications)
         }
+    }
+
+    fun markAsRead(id: Int) {
+        launchWithErrorHandling {
+            notificationRepository.markAsRead(id)
+            // Update local state instead of full reload for better UX
+            _uiState = uiState.copy(
+                notifications = uiState.notifications.map {
+                    if (it.id == id) it.copy(isRead = true) else it
+                }
+            )
+        }
+    }
+
+    private fun NotificationResponse.toUiState(): NotificationItemUiState {
+        return NotificationItemUiState(
+            id = id ?: 0,
+            title = title,
+            message = message,
+            time = createdAt.replace("T", " "), // Simple formatting
+            isRead = isRead
+        )
     }
 
     override fun setLoading(value: Boolean) {

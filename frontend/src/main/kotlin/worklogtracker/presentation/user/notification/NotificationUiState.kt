@@ -9,7 +9,9 @@ data class NotificationListUiState(
 ) : BaseUiState
 
 data class NotificationItemUiState(
+    val id: Int,
     val title: String,
     val message: String,
-    val time: String
+    val time: String,
+    val isRead: Boolean
 )

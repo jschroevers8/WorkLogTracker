@@ -32,7 +32,9 @@ fun NotificationScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         ) {
             items(state.notifications) { notification ->
-                NotificationCard(notification)
+                NotificationCard(notification) {
+                    viewModel.markAsRead(notification.id)
+                }
             }
         }
     }
