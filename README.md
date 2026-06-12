@@ -1,25 +1,64 @@
-# WorkLog & Task Tracker Backend
+# WorkLog & Task Tracker
 
-**Complete Kotlin Multiplatform Backend Implementation**
+**Complete Kotlin Multiplatform Implementation**
 
-Fully migrated from Rent My Car Backend using Domain-Driven Design (DDD) and Clean Architecture principles.
-
----
-
-## Overview
-
-WorkLog & Task Tracker is a production-ready backend for managing work tasks, time tracking, and team productivity. Built with:
-
-- **Kotlin** - Type-safe, null-safe language
-- **Ktor** - Lightweight, async web framework
-- **Exposed ORM** - Type-safe SQL DSL
-- **PostgreSQL** - Relational database
-- **JWT** - Stateless authentication
-- **Coroutines** - Async/await support
+WorkLog & Task Tracker is een krachtig systeem voor het beheren van projecten, taken en urenregistratie. Dit project maakt gebruik van Kotlin Multiplatform om code te delen tussen de backend, Android frontend en web applicatie.
 
 ---
 
-## Architecture
+## Belangrijkste Features
+
+### 📱 Android App (Frontend)
+- **Dashboard**: Overzicht van actieve projecten en taken.
+- **Urenregistratie**: Start en stop timers voor specifieke taken.
+- **Taakbeheer**: Bekijk, filter en update de status van je taken.
+- **Offline Modus**: Werk door zonder internetverbinding; gegevens worden gesynchroniseerd zodra je weer online bent.
+- **Notificaties**: Ontvang waarschuwingen voor naderende deadlines.
+- **Kaartintegratie**: Locatiegebaseerde taken bekijken (MapLibre).
+
+### 🌐 Web Applicatie (Compose HTML)
+- **Admin Dashboard**: Beheer van medewerkers, projecten en taken.
+- **Project Management**: Creëer en bewerk projecten, wijs teamleden toe.
+- **Rapportage**: Inzicht in gewerkte uren per medewerker of project.
+- **Real-time Updates**: Directe feedback op statuswijzigingen.
+
+### ⚙️ Backend (Ktor)
+- **DDD & Clean Architecture**: Robuuste en schaalbare code-opzet.
+- **REST API**: Volledige API voor integratie met verschillende frontends.
+- **JWT Authenticatie**: Veilig inloggen en Role-Based Access Control (RBAC).
+- **PostgreSQL**: Betrouwbare dataopslag met Exposed ORM.
+- **Sync Engine**: Geavanceerde synchronisatie voor offline ondersteuning.
+- **Geplande Taken**: Automatische controles voor deadlines en opschoning.
+
+---
+
+## Aan de Slag
+
+Voor gedetailleerde instructies over hoe je dit project kunt installeren en eraan kunt bijdragen, raadpleeg onze **[CONTRIBUTING.md](CONTRIBUTING.md)**.
+
+### Snelle Start (Docker)
+Als je alleen de backend en database wilt draaien:
+```bash
+docker-compose up -d
+```
+
+---
+
+## Gebruikte Technologieën
+
+WorkLog & Task Tracker is gebouwd met moderne technologieën:
+
+- **Kotlin** - Type-safe, null-safe programmeertaal.
+- **Ktor** - Lichtgewicht, asynchroon web framework.
+- **Exposed ORM** - Type-safe SQL DSL voor Kotlin.
+- **PostgreSQL** - Robuuste relationele database.
+- **JWT** - Stateless authenticatie.
+- **Coroutines** - Ondersteuning voor asynchrone programmering.
+- **Jetpack Compose / Compose Multiplatform** - Moderne UI toolkit voor Android en Web.
+
+---
+
+## Architectuur
 
 ### Clean Architecture Layers
 
@@ -661,33 +700,28 @@ Can implement with Redis/Memcached:
 
 ---
 
-## Contributing
+## Bijdragen
 
-1. Follow DDD principles
-2. Keep domain logic in entities/value objects
-3. Use repositories for data access
-4. Write use cases for orchestration
-5. Add tests for new features
-6. Document domain decisions
+Voor informatie over hoe je kunt bijdragen aan dit project en de volledige installatie-instructies, zie **[CONTRIBUTING.md](CONTRIBUTING.md)**.
 
 ---
 
-## License
+## Licentie
 
 MIT (or your organization's license)
 
 ---
 
-## Support
+## Ondersteuning
 
-For issues or questions:
-1. Check documentation
-2. Review test files
-3. Open GitHub issue
+Voor problemen of vragen:
+1. Controleer de documentatie
+2. Bekijk de testbestanden
+3. Open een GitHub issue
 
 ---
 
-## Key Files Reference
+## Referentie Belangrijke Bestanden
 
 | Path | Purpose |
 |------|---------|
@@ -701,8 +735,8 @@ For issues or questions:
 
 ---
 
-**Last Updated:** June 2, 2026  
-**Version:** 1.0.0  
-**Status:** Production Ready
+**Laatst Bijgewerkt:** 12 juni 2026  
+**Versie:** 1.0.0  
+**Status:** In Ontwikkeling
 
 
