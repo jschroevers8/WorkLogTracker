@@ -5,7 +5,9 @@ import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import org.jetbrains.compose.web.css.*
 import worklogtracker.shared.dto.auth.AuthResponse
-import worklogtracker.webapp.ui.*
+import worklogtracker.webapp.ui.Styles
+import worklogtracker.webapp.ui.components.NavLink
+import worklogtracker.webapp.ui.screens.*
 
 enum class Screen {
     LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, WORK_LOGS
@@ -138,23 +140,4 @@ fun main() {
             }
         }
     }
-}
-
-@Composable
-fun NavLink(text: String, active: Boolean, onClick: () -> Unit) {
-    Div({
-        style {
-            marginRight(24.px)
-            cursor("pointer")
-            padding(20.px, 0.px)
-            fontSize(0.95.em)
-            fontWeight("500")
-            color(if (active) Styles.Primary else Styles.TextSecondary)
-            if (active) {
-                property("border-bottom", "2px solid ${Styles.Primary}")
-            }
-            property("transition", "color 0.2s, border-bottom 0.2s")
-        }
-        onClick { onClick() }
-    }) { Text(text) }
 }

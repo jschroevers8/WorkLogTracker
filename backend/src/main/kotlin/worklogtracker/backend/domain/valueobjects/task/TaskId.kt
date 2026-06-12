@@ -1,0 +1,5 @@
+package worklogtracker.backend.domain.valueobjects.task
+
+@JvmInline
+value class TaskId(val value: Int)
+

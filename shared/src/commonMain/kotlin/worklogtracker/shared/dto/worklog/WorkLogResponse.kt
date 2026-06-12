@@ -5,13 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class WorkLogResponse(
     val id: Int?,
-    val taskId: Int,
+    val taskAssignmentId: Int,
     val userId: Int,
-    val startTime: String,
-    val endTime: String?,
-    val durationMinutes: Int?,
-    val notes: String?,
-    val isSynced: Boolean,
-    val createdAt: String,
-    val updatedAt: String
+    val hours: Double,
+    val description: String?,
+    val createdAt: String
 )
