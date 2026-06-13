@@ -90,7 +90,7 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                 }
             }
 
-            Div({ style { marginBottom(24.px) } }) {
+            Div({ style { marginBottom(24.px); width(100.percent)  } }) {
                 Label(forId = "password", attrs = {
                     style {
                         display(DisplayStyle.Block)
