@@ -58,11 +58,7 @@ import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.plugins.contentnegotiation.*
 
 fun Application.configureRouting() {
-    install(ContentNegotiation) {
-        json()
-    }
-
-    val httpClient = HttpClient(io.ktor.client.engine.cio.CIO)
+    val httpClient = HttpClient(CIO)
     // Client configuration is moved to Use Case to avoid import conflicts
 
     val jwtSecret = environment.config.property("jwt.secret").getString()

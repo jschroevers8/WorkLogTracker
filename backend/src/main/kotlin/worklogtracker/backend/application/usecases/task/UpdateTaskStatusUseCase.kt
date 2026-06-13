@@ -23,10 +23,6 @@ class UpdateTaskStatusUseCase(
         var task = taskRepository.findById(taskId) 
             ?: throw TaskNotFoundException(taskId.value.toString())
         
-        if (task.assignedUserId != null && task.assignedUserId != userId) {
-            throw Exception("You don't have permission to update this task")
-        }
-        
         task = task.updateStatus(newStatus)
         taskRepository.update(task)
 
@@ -34,7 +30,7 @@ class UpdateTaskStatusUseCase(
             createNotificationUseCase(
                 userId = task.createdBy,
                 title = "Taak voltooid",
-                message = "De taak '${task.title}' is voltooid door ${task.assignedUserId}.",
+                message = "De taak '${task.title}' is voltooid",
                 type = NotificationType.TASK_COMPLETED,
                 taskId = taskId
             )

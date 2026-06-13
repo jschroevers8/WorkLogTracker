@@ -13,10 +13,7 @@ fun Route.getWorkLogsRoute(getUserWorkLogsUseCase: GetUserWorkLogsUseCase) {
         get("/api/worklogs") {
             val userId = call.getUserId()
 
-            val from = call.parameters["from"]?.let(LocalDateTime::parse)
-            val to = call.parameters["to"]?.let(LocalDateTime::parse)
-
-            call.respond(HttpStatusCode.OK, getUserWorkLogsUseCase(userId, from, to))
+            call.respond(HttpStatusCode.OK, getUserWorkLogsUseCase(userId))
         }
     }
 }

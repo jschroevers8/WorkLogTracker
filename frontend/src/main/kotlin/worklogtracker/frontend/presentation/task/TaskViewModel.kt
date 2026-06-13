@@ -21,7 +21,6 @@ class TaskViewModel(
                     title = response.title,
                     description = response.description ?: "",
                     status = response.status,
-                    priority = response.priority
                 )
             }
 

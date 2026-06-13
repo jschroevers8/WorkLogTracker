@@ -1,2 +1,2 @@
-GET http://localhost:8080/api/v1/tasks?projectId=1&status=OPEN
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTc4MDQ5NjU1MX0.iHK-bXs2MEIhelQjcdTWt6OmjdxyHrTND8yNCwmf2RA
+GET http://localhost:8080/api/tasks?projectId=1&status=OPEN
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTc4MTQyOTk0NH0.lYcKcOD5o6P75i275V2V-BiNomF-5euJAG673kcL4CU

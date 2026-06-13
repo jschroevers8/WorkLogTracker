@@ -55,7 +55,6 @@ fun TaskScreen(
                 LazyColumn {
                     items(uiState.tasks) { task ->
                         TaskCard(task) {
-                            workLogViewModel.setSelectedTask(task.id.toInt())
                             backStack.add(Screen.WorkLogs)
                         }
                     }
@@ -81,7 +80,6 @@ fun TaskCard(task: TaskItem, onClick: () -> Unit) {
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(text = "Status: ${task.status}", style = MaterialTheme.typography.labelSmall)
-                Text(text = "Priority: ${task.priority}", style = MaterialTheme.typography.labelSmall)
             }
         }
     }

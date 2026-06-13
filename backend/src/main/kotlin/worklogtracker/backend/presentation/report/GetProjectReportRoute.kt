@@ -12,24 +12,24 @@ import io.ktor.server.response.respond
 fun Route.getProjectReportRoute(taskRepository: TaskRepositoryInterface) {
     authenticate {
         get("/api/reports/project/{projectId}") {
-            val projectId = ProjectId(call.parameters["projectId"]?.toInt() ?: error("Project ID required"))
-            val tasks = taskRepository.findByProject(projectId)
-            val completed = tasks.count { it.status.name == "COMPLETED" }
-            val estimated = tasks.sumOf { it.estimatedHours }.toDouble()
-            val actual = tasks.sumOf { it.actualHours }.toDouble()
-
-            call.respond(HttpStatusCode.OK,
-                ProjectReportResponse(
-                    projectId.value,
-                    "Project ${projectId.value}",
-                    tasks.size,
-                    completed,
-                    estimated,
-                    actual,
-                    tasks.firstOrNull()?.status?.name ?: "UNKNOWN",
-                    if (tasks.isNotEmpty()) (completed.toDouble() / tasks.size) * 100 else 0.0
-                )
-            )
+//            val projectId = ProjectId(call.parameters["projectId"]?.toInt() ?: error("Project ID required"))
+//            val tasks = taskRepository.findByProject(projectId)
+//            val completed = tasks.count { it.status.name == "COMPLETED" }
+//            val estimated = tasks.sumOf { it.estimatedHours }.toDouble()
+//            val actual = tasks.sumOf { it.actualHours }.toDouble()
+//
+//            call.respond(HttpStatusCode.OK,
+//                ProjectReportResponse(
+//                    projectId.value,
+//                    "Project ${projectId.value}",
+//                    tasks.size,
+//                    completed,
+//                    estimated,
+//                    actual,
+//                    tasks.firstOrNull()?.status?.name ?: "UNKNOWN",
+//                    if (tasks.isNotEmpty()) (completed.toDouble() / tasks.size) * 100 else 0.0
+//                )
+//            )
         }
     }
 }
