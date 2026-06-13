@@ -39,7 +39,7 @@ fun initializeDatabase() {
     }
 
     transaction {
-        SchemaUtils.create(
+        SchemaUtils.createMissingTablesAndColumns(
             UserTable,
             ProjectTable,
             TaskTable,
