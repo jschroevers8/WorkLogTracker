@@ -37,10 +37,15 @@ fun CameraComponent(onPhotoCaptured: (String) -> Unit) {
                 val canvas = document.createElement("canvas") as HTMLCanvasElement
                 val context = canvas.getContext("2d") as CanvasRenderingContext2D
                 videoElement?.let { video ->
-                    canvas.width = video.videoWidth
-                    canvas.height = video.videoHeight
+                    // Scale down image to reduce Base64 string length ("name too long" issue)
+                    val maxWidth = 800
+                    val scale = if (video.videoWidth > maxWidth) maxWidth.toDouble() / video.videoWidth else 1.0
+                    canvas.width = (video.videoWidth * scale).toInt()
+                    canvas.height = (video.videoHeight * scale).toInt()
+                    
                     context.drawImage(video, 0.0, 0.0, canvas.width.toDouble(), canvas.height.toDouble())
-                    onPhotoCaptured(canvas.toDataURL("image/jpeg"))
+                    // Use JPEG with lower quality to further reduce size
+                    onPhotoCaptured(canvas.toDataURL("image/jpeg", 0.7))
                 }
             }
             style {
