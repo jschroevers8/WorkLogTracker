@@ -5,9 +5,20 @@ import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.StatCard
+import worklogtracker.webapp.viewmodel.DashboardViewModel
+
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import worklogtracker.webapp.ApiClient
 
 @Composable
-fun DashboardScreen() {
+fun DashboardScreen(apiClient: ApiClient, scope: CoroutineScope) {
+    val viewModel = remember { DashboardViewModel(apiClient) }
+
+    LaunchedEffect(Unit) {
+        viewModel.loadDashboardData()
+    }
+
     H2({
         style {
             color(Styles.TextPrimary)
@@ -22,9 +33,9 @@ fun DashboardScreen() {
             gap(24.px)
         }
     }) {
-        StatCard("Totaal Medewerkers", "12", Styles.Primary)
-        StatCard("Actieve Projecten", "5", Styles.Success)
-        StatCard("Uren deze week", "156", Styles.Accent)
+        StatCard("Totaal Medewerkers", viewModel.totalEmployees.toString(), Styles.Primary)
+        StatCard("Actieve Projecten", viewModel.activeProjects.toString(), Styles.Success)
+        StatCard("Uren deze week", viewModel.totalHoursThisWeek.toString(), Styles.Accent)
     }
 }
 

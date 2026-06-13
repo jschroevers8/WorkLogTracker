@@ -7,15 +7,12 @@ import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.shared.dto.auth.LoginRequest
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.disabled
+import worklogtracker.webapp.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLoginSuccess: (AuthResponse) -> Unit) {
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var error by remember { mutableStateOf("") }
-    var loading by remember { mutableStateOf(false) }
+    val viewModel = remember { LoginViewModel(api, scope, onLoginSuccess) }
 
     Div({
         style {
@@ -46,7 +43,7 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                 }
             }) { Text("Admin Portaal") }
 
-            if (error.isNotEmpty()) {
+            if (viewModel.error.isNotEmpty()) {
                 Div({
                     style {
                         color(Styles.Error)
@@ -56,7 +53,7 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                         padding(10.px)
                         borderRadius(6.px)
                     }
-                }) { Text(error) }
+                }) { Text(viewModel.error) }
             }
 
             Div({ style { marginBottom(16.px) } }) {
@@ -78,8 +75,8 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                         border(1.px, LineStyle.Solid, Styles.Border)
                         outline("none")
                     }
-                    value(email)
-                    onInput { email = it.value }
+                    value(viewModel.email)
+                    onInput { viewModel.email = it.value }
                 }
             }
 
@@ -102,52 +99,32 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                         border(1.px, LineStyle.Solid, Styles.Border)
                         outline("none")
                     }
-                    value(password)
-                    onInput { password = it.value }
+                    value(viewModel.password)
+                    onInput { viewModel.password = it.value }
                 }
             }
 
             Button({
-                if (loading) {
+                if (viewModel.loading) {
                     disabled()
                 }
 
                 style {
                     width(100.percent)
                     padding(12.px)
-                    backgroundColor(if (loading) Styles.Secondary else Styles.Primary)
+                    backgroundColor(if (viewModel.loading) Styles.Secondary else Styles.Primary)
                     color(Color.white)
                     border(0.px)
                     borderRadius(8.px)
-                    cursor(if (loading) "default" else "pointer")
+                    cursor(if (viewModel.loading) "default" else "pointer")
                     fontWeight("600")
                     property("transition", "background-color 0.2s")
                 }
                 onClick {
-                    if (email.isEmpty() || password.isEmpty()) {
-                        error = "Vul alle velden in"
-                        return@onClick
-                    }
-                    loading = true
-                    error = ""
-                    scope.launch {
-                        try {
-                            val response = api.auth.login(LoginRequest(email, password))
-
-                            if (response.role == "ADMIN") {
-                                onLoginSuccess(response)
-                            } else {
-                                error = "Toegang geweigerd: Alleen Admins kunnen inloggen op het admin portaal."
-                            }
-                        } catch (e: Throwable) {
-                            error = e.message ?: "Inloggen mislukt. Controleer je gegevens en probeer het opnieuw."
-                        } finally {
-                            loading = false
-                        }
-                    }
+                    viewModel.login()
                 }
             }) {
-                Text(if (loading) "Bezig met inloggen..." else "Inloggen")
+                Text(if (viewModel.loading) "Bezig met inloggen..." else "Inloggen")
             }
         }
     }

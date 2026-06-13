@@ -11,6 +11,7 @@ import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.ProjectCard
+import worklogtracker.webapp.viewmodel.ProjectsViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.attributes.placeholder

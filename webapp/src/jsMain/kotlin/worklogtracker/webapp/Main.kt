@@ -124,7 +124,7 @@ fun main() {
                         }
                     }) {
                         when (currentScreen) {
-                            Screen.DASHBOARD -> DashboardScreen()
+                            Screen.DASHBOARD -> DashboardScreen(apiClient, scope)
                             Screen.EMPLOYEES -> EmployeesScreen(apiClient, scope) { id ->
                                 selectedUserId = id
                                 currentScreen = Screen.EMPLOYEE_DETAIL
