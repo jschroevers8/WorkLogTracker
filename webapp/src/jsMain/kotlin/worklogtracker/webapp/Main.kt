@@ -14,7 +14,7 @@ import worklogtracker.webapp.ui.components.NavLink
 import worklogtracker.webapp.ui.screens.*
 
 enum class Screen {
-    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, PROJECT_DETAIL, WORK_LOGS
+    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, PROJECT_DETAIL
 }
 
 val apiClient = ApiClient()
@@ -100,7 +100,6 @@ fun main() {
 
                     Div({
                         style {
-//                            marginLeft(java.lang.String("auto"))
                             display(DisplayStyle.Flex)
                             alignItems(AlignItems.Center)
                         }
@@ -148,7 +147,6 @@ fun main() {
                         overflow("hidden")
                     }
                 }) {
-                    // Page Content
                     Div({
                         style {
                             padding(32.px)
@@ -172,7 +170,6 @@ fun main() {
                             Screen.PROJECT_DETAIL -> ProjectDetailScreen(selectedProjectId!!, apiClient, scope) {
                                 currentScreen = Screen.PROJECTS
                             }
-                            Screen.WORK_LOGS -> WorkLogRegistrationScreen(apiClient, scope)
                             else -> {}
                         }
                     }

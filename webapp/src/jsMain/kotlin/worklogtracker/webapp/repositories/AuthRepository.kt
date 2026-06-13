@@ -17,13 +17,14 @@ class AuthRepository(private val client: HttpClient, private val baseUrl: String
 
         if (response.status.isSuccess()) {
             return response.body()
-        } else {
-            val errorBody = try {
-                response.body<ErrorResponse>()
-            } catch (e: Exception) {
-                null
-            }
-            throw Exception(errorBody?.message ?: "Inloggen mislukt (Status: ${response.status.value})")
         }
+
+        val errorBody = try {
+            response.body<ErrorResponse>()
+        } catch (e: Exception) {
+            null
+        }
+
+        throw Exception(errorBody?.message ?: "Inloggen mislukt (Status: ${response.status.value})")
     }
 }

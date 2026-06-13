@@ -17,12 +17,4 @@ class WorkLogRepository(private val client: HttpClient, private val baseUrl: Str
             }
         }.body()
     }
-
-    suspend fun createWorkLog(request: CreateWorkLogRequest): WorkLogResponse {
-        return client.post("$baseUrl/worklogs") {
-            header(HttpHeaders.Authorization, "Bearer ${getToken()}")
-            contentType(ContentType.Application.Json)
-            setBody(request)
-        }.body()
-    }
 }

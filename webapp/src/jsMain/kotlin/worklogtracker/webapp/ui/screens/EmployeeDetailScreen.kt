@@ -3,10 +3,8 @@ package worklogtracker.webapp.ui.screens
 import androidx.compose.runtime.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
-import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
-import kotlinx.coroutines.launch
 
 import worklogtracker.webapp.viewmodel.EmployeeDetailViewModel
 
