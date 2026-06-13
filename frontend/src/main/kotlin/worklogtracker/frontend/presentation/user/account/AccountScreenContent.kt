@@ -89,6 +89,8 @@ fun AccountScreenContent(
 
         Spacer(Modifier.height(32.dp))
 
+        Spacer(Modifier.weight(1f))
+
         AccountRow("Log out", "log_out", Icons.Default.Logout, iconTint = WltColors.Error) { showLogoutDialog = true }
 
         if (showLogoutDialog) {

@@ -1,5 +1,7 @@
 package worklogtracker.frontend.presentation.project
 
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -12,6 +14,7 @@ import androidx.navigation3.runtime.NavKey
 import org.koin.androidx.compose.koinViewModel
 import worklogtracker.frontend.presentation.framework.BottomNavigationBar
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun ProjectScreen(
     backStack: NavBackStack<NavKey>,
@@ -47,9 +50,25 @@ fun ProjectScreen(
             } else if (uiState.error != null) {
                 Text(text = "Error: ${uiState.error}", color = MaterialTheme.colorScheme.error)
             } else {
+                val groupedProjects = uiState.projects.groupBy { it.status }
                 LazyColumn {
-                    items(uiState.projects) { project ->
-                        ProjectCard(project)
+                    groupedProjects.forEach { (status, projects) ->
+                        stickyHeader {
+                            Surface(
+                                modifier = Modifier.fillMaxWidth(),
+                                color = MaterialTheme.colorScheme.secondaryContainer
+                            ) {
+                                Text(
+                                    text = status,
+                                    modifier = Modifier.padding(8.dp),
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.onSecondaryContainer
+                                )
+                            }
+                        }
+                        items(projects) { project ->
+                            ProjectCard(project)
+                        }
                     }
                 }
             }
