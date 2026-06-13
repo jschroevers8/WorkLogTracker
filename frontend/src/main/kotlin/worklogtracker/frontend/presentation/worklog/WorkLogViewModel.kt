@@ -21,7 +21,9 @@ class WorkLogViewModel(
     fun loadTasks() {
         launchWithErrorHandling {
             val tasks = taskRepository.getTasks()
-            val taskList = tasks.map { TaskItem(it.id ?: 0, it.title) }
+            val taskList = tasks
+                .filter { it.status != "COMPLETED" && it.status != "CANCELLED" }
+                .map { TaskItem(it.id ?: 0, it.title, it.assignmentId) }
             _uiState = uiState.copy(tasks = taskList)
         }
     }
@@ -47,7 +49,9 @@ class WorkLogViewModel(
     }
 
     fun submitWorkLog() {
-        val assignmentId = uiState.selectedTaskAssignmentId ?: return
+        val taskId = uiState.selectedTaskAssignmentId ?: return
+        val selectedTask = uiState.tasks.find { it.id == taskId } ?: return
+        val assignmentId = selectedTask.assignmentId ?: return
         val hours = uiState.hours.toDoubleOrNull() ?: return
         
         launchWithErrorHandling {
@@ -59,18 +63,16 @@ class WorkLogViewModel(
             )
             workLogRepository.createWorkLog(request)
             
-            val taskId = assignmentId.toString()
-
             uiState.photoBase64?.let { 
-                 taskRepository.uploadPhoto(UploadTaskPhotoRequest(assignmentId, it)) 
+                 taskRepository.uploadPhoto(UploadTaskPhotoRequest(taskId, it)) 
             }
             
             if (uiState.latitude != null && uiState.longitude != null) {
-                taskRepository.recordLocation(RecordTaskLocationRequest(assignmentId, uiState.latitude!!, uiState.longitude!!))
+                taskRepository.recordLocation(RecordTaskLocationRequest(taskId, uiState.latitude!!, uiState.longitude!!))
             }
             
             // Mark task as COMPLETED
-            taskRepository.updateTaskStatus(taskId, UpdateTaskStatusRequest("COMPLETED"))
+            taskRepository.updateTaskStatus(taskId.toString(), UpdateTaskStatusRequest("COMPLETED"))
 
             _uiState = uiState.copy(
                 success = true,

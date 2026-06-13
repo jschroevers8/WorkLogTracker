@@ -7,7 +7,7 @@ import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.webapp.ui.Styles
 
 @Composable
-fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: () -> Unit) {
+fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: () -> Unit, onCloseProject: () -> Unit) {
     Div({
         style {
             backgroundColor(Styles.Surface)
@@ -66,6 +66,19 @@ fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: (
                         fontSize(0.8.em)
                     }
                 }) { Text("+ Taak") }
+
+                Button({
+                    onClick { onCloseProject() }
+                    style {
+                        padding(6.px, 12.px)
+                        backgroundColor(Styles.Error)
+                        color(Color.white)
+                        border(0.px)
+                        borderRadius(6.px)
+                        cursor("pointer")
+                        fontSize(0.8.em)
+                    }
+                }) { Text("Afsluiten") }
             }
             
             Button({

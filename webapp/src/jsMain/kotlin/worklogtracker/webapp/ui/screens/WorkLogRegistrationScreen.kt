@@ -14,6 +14,9 @@ import org.w3c.dom.CanvasRenderingContext2D
 import org.w3c.dom.HTMLCanvasElement
 import org.w3c.dom.HTMLVideoElement
 import worklogtracker.shared.dto.task.TaskResponse
+import worklogtracker.shared.dto.task.UploadTaskPhotoRequest
+import worklogtracker.shared.dto.task.RecordTaskLocationRequest
+import worklogtracker.shared.dto.task.UpdateTaskStatusRequest
 import worklogtracker.shared.dto.worklog.CreateWorkLogRequest
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
@@ -194,13 +197,29 @@ fun WorkLogRegistrationScreen(api: ApiClient, scope: kotlinx.coroutines.Coroutin
                 scope.launch {
                     loading = true
                     try {
+                        val task = tasks.find { it.id == selectedTaskId }
+                        val assignmentId = task?.assignmentId ?: selectedTaskId!! // Fallback to selectedTaskId if assignmentId is missing
+                        
                         api.worklogs.createWorkLog(
                             CreateWorkLogRequest(
-                                taskAssignmentId = selectedTaskId!!,
+                                taskAssignmentId = assignmentId,
                                 hours = hours,
                                 description = notes
                             )
                         )
+
+                        if (photoBase64 != null && selectedTaskId != null) {
+                            api.tasks.uploadPhoto(UploadTaskPhotoRequest(selectedTaskId!!, photoBase64!!))
+                        }
+
+                        if (latitude != null && longitude != null && selectedTaskId != null) {
+                            api.tasks.recordLocation(RecordTaskLocationRequest(selectedTaskId!!, latitude!!, longitude!!))
+                        }
+
+                        if (selectedTaskId != null) {
+                            api.tasks.updateTaskStatus(selectedTaskId!!, UpdateTaskStatusRequest("COMPLETED"))
+                        }
+
                         statusMessage = "Uren succesvol geregistreerd!"
                         notes = ""
                         photoBase64 = null

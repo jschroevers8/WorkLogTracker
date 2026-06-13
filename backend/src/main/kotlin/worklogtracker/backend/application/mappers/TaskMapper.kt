@@ -9,7 +9,8 @@ import java.time.format.DateTimeFormatter
 
 fun TaskEntity.toResponse(
     photos: List<TaskPhotoEntity> = emptyList(),
-    locations: List<TaskLocationEntity> = emptyList()
+    locations: List<TaskLocationEntity> = emptyList(),
+    assignmentId: Int? = null
 ) =
     TaskResponse(
         id = id?.value,
@@ -20,6 +21,7 @@ fun TaskEntity.toResponse(
         createdBy = createdBy.value,
         createdAt = createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
         updatedAt = updatedAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
+        assignmentId = assignmentId,
         photoUrls = photos.map { it.photoUrl },
         locations = locations.map { 
             TaskLocationDto(

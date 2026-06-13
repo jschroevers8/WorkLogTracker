@@ -4,6 +4,8 @@ import worklogtracker.backend.application.usecases.notification.CreateNotificati
 import worklogtracker.backend.domain.entities.enums.NotificationType
 import worklogtracker.backend.domain.entities.TaskAssignmentEntity
 import worklogtracker.backend.domain.entities.enums.TaskStatus
+import worklogtracker.backend.domain.entities.enums.ProjectStatus
+import worklogtracker.backend.domain.repositories.ProjectRepositoryInterface
 import worklogtracker.backend.domain.repositories.TaskAssignmentRepositoryInterface
 import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.backend.application.exceptions.TaskCreationFailedException
@@ -19,6 +21,7 @@ class CreateTaskUseCase(
     private val taskRepository: TaskRepositoryInterface,
     private val taskAssignmentRepository: TaskAssignmentRepositoryInterface,
     private val userRepository: UserRepositoryInterface,
+    private val projectRepository: ProjectRepositoryInterface,
     private val taskFactory: TaskFactory,
     private val createNotificationUseCase: CreateNotificationUseCase
 ) {
@@ -34,6 +37,9 @@ class CreateTaskUseCase(
             val user = userRepository.findById(userId) ?: throw Exception("User not found")
             val assignedUser = userRepository.findById(assignedUserId) ?: throw Exception("Assigned user not found")
             
+            val project = projectRepository.findById(projectId)
+                ?: throw Exception("Project not found")
+
             val task = taskFactory.create(
                 projectId = projectId,
                 createdBy = userId,
@@ -52,6 +58,11 @@ class CreateTaskUseCase(
                 status = TaskStatus.OPEN
             )
             taskAssignmentRepository.save(assignment)
+
+            // Update project status if it's in PLANNING
+            if (project.status == ProjectStatus.PLANNING) {
+                projectRepository.update(project.updateStatus(ProjectStatus.ACTIVE))
+            }
 
             // Notify user
             createNotificationUseCase(

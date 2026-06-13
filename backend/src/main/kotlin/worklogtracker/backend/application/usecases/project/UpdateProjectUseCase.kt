@@ -6,14 +6,17 @@ import worklogtracker.backend.application.mappers.toResponse
 import worklogtracker.backend.domain.entities.enums.ProjectStatus
 import worklogtracker.backend.domain.exceptions.ProjectNotFoundException
 import worklogtracker.backend.domain.exceptions.UnauthorizedException
+import worklogtracker.backend.domain.entities.enums.TaskStatus
 import worklogtracker.backend.domain.repositories.ProjectRepositoryInterface
+import worklogtracker.backend.domain.repositories.TaskRepositoryInterface
 import worklogtracker.backend.domain.repositories.UserRepositoryInterface
 import worklogtracker.backend.domain.valueobjects.project.ProjectId
 import worklogtracker.backend.domain.valueobjects.user.UserId
 
 class UpdateProjectUseCase(
     private val projectRepository: ProjectRepositoryInterface,
-    private val userRepository: UserRepositoryInterface
+    private val userRepository: UserRepositoryInterface,
+    private val taskRepository: TaskRepositoryInterface
 ) {
     
     suspend operator fun invoke(
@@ -32,7 +35,15 @@ class UpdateProjectUseCase(
             
             if (name != null) project = project.copy(name = name)
             if (description != null) project = project.copy(description = description)
-            if (status != null) project = project.updateStatus(status)
+            if (status != null) {
+                if (status == ProjectStatus.COMPLETED) {
+                    val tasks = taskRepository.findByProject(projectId)
+                    if (tasks.any { it.status == TaskStatus.OPEN }) {
+                        throw Exception("Kan project niet afsluiten: er zijn nog open taken")
+                    }
+                }
+                project = project.updateStatus(status)
+            }
             
             projectRepository.update(project)
 

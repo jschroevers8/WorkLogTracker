@@ -28,7 +28,7 @@ class TaskRepository(private val api: ApiClient) {
 
     suspend fun updateTaskStatus(id: String, request: UpdateTaskStatusRequest) {
         val body = json.encodeToString(request)
-        api.post("$baseUrl/$id/status", body)
+        api.put("$baseUrl/$id/status", body)
     }
 
     suspend fun assignTask(id: String, request: AssignTaskRequest) {

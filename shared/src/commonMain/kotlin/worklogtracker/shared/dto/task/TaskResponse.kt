@@ -12,6 +12,7 @@ data class TaskResponse(
     val createdBy: Int,
     val createdAt: String,
     val updatedAt: String,
+    val assignmentId: Int? = null,
     val photoUrls: List<String> = emptyList(),
     val locations: List<TaskLocationDto> = emptyList()
 )

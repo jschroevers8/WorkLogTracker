@@ -5,6 +5,7 @@ import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
 import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.shared.dto.project.CreateProjectRequest
+import worklogtracker.shared.dto.project.UpdateProjectRequest
 import worklogtracker.shared.dto.task.CreateTaskRequest
 import worklogtracker.shared.dto.task.AssignTaskRequest
 import worklogtracker.shared.dto.user.UserResponse
@@ -248,7 +249,17 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                 ProjectCard(
                     project = project,
                     onAddTask = { selectedProjectIdForTask = project.id },
-                    onSeeDetails = { onSeeProjectDetails(project.id!!) }
+                    onSeeDetails = { onSeeProjectDetails(project.id!!) },
+                    onCloseProject = {
+                        scope.launch {
+                            try {
+                                api.projects.updateProject(project.id!!, UpdateProjectRequest(status = "COMPLETED"))
+                                refreshData()
+                            } catch (e: Exception) {
+                                error = "Fout bij afsluiten project: ${e.message}"
+                            }
+                        }
+                    }
                 )
             }
         }

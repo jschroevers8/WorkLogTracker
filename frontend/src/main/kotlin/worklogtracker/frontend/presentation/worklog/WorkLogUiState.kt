@@ -17,5 +17,6 @@ data class WorkLogUiState(
 
 data class TaskItem(
     val id: Int,
-    val title: String
+    val title: String,
+    val assignmentId: Int? = null
 )
