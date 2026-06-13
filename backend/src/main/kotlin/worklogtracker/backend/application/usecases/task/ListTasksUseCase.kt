@@ -28,15 +28,14 @@ class ListTasksUseCase(
             taskRepository.findByUser(userId)
         }
 
-        val assignments = taskAssignmentRepository.findByUser(userId)
-
         return tasks.map { task ->
             val taskId = task.id!!
             val photos = taskPhotoRepository.findByTask(taskId)
             val locations = taskLocationRepository.findByTask(taskId)
-            val assignment = assignments.find { it.taskId == taskId }
+            val assignment = taskAssignmentRepository.findByTask(taskId).firstOrNull()
             val timeEntries = assignment?.let { timeEntryRepository.findByAssignment(it.id!!) } ?: emptyList()
             val totalHours = timeEntries.sumOf { it.hours.toDouble() }
+
             task.toResponse(photos, locations, assignment?.id?.value, totalHours)
         }
     }

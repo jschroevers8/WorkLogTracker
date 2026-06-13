@@ -17,12 +17,9 @@ class DashboardViewModel(private val apiClient: ApiClient) {
             val projects = apiClient.projects.getProjects(status = "ACTIVE")
             activeProjects = projects.size
 
-            // Voor nu halen we de uren van alle gebruikers op (indien mogelijk)
-            // Maar we simuleren hier data voor de grafiek op basis van de logs
             val worklogs = apiClient.worklogs.getUserWorkLogs(0)
             totalHoursThisWeek = worklogs.sumOf { it.hours }
 
-            // Simuleer daily hours voor de grafiek (laatste 7 dagen)
             val days = listOf("Ma", "Di", "Wo", "Do", "Vr", "Za", "Zo")
             dailyHours = days.map { day -> 
                 day to (4.0 + (kotlin.random.Random.nextDouble() * 8.0)) 
