@@ -1,2 +1,2 @@
-PUT http://localhost:8080/api/v1/notifications/{{notificationId}}/read
-Authorization: Bearer {{token}}
+POST http://localhost:8080/api/notifications/2/read
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImV4cCI6MTc4MTQzNDU0OH0.KdF4W983IV97UPO2OxPmyfCTF5UbEs_u_xrWa4QCaKs

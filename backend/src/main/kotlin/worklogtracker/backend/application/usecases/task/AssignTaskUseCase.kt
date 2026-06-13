@@ -17,7 +17,8 @@ class AssignTaskUseCase(
     private val taskRepository: TaskRepositoryInterface,
     private val taskAssignmentRepository: TaskAssignmentRepositoryInterface,
     private val userRepository: UserRepositoryInterface,
-    private val createNotificationUseCase: CreateNotificationUseCase
+    private val createNotificationUseCase: CreateNotificationUseCase,
+    private val updateTaskStatusUseCase: UpdateTaskStatusUseCase
 ) {
     
     suspend operator fun invoke(
@@ -26,10 +27,9 @@ class AssignTaskUseCase(
         assignedUserId: UserId
     ): Boolean {
         return try {
-            val user = userRepository.findById(userId) ?: throw Exception("User not found")
-            // user.ensureIsAdmin() 
-            
-            val assignedUser = userRepository.findById(assignedUserId) 
+            userRepository.findById(userId) ?: throw Exception("User not found")
+
+            userRepository.findById(assignedUserId)
                 ?: throw Exception("Assigned user not found")
             
             val task = taskRepository.findById(taskId) 
@@ -50,6 +50,12 @@ class AssignTaskUseCase(
                 message = "Je bent toegewezen aan taak: ${task.title}",
                 type = NotificationType.TASK_ASSIGNED,
                 taskId = taskId
+            )
+
+            updateTaskStatusUseCase(
+                taskId = taskId,
+                userId = assignedUserId,
+                newStatus = TaskStatus.IN_PROGRESS,
             )
 
             true

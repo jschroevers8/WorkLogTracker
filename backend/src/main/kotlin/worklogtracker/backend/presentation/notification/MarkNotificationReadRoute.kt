@@ -10,7 +10,7 @@ import worklogtracker.backend.infrastructure.plugins.getUserId
 
 fun Route.markNotificationReadRoute(markNotificationAsReadUseCase: MarkNotificationAsReadUseCase) {
     authenticate {
-        put("/api/notifications/{id}/read") {
+        post("/api/notifications/{id}/read") {
             val notificationId = NotificationId(call.parameters["id"]?.toInt() ?: error("Notification ID required"))
 
             call.respond(

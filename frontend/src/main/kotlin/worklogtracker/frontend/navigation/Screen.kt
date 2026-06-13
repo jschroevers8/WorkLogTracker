@@ -25,7 +25,7 @@ sealed class Screen(val requiresAuth: Boolean = false) : NavKey {
 
     @Serializable
     @SerialName("worklogs")
-    object WorkLogs : Screen(requiresAuth = true)
+    data class WorkLogs(val taskId: String? = null) : Screen(requiresAuth = false)
 
     @Serializable
     @SerialName("notification")

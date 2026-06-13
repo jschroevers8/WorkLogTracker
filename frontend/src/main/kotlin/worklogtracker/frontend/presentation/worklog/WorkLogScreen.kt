@@ -29,11 +29,18 @@ import java.io.ByteArrayOutputStream
 @Composable
 fun WorkLogScreen(
     backStack: NavBackStack<NavKey>,
+    taskId: String? = null,
     viewModel: WorkLogViewModel = koinViewModel()
 ) {
     val uiState = viewModel.uiState
     val context = LocalContext.current
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(taskId) {
+        taskId?.toLongOrNull()?.let {
+            viewModel.onTaskAssignmentSelected(it.toInt())
+        }
+    }
 
     // Camera Launcher
     val cameraLauncher = rememberLauncherForActivityResult(

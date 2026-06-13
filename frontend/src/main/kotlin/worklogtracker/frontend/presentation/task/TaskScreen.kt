@@ -55,7 +55,7 @@ fun TaskScreen(
                 LazyColumn {
                     items(uiState.tasks) { task ->
                         TaskCard(task) {
-                            backStack.add(Screen.WorkLogs)
+                            backStack.add(Screen.WorkLogs(task.id))
                         }
                     }
                 }

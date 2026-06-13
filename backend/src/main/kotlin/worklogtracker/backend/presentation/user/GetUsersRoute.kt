@@ -1,4 +1,4 @@
-package worklogtracker.backend.presentation.routes.user
+package worklogtracker.backend.presentation.user
 
 import io.ktor.server.response.*
 import io.ktor.server.routing.*

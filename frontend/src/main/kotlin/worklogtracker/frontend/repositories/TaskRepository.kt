@@ -21,19 +21,9 @@ class TaskRepository(private val api: ApiClient) {
         return json.decodeFromString(response.bodyAsText())
     }
 
-    suspend fun createTask(request: CreateTaskRequest) {
-        val body = json.encodeToString(request)
-        api.post(baseUrl, body)
-    }
-
     suspend fun updateTaskStatus(id: String, request: UpdateTaskStatusRequest) {
         val body = json.encodeToString(request)
-        api.put("$baseUrl/$id/status", body)
-    }
-
-    suspend fun assignTask(id: String, request: AssignTaskRequest) {
-        val body = json.encodeToString(request)
-        api.post("$baseUrl/$id/assign", body)
+        api.post("$baseUrl/$id/status", body)
     }
 
     suspend fun uploadPhoto(request: UploadTaskPhotoRequest) {

@@ -23,7 +23,7 @@ fun BottomNavigationBar(
     val items = mutableListOf(
         Screen.Projects to Icons.Default.Folder,
         Screen.Tasks to Icons.Default.Assignment,
-        Screen.WorkLogs to Icons.Default.Timeline,
+        Screen.WorkLogs() to Icons.Default.Timeline,
         Screen.Notification to Icons.Default.Notifications,
         Screen.Account to Icons.Default.AccountCircle
     )

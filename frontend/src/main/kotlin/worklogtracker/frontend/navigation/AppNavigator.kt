@@ -51,10 +51,9 @@ fun AppNavigator() {
                     is Screen.Signup -> SignupScreen(backStack, screen.targetScreen)
                     is Screen.Projects -> ProjectScreen(backStack)
                     is Screen.Tasks -> TaskScreen(backStack)
-                    is Screen.WorkLogs -> WorkLogScreen(backStack)
+                    is Screen.WorkLogs -> WorkLogScreen(backStack, screen.taskId)
                     is Screen.Account -> AccountScreen(backStack)
                     is Screen.Notification -> NotificationScreen(backStack)
-                    else -> {}
                 }
             }
         }

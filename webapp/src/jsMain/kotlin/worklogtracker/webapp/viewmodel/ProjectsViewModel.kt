@@ -73,7 +73,7 @@ class ProjectsViewModel(
             try {
                 val task = api.tasks.createTask(CreateTaskRequest(pid, newTaskTitle, newTaskDesc, uid))
                 val request = AssignTaskRequest(uid)
-                api.tasks.assignTask(task.id, request)
+                api.tasks.assignTask(task.id!!, request)
                 refreshData()
                 selectedProjectIdForTask = null
                 newTaskTitle = ""

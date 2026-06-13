@@ -37,8 +37,6 @@ import worklogtracker.backend.presentation.notification.markNotificationReadRout
 import worklogtracker.backend.presentation.project.createProjectRoute
 import worklogtracker.backend.presentation.project.getProjectsRoute
 import worklogtracker.backend.presentation.project.updateProjectRoute
-import worklogtracker.backend.presentation.report.getProjectReportRoute
-import worklogtracker.backend.presentation.report.getUserReportRoute
 import worklogtracker.backend.presentation.task.assignTaskRoute
 import worklogtracker.backend.presentation.task.createTaskRoute
 import worklogtracker.backend.presentation.task.getTasksRoute
@@ -47,15 +45,13 @@ import worklogtracker.backend.presentation.task.uploadTaskPhotoRoute
 import worklogtracker.backend.presentation.task.recordTaskLocationRoute
 import worklogtracker.backend.presentation.worklog.logTimeRoute
 import worklogtracker.backend.presentation.worklog.getWorkLogsRoute
-import worklogtracker.backend.presentation.routes.user.getUsersRoute
+import worklogtracker.backend.presentation.user.getUsersRoute
 import io.ktor.server.application.*
 import io.ktor.server.routing.routing
 
 import worklogtracker.backend.application.usecases.ai.GenerateAiDescriptionUseCase
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.serialization.kotlinx.json.*
-import io.ktor.server.plugins.contentnegotiation.*
 
 fun Application.configureRouting() {
     val httpClient = HttpClient(CIO)
@@ -87,8 +83,8 @@ fun Application.configureRouting() {
     val listProjectsUseCase = ListProjectsUseCase(projectRepository, userRepository)
     val createNotificationUseCaseInstance = CreateNotificationUseCase(notificationRepository, notificationFactory)
     val createTaskUseCase = CreateTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, projectRepository, taskFactory, createNotificationUseCaseInstance)
-    val assignTaskUseCase = AssignTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, createNotificationUseCaseInstance)
     val updateTaskStatusUseCase = UpdateTaskStatusUseCase(taskRepository, createNotificationUseCaseInstance)
+    val assignTaskUseCase = AssignTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, createNotificationUseCaseInstance, updateTaskStatusUseCase)
     val listTasksUseCase = ListTasksUseCase(taskRepository, taskPhotoRepository, taskLocationRepository, taskAssignmentRepository)
     
     val generateAiDescriptionUseCase = GenerateAiDescriptionUseCase(httpClient)

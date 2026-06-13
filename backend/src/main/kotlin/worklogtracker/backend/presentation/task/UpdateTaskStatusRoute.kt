@@ -13,7 +13,7 @@ import worklogtracker.shared.dto.task.UpdateTaskStatusRequest
 
 fun Route.updateTaskStatusRoute(updateTaskStatusUseCase: UpdateTaskStatusUseCase) {
     authenticate {
-        put("/api/tasks/{id}/status") {
+        post("/api/tasks/{id}/status") {
             val userId = call.getUserId()
             val taskId = TaskId(call.parameters["id"]?.toInt() ?: error("Task ID required"))
             val request = call.receive<UpdateTaskStatusRequest>()
