@@ -7,10 +7,6 @@ class TaskViewModel(
     private val taskRepository: TaskRepository
 ) : BaseViewModel<TaskUiState>(TaskUiState()) {
 
-    init {
-        loadTasks()
-    }
-
     fun loadTasks() {
         launchWithErrorHandling {
             val tasks = taskRepository.getTasks()
