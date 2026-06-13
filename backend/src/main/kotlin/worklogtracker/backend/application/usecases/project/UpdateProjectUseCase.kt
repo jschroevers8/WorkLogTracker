@@ -38,8 +38,8 @@ class UpdateProjectUseCase(
             if (status != null) {
                 if (status == ProjectStatus.COMPLETED) {
                     val tasks = taskRepository.findByProject(projectId)
-                    if (tasks.any { it.status == TaskStatus.OPEN }) {
-                        throw Exception("Kan project niet afsluiten: er zijn nog open taken")
+                    if (tasks.any { it.status != TaskStatus.COMPLETED }) {
+                        throw Exception("Kan project niet afsluiten: er zijn nog onvoltooide taken")
                     }
                 }
                 project = project.updateStatus(status)

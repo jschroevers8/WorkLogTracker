@@ -253,6 +253,14 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                     onCloseProject = {
                         scope.launch {
                             try {
+                                val tasks = api.tasks.getTasks(projectId = project.id)
+                                val hasUnfinishedTasks = tasks.any { it.status != "COMPLETED" }
+                                
+                                if (hasUnfinishedTasks) {
+                                    error = "Kan project '${project.name}' niet afsluiten: er zijn nog onvoltooide taken."
+                                    return@launch
+                                }
+
                                 api.projects.updateProject(project.id!!, UpdateProjectRequest(status = "COMPLETED"))
                                 refreshData()
                             } catch (e: Exception) {
