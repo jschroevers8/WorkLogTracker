@@ -38,7 +38,7 @@ class RegisterUserUseCase(
             )
             
             val savedUser = userRepository.save(user)
-            val token = tokenGenerator.generate(user.id!!)
+            val token = tokenGenerator.generate(savedUser.id!!)
 
             savedUser.toResponse(token)
         } catch (e: Exception) {

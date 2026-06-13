@@ -46,7 +46,6 @@ class GenerateAiDescriptionUseCase(
                 null
             }
         } catch (e: Exception) {
-            println("Ollama AI Fout: ${e.message}")
             null
         }
     }

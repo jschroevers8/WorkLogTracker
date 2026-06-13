@@ -15,9 +15,6 @@ class UploadTaskPhotoUseCase(
         photoUrl: String
     ): Boolean {
 
-        println("hier123")
-        println(photoUrl)
-
         val photo = TaskPhotoEntity(
             taskId = taskId,
             photoUrl = photoUrl,

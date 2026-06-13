@@ -10,8 +10,7 @@ data class Password(val hash: String) {
         )
 
         fun create(plainPassword: String): Password {
-            println(plainPassword)
-            require(isValid(plainPassword)) { 
+            require(isValid(plainPassword)) {
                 "Password must be at least 8 characters with uppercase, lowercase, digit and special character" 
             }
             val hash = BCrypt.withDefaults().hashToString(12, plainPassword.toCharArray())

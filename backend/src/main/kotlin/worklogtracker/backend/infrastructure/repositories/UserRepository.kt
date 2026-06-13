@@ -40,7 +40,7 @@ class UserRepository : UserRepositoryInterface {
         transaction {
             val now = Instant.now().toEpochMilli()
 
-            UserTable.insert {
+            val id = UserTable.insert {
                 it[email] = user.email.value
                 it[passwordHash] = user.passwordHash.hash
                 it[firstName] = user.firstName
@@ -48,9 +48,10 @@ class UserRepository : UserRepositoryInterface {
                 it[role] = user.role.name
                 it[createdAt] = now
                 it[updatedAt] = now
-            }
+            } get UserTable.id
 
             user.copy(
+                id = UserId(id),
                 createdAt = Instant.ofEpochMilli(now)
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime(),
