@@ -4,6 +4,10 @@ import androidx.compose.runtime.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
 import org.jetbrains.compose.web.css.*
+import kotlinx.browser.localStorage
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.decodeFromString
 import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.NavLink
@@ -17,8 +21,27 @@ val apiClient = ApiClient()
 
 fun main() {
     renderComposable(rootElementId = "root") {
-        var currentScreen by remember { mutableStateOf(Screen.LOGIN) }
-        var currentUser by remember { mutableStateOf<AuthResponse?>(null) }
+        var currentUser by remember {
+            mutableStateOf(
+                localStorage.getItem("auth_response")?.let {
+                    try {
+                        Json.decodeFromString<AuthResponse>(it)
+                    } catch (e: Exception) {
+                        null
+                    }
+                }
+            )
+        }
+        var currentScreen by remember {
+            mutableStateOf(if (currentUser != null) Screen.DASHBOARD else Screen.LOGIN)
+        }
+
+        LaunchedEffect(currentUser) {
+            if (currentUser != null) {
+                apiClient.setToken(currentUser!!.token)
+            }
+        }
+
         var selectedUserId by remember { mutableStateOf<Int?>(null) }
         var selectedProjectId by remember { mutableStateOf<Int?>(null) }
         val scope = rememberCoroutineScope()
@@ -26,6 +49,7 @@ fun main() {
         if (currentScreen == Screen.LOGIN) {
             LoginScreen(apiClient, scope) { user ->
                 currentUser = user
+                localStorage.setItem("auth_response", Json.encodeToString(user))
                 apiClient.setToken(user.token)
                 currentScreen = Screen.DASHBOARD
             }
@@ -100,6 +124,7 @@ fun main() {
                             }
                             onClick {
                                 currentUser = null
+                                localStorage.removeItem("auth_response")
                                 apiClient.setToken(null)
                                 currentScreen = Screen.LOGIN
                             }
