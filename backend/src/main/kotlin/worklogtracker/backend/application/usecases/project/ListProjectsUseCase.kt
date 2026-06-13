@@ -22,6 +22,9 @@ class ListProjectsUseCase(
         
         // Admins can see everything based on filter
         // Others see only their projects (or nothing if we want to restrict project list)
+
+
+        //TODO ervoor zrogen dat je wel proejcten mag zien die aan je taak vast zitten
         if (user.role != UserRole.ADMIN) {
             return projectRepository.findByUser(userId).map { it.toResponse() }
         }
