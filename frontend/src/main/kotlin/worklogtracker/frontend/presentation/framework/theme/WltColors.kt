@@ -3,7 +3,7 @@ package worklogtracker.frontend.presentation.framework.theme
 import androidx.compose.ui.graphics.Color
 
 object WltColors {
-    val Background = Color(0xFFF5F7FA) // Light grey background for a clean look
+    val Background = Color(0xFFE0F2FE) // Lichtblauw
     val Surface = Color.White
     val Primary = Color(0xFF2563EB) // Professional blue (Indigo-ish)
     val Secondary = Color(0xFF64748B) // Slate grey for secondary info

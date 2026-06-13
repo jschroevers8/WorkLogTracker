@@ -32,8 +32,16 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                 width(320.px)
                 display(DisplayStyle.Flex)
                 flexDirection(FlexDirection.Column)
+                alignItems(AlignItems.Center)
             }
         }) {
+            Img(src = "https://img.icons8.com/fluency/96/work.png") {
+                style {
+                    width(64.px)
+                    height(64.px)
+                    marginBottom(16.px)
+                }
+            }
             H2({
                 style {
                     textAlign("center")
@@ -52,11 +60,13 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                         backgroundColor(Color("#FEE2E2"))
                         padding(10.px)
                         borderRadius(6.px)
+                        width(100.percent)
+                        boxSizing("border-box")
                     }
                 }) { Text(viewModel.error) }
             }
 
-            Div({ style { marginBottom(16.px) } }) {
+            Div({ style { marginBottom(16.px); width(100.percent) } }) {
                 Label(forId = "email", attrs = {
                     style {
                         display(DisplayStyle.Block)

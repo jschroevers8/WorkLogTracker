@@ -32,7 +32,11 @@ class WorkLogViewModel(
     }
 
     fun onHoursChanged(hours: String) {
-        _uiState = uiState.copy(hours = hours)
+        val filtered = hours.replace(",", ".").filter { it.isDigit() || it == '.' }
+        val dotCount = filtered.count { it == '.' }
+        if (dotCount <= 1) {
+            _uiState = uiState.copy(hours = filtered)
+        }
     }
 
     fun onDescriptionChanged(description: String) {

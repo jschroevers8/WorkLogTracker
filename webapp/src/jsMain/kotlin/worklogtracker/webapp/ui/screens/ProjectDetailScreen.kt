@@ -88,24 +88,42 @@ fun TaskDetailCard(task: TaskResponse) {
             }
         }) {
             H4({ style { margin(0.px); color(Styles.TextPrimary) } }) { Text(task.title) }
-            Span({
+            Div({
                 style {
-                    padding(4.px, 12.px)
-                    borderRadius(20.px)
-                    fontSize(0.8.em)
-                    fontWeight("600")
-                    backgroundColor(when(task.status) {
-                        "COMPLETED" -> Color("#DEF7EC")
-                        "IN_PROGRESS" -> Color("#E1EFFE")
-                        else -> Color("#F3F4F6")
-                    })
-                    color(when(task.status) {
-                        "COMPLETED" -> Color("#03543F")
-                        "IN_PROGRESS" -> Color("#1E429F")
-                        else -> Color("#374151")
-                    })
+                    display(DisplayStyle.Flex)
+                    alignItems(AlignItems.Center)
+                    gap(12.px)
                 }
-            }) { Text(task.status) }
+            }) {
+                Span({
+                    style {
+                        fontSize(0.9.em)
+                        fontWeight("600")
+                        color(Styles.Primary)
+                        backgroundColor(Color("#EFF6FF"))
+                        padding(4.px, 10.px)
+                        borderRadius(6.px)
+                    }
+                }) { Text("${task.totalHours} uur") }
+                Span({
+                    style {
+                        padding(4.px, 12.px)
+                        borderRadius(20.px)
+                        fontSize(0.8.em)
+                        fontWeight("600")
+                        backgroundColor(when(task.status) {
+                            "COMPLETED" -> Color("#DEF7EC")
+                            "IN_PROGRESS" -> Color("#E1EFFE")
+                            else -> Color("#F3F4F6")
+                        })
+                        color(when(task.status) {
+                            "COMPLETED" -> Color("#03543F")
+                            "IN_PROGRESS" -> Color("#1E429F")
+                            else -> Color("#374151")
+                        })
+                    }
+                }) { Text(task.status) }
+            }
         }
 
         P({ style { color(Styles.TextSecondary); fontSize(0.95.em); marginBottom(16.px) } }) {

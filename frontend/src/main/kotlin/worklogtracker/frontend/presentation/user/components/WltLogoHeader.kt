@@ -7,23 +7,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Work
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import worklogtracker.frontend.presentation.framework.theme.WltColors
+
 @Composable
 fun WltLogoHeader(spacingBottom: Int = 40) {
-    Spacer(Modifier.height(30.dp))
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Spacer(Modifier.height(30.dp))
+        
+        Icon(
+            imageVector = Icons.Default.Work,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = WltColors.Primary
+        )
+        
+        Spacer(Modifier.height(8.dp))
+        
+        Text(
+            text = "WorkLogTracker",
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold,
+            color = WltColors.Primary
+        )
 
-//    Image(
-//        painter = painterResource(R.drawable.logo),
-//        contentDescription = null,
-//        modifier = Modifier.height(120.dp)
-//    )
-//
-//    Spacer(Modifier.height(8.dp))
-//
-//    Image(
-//        painter = painterResource(R.drawable.text),
-//        contentDescription = null,
-//        modifier = Modifier.height(40.dp)
-//    )
-
-    Spacer(Modifier.height(spacingBottom.dp))
+        Spacer(Modifier.height(spacingBottom.dp))
+    }
 }

@@ -13,7 +13,8 @@ class ListTasksUseCase(
     private val taskRepository: TaskRepositoryInterface,
     private val taskPhotoRepository: TaskPhotoRepositoryInterface,
     private val taskLocationRepository: TaskLocationRepositoryInterface,
-    private val taskAssignmentRepository: worklogtracker.backend.domain.repositories.TaskAssignmentRepositoryInterface
+    private val taskAssignmentRepository: worklogtracker.backend.domain.repositories.TaskAssignmentRepositoryInterface,
+    private val timeEntryRepository: worklogtracker.backend.domain.repositories.TimeEntryRepositoryInterface
 ) {
     
     suspend operator fun invoke(
@@ -34,7 +35,9 @@ class ListTasksUseCase(
             val photos = taskPhotoRepository.findByTask(taskId)
             val locations = taskLocationRepository.findByTask(taskId)
             val assignment = assignments.find { it.taskId == taskId }
-            task.toResponse(photos, locations, assignment?.id?.value)
+            val timeEntries = assignment?.let { timeEntryRepository.findByAssignment(it.id!!) } ?: emptyList()
+            val totalHours = timeEntries.sumOf { it.hours.toDouble() }
+            task.toResponse(photos, locations, assignment?.id?.value, totalHours)
         }
     }
 }

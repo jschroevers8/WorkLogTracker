@@ -3,7 +3,7 @@ package worklogtracker.webapp.ui
 import org.jetbrains.compose.web.css.Color
 
 object Styles {
-    val Background = Color("#F5F7FA")
+    val Background = Color("#E0F2FE") // Lichtblauw
     val Surface = Color("#FFFFFF")
     val Primary = Color("#2563EB")
     val Secondary = Color("#64748B")

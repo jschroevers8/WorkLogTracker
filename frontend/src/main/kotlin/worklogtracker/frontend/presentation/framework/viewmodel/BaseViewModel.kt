@@ -57,7 +57,13 @@ abstract class BaseViewModel<S : BaseUiState>(
                 setLoading(true)
                 block()
             } catch (e: Exception) {
-                setError("Something went wrong")
+                val message = when {
+                    e.message?.contains("401") == true -> "Ongeldig e-mailadres of wachtwoord."
+                    e.message?.contains("403") == true -> "Geen toegang."
+                    e.message?.contains("Unable to resolve host") == true -> "Geen internetverbinding."
+                    else -> e.message ?: "Er is iets misgegaan"
+                }
+                setError(message)
             } finally {
                 setLoading(false)
             }

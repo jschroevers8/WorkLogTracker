@@ -7,13 +7,3 @@ Content-Type: application/json
   "firstName": "John",
   "lastName": "Doe"
 }
-
-
-//error beter afvangen in login
-// uren invoerveld verbeteren
-// uren nog laten zien bij taak details
-// uren fixen
-// achtergrond beetje lichtblauw met logo?
-// misschien nog mooie grafiekjes in de dashboard
-// admin mag geen taken hebben
-// zoek functie op naam van project

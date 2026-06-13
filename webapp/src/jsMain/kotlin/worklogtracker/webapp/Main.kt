@@ -82,9 +82,17 @@ fun main() {
                             cursor("pointer")
                             fontSize(1.25.em)
                             color(Styles.Primary)
+                            display(DisplayStyle.Flex)
+                            alignItems(AlignItems.Center)
+                            gap(8.px)
                         }
                         onClick { currentScreen = Screen.DASHBOARD }
-                    }) { Text("WLT Admin") }
+                    }) { 
+                        Img(src = "https://img.icons8.com/fluency/48/work.png") {
+                            style { width(24.px); height(24.px) }
+                        }
+                        Text("WLT Admin") 
+                    }
 
                     NavLink("Dashboard", currentScreen == Screen.DASHBOARD) { currentScreen = Screen.DASHBOARD }
                     NavLink("Medewerkers", currentScreen == Screen.EMPLOYEES || currentScreen == Screen.EMPLOYEE_DETAIL) { currentScreen = Screen.EMPLOYEES }

@@ -85,7 +85,7 @@ fun Application.configureRouting() {
     val createTaskUseCase = CreateTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, projectRepository, taskFactory, createNotificationUseCaseInstance)
     val updateTaskStatusUseCase = UpdateTaskStatusUseCase(taskRepository, createNotificationUseCaseInstance)
     val assignTaskUseCase = AssignTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, createNotificationUseCaseInstance, updateTaskStatusUseCase)
-    val listTasksUseCase = ListTasksUseCase(taskRepository, taskPhotoRepository, taskLocationRepository, taskAssignmentRepository)
+    val listTasksUseCase = ListTasksUseCase(taskRepository, taskPhotoRepository, taskLocationRepository, taskAssignmentRepository, timeEntryRepository)
     
     val generateAiDescriptionUseCase = GenerateAiDescriptionUseCase(httpClient)
     val logTimeUseCase = LogTimeUseCase(timeEntryRepository, taskAssignmentRepository, taskRepository, generateAiDescriptionUseCase)

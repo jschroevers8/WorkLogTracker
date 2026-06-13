@@ -10,7 +10,8 @@ import java.time.format.DateTimeFormatter
 fun TaskEntity.toResponse(
     photos: List<TaskPhotoEntity> = emptyList(),
     locations: List<TaskLocationEntity> = emptyList(),
-    assignmentId: Int? = null
+    assignmentId: Int? = null,
+    totalHours: Double = 0.0
 ) =
     TaskResponse(
         id = id?.value,
@@ -29,5 +30,6 @@ fun TaskEntity.toResponse(
                 longitude = it.longitude,
                 recordedAt = it.recordedAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
             )
-        }
+        },
+        totalHours = totalHours
     )

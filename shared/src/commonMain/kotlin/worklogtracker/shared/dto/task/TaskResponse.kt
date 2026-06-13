@@ -14,7 +14,8 @@ data class TaskResponse(
     val updatedAt: String,
     val assignmentId: Int? = null,
     val photoUrls: List<String> = emptyList(),
-    val locations: List<TaskLocationDto> = emptyList()
+    val locations: List<TaskLocationDto> = emptyList(),
+    val totalHours: Double = 0.0
 )
 
 @Serializable
