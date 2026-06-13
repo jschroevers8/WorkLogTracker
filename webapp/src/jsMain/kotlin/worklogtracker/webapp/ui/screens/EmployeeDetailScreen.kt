@@ -8,20 +8,14 @@ import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import kotlinx.coroutines.launch
 
+import worklogtracker.webapp.viewmodel.EmployeeDetailViewModel
+
 @Composable
 fun EmployeeDetailScreen(userId: Int, api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onBack: () -> Unit) {
-    var worklogs by remember { mutableStateOf<List<WorkLogResponse>>(emptyList()) }
-    var loading by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf("") }
+    val viewModel = remember { EmployeeDetailViewModel(api) }
 
     LaunchedEffect(userId) {
-        try {
-            worklogs = api.worklogs.getUserWorkLogs(userId)
-        } catch (e: Exception) {
-            error = "Fout bij ophalen uren: ${e.message}"
-        } finally {
-            loading = false
-        }
+        viewModel.loadWorkLogs(userId)
     }
 
     Div({
@@ -52,11 +46,11 @@ fun EmployeeDetailScreen(userId: Int, api: ApiClient, scope: kotlinx.coroutines.
         }) { Text("Urenoverzicht Medewerker #$userId") }
     }
 
-    if (loading) {
+    if (viewModel.loading) {
         P { Text("Laden...") }
-    } else if (error.isNotEmpty()) {
-        P({ style { color(Styles.Error) } }) { Text(error) }
-    } else if (worklogs.isEmpty()) {
+    } else if (viewModel.error.isNotEmpty()) {
+        P({ style { color(Styles.Error) } }) { Text(viewModel.error) }
+    } else if (viewModel.worklogs.isEmpty()) {
         Div({
             style {
                 padding(40.px)
@@ -96,7 +90,7 @@ fun EmployeeDetailScreen(userId: Int, api: ApiClient, scope: kotlinx.coroutines.
                     }
                 }
                 Tbody {
-                    worklogs.forEach { log ->
+                    viewModel.worklogs.forEach { log ->
                         Tr({
                             style {
                                 property("border-bottom", "1px solid ${Styles.Border}")

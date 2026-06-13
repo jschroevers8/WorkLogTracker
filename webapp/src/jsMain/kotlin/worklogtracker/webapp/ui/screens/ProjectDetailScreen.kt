@@ -10,6 +10,8 @@ import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import kotlinx.coroutines.launch
 
+import worklogtracker.webapp.viewmodel.ProjectDetailViewModel
+
 @Composable
 fun ProjectDetailScreen(
     projectId: Int,
@@ -17,27 +19,10 @@ fun ProjectDetailScreen(
     scope: kotlinx.coroutines.CoroutineScope,
     onBack: () -> Unit
 ) {
-    var project by remember { mutableStateOf<ProjectResponse?>(null) }
-    var tasks by remember { mutableStateOf<List<TaskResponse>>(emptyList()) }
-    var loading by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf("") }
+    val viewModel = remember { ProjectDetailViewModel(api) }
 
     LaunchedEffect(projectId) {
-        try {
-            loading = true
-            val projects = api.projects.getProjects()
-            project = projects.find { it.id == projectId }
-            
-            if (project != null) {
-                tasks = api.tasks.getTasks(projectId = projectId)
-            } else {
-                error = "Project niet gevonden"
-            }
-        } catch (e: Exception) {
-            error = "Fout bij laden project details: ${e.message}"
-        } finally {
-            loading = false
-        }
+        viewModel.loadProjectDetails(projectId)
     }
 
     Div({
@@ -59,11 +44,11 @@ fun ProjectDetailScreen(
             }
         }) { Text("← Terug naar Projecten") }
 
-        if (loading) {
+        if (viewModel.loading) {
             P { Text("Project details laden...") }
-        } else if (error.isNotEmpty()) {
-            P({ style { color(Styles.Error) } }) { Text(error) }
-        } else project?.let { p ->
+        } else if (viewModel.error.isNotEmpty()) {
+            P({ style { color(Styles.Error) } }) { Text(viewModel.error) }
+        } else viewModel.project?.let { p ->
             H2 { Text("Project: ${p.name}") }
             P({ style { color(Styles.TextSecondary); marginBottom(24.px) } }) { 
                 Text(p.description ?: "Geen beschrijving beschikbaar.") 
@@ -71,10 +56,10 @@ fun ProjectDetailScreen(
 
             H3 { Text("Taken") }
             
-            if (tasks.isEmpty()) {
+            if (viewModel.tasks.isEmpty()) {
                 P { Text("Geen taken gevonden voor dit project.") }
             } else {
-                tasks.forEach { task ->
+                viewModel.tasks.forEach { task ->
                     TaskDetailCard(task)
                 }
             }

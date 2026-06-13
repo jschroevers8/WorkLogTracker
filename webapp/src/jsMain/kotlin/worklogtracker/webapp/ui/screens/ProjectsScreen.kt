@@ -20,36 +20,10 @@ import org.jetbrains.compose.web.attributes.selected
 
 @Composable
 fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onSeeProjectDetails: (Int) -> Unit) {
-    var activeProjects by remember { mutableStateOf<List<ProjectResponse>>(emptyList()) }
-    var completedProjects by remember { mutableStateOf<List<ProjectResponse>>(emptyList()) }
-    var selectedTab by remember { mutableStateOf("ACTIVE") }
-    var users by remember { mutableStateOf<List<UserResponse>>(emptyList()) }
-    var loading by remember { mutableStateOf(true) }
-    var error by remember { mutableStateOf("") }
-    
-    var showCreateProject by remember { mutableStateOf(false) }
-    var newProjectName by remember { mutableStateOf("") }
-    var newProjectDesc by remember { mutableStateOf("") }
-
-    var selectedProjectIdForTask by remember { mutableStateOf<Int?>(null) }
-    var newTaskTitle by remember { mutableStateOf("") }
-    var newTaskDesc by remember { mutableStateOf("") }
-    var selectedUserIdForTask by remember { mutableStateOf<Int?>(null) }
-
-    suspend fun refreshData() {
-        activeProjects = api.projects.getProjects(excludeStatus = "COMPLETED")
-        completedProjects = api.projects.getProjects(status = "COMPLETED")
-        users = api.users.getUsers()
-    }
+    val viewModel = remember { ProjectsViewModel(api, scope) }
 
     LaunchedEffect(Unit) {
-        try {
-            refreshData()
-        } catch (e: Exception) {
-            error = "Fout bij ophalen data: ${e.message}"
-        } finally {
-            loading = false
-        }
+        viewModel.refreshData()
     }
 
     Div({
@@ -68,7 +42,7 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
         }) { Text("Projecten & Beheer") }
 
         Button({
-            onClick { showCreateProject = !showCreateProject }
+            onClick { viewModel.toggleCreateProject() }
             style {
                 padding(10.px, 20.px)
                 backgroundColor(Styles.Primary)
@@ -78,10 +52,10 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                 cursor("pointer")
                 fontWeight("600")
             }
-        }) { Text(if (showCreateProject) "Annuleren" else "+ Nieuw Project") }
+        }) { Text(if (viewModel.showCreateProject) "Annuleren" else "+ Nieuw Project") }
     }
 
-    if (showCreateProject) {
+    if (viewModel.showCreateProject) {
         Div({
             style {
                 backgroundColor(Styles.Surface)
@@ -94,36 +68,26 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
             H3 { Text("Nieuw Project Aanmaken") }
             Input(InputType.Text) {
                 placeholder("Projectnaam")
-                value(newProjectName)
-                onInput { newProjectName = it.value }
+                value(viewModel.newProjectName)
+                onInput { viewModel.newProjectName = it.value }
                 style { width(100.percent); padding(8.px); marginBottom(8.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
             }
             TextArea {
                 placeholder("Beschrijving")
-                value(newProjectDesc)
-                onInput { newProjectDesc = it.value }
+                value(viewModel.newProjectDesc)
+                onInput { viewModel.newProjectDesc = it.value }
                 style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
             }
             Button({
                 onClick {
-                    scope.launch {
-                        try {
-                            api.projects.createProject(CreateProjectRequest(newProjectName, newProjectDesc))
-                            refreshData()
-                            showCreateProject = false
-                            newProjectName = ""
-                            newProjectDesc = ""
-                        } catch (e: Exception) {
-                            error = "Fout bij aanmaken project: ${e.message}"
-                        }
-                    }
+                    viewModel.createProject()
                 }
                 style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
             }) { Text("Project Opslaan") }
         }
     }
 
-    if (selectedProjectIdForTask != null) {
+    if (viewModel.selectedProjectIdForTask != null) {
         Div({
             style {
                 backgroundColor(Styles.Surface)
@@ -133,34 +97,34 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                 border(1.px, LineStyle.Solid, Styles.Border)
             }
         }) {
-            H3 { Text("Nieuwe Taak voor Project ID: $selectedProjectIdForTask") }
+            H3 { Text("Nieuwe Taak voor Project ID: ${viewModel.selectedProjectIdForTask}") }
             Input(InputType.Text) {
                 placeholder("Taak Titel")
-                value(newTaskTitle)
-                onInput { newTaskTitle = it.value }
+                value(viewModel.newTaskTitle)
+                onInput { viewModel.newTaskTitle = it.value }
                 style { width(100.percent); padding(8.px); marginBottom(8.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
             }
             TextArea {
                 placeholder("Beschrijving")
-                value(newTaskDesc)
-                onInput { newTaskDesc = it.value }
+                value(viewModel.newTaskDesc)
+                onInput { viewModel.newTaskDesc = it.value }
                 style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
             }
 
             H4 { Text("Toewijzen aan medewerker") }
             Select({
-                onInput { selectedUserIdForTask = it.value?.toIntOrNull() }
+                onInput { viewModel.selectedUserIdForTask = it.value?.toIntOrNull() }
                 style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
             }) {
                 Option("", {
-                    if (selectedUserIdForTask == null) selected()
+                    if (viewModel.selectedUserIdForTask == null) selected()
                 }) {
                     Text("Selecteer een medewerker")
                 }
 
-                users.forEach { user ->
+                viewModel.users.forEach { user ->
                     Option(user.id.toString(), {
-                        if (selectedUserIdForTask?.toLong() == user.id) selected()
+                        if (viewModel.selectedUserIdForTask?.toLong() == user.id) selected()
                     }) {
                         Text("${user.firstName} ${user.lastName}")
                     }
@@ -169,30 +133,12 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
 
             Button({
                 onClick {
-                    scope.launch {
-                        try {
-                            val pid = selectedProjectIdForTask!!
-                            api.tasks.createTask(CreateTaskRequest(
-                                projectId = pid,
-                                title = newTaskTitle,
-                                description = newTaskDesc,
-                                assignedUserId = selectedUserIdForTask ?: 0
-                            ))
-                            
-                            refreshData()
-                            selectedProjectIdForTask = null
-                            newTaskTitle = ""
-                            newTaskDesc = ""
-                            selectedUserIdForTask = null
-                        } catch (e: Exception) {
-                            error = "Fout bij aanmaken/toewijzen taak: ${e.message}"
-                        }
-                    }
+                    viewModel.createTask()
                 }
                 style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
             }) { Text("Taak Opslaan & Toewijzen") }
             Button({
-                onClick { selectedProjectIdForTask = null }
+                onClick { viewModel.selectedProjectIdForTask = null }
                 style { marginLeft(8.px); padding(8.px, 16.px); backgroundColor(Styles.Secondary); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
             }) { Text("Annuleren") }
         }
@@ -207,11 +153,11 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
         }
     }) {
         Div({
-            onClick { selectedTab = "ACTIVE" }
+            onClick { viewModel.selectedTab = "ACTIVE" }
             style {
                 padding(12.px, 24.px)
                 cursor("pointer")
-                if (selectedTab == "ACTIVE") {
+                if (viewModel.selectedTab == "ACTIVE") {
                     property("border-bottom", "3px solid ${Styles.Primary}")
                     fontWeight("bold")
                 }
@@ -219,11 +165,11 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
         }) { Text("Actieve Projecten") }
 
         Div({
-            onClick { selectedTab = "COMPLETED" }
+            onClick { viewModel.selectedTab = "COMPLETED" }
             style {
                 padding(12.px, 24.px)
                 cursor("pointer")
-                if (selectedTab == "COMPLETED") {
+                if (viewModel.selectedTab == "COMPLETED") {
                     property("border-bottom", "3px solid ${Styles.Primary}")
                     fontWeight("bold")
                 }
@@ -231,12 +177,12 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
         }) { Text("Voltooide Projecten") }
     }
 
-    if (loading) {
+    if (viewModel.loading) {
         P { Text("Laden...") }
-    } else if (error.isNotEmpty()) {
-        P({ style { color(Styles.Error) } }) { Text(error) }
+    } else if (viewModel.error.isNotEmpty()) {
+        P({ style { color(Styles.Error) } }) { Text(viewModel.error) }
     } else {
-        val currentProjects = if (selectedTab == "ACTIVE") activeProjects else completedProjects
+        val currentProjects = if (viewModel.selectedTab == "ACTIVE") viewModel.activeProjects else viewModel.completedProjects
 
         Div({
             style {
@@ -248,7 +194,7 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
             currentProjects.forEach { project ->
                 ProjectCard(
                     project = project,
-                    onAddTask = { selectedProjectIdForTask = project.id },
+                    onAddTask = { viewModel.selectedProjectIdForTask = project.id },
                     onSeeDetails = { onSeeProjectDetails(project.id!!) },
                     onCloseProject = {
                         scope.launch {
@@ -257,14 +203,14 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                                 val hasUnfinishedTasks = tasks.any { it.status != "COMPLETED" }
                                 
                                 if (hasUnfinishedTasks) {
-                                    error = "Kan project '${project.name}' niet afsluiten: er zijn nog onvoltooide taken."
+                                    viewModel.error = "Kan project '${project.name}' niet afsluiten: er zijn nog onvoltooide taken."
                                     return@launch
                                 }
 
                                 api.projects.updateProject(project.id!!, UpdateProjectRequest(status = "COMPLETED"))
-                                refreshData()
+                                viewModel.refreshData()
                             } catch (e: Exception) {
-                                error = "Fout bij afsluiten project: ${e.message}"
+                                viewModel.error = "Fout bij afsluiten project: ${e.message}"
                             }
                         }
                     }
