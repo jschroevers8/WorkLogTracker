@@ -7,7 +7,7 @@ import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.webapp.ui.Styles
 
 @Composable
-fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit) {
+fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: () -> Unit) {
     Div({
         style {
             backgroundColor(Styles.Surface)
@@ -69,6 +69,7 @@ fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit) {
             }
             
             Button({
+                onClick { onSeeDetails() }
                 style {
                     padding(6.px, 12.px)
                     backgroundColor(Color.white)

@@ -11,5 +11,14 @@ data class TaskResponse(
     val status: String,
     val createdBy: Int,
     val createdAt: String,
-    val updatedAt: String
+    val updatedAt: String,
+    val photoUrls: List<String> = emptyList(),
+    val locations: List<TaskLocationDto> = emptyList()
+)
+
+@Serializable
+data class TaskLocationDto(
+    val latitude: Double,
+    val longitude: Double,
+    val recordedAt: String
 )

@@ -10,7 +10,7 @@ import worklogtracker.webapp.ui.components.NavLink
 import worklogtracker.webapp.ui.screens.*
 
 enum class Screen {
-    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, WORK_LOGS
+    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, PROJECT_DETAIL, WORK_LOGS
 }
 
 val apiClient = ApiClient()
@@ -20,6 +20,7 @@ fun main() {
         var currentScreen by remember { mutableStateOf(Screen.LOGIN) }
         var currentUser by remember { mutableStateOf<AuthResponse?>(null) }
         var selectedUserId by remember { mutableStateOf<Int?>(null) }
+        var selectedProjectId by remember { mutableStateOf<Int?>(null) }
         val scope = rememberCoroutineScope()
 
         if (currentScreen == Screen.LOGIN) {
@@ -63,7 +64,7 @@ fun main() {
 
                     NavLink("Dashboard", currentScreen == Screen.DASHBOARD) { currentScreen = Screen.DASHBOARD }
                     NavLink("Medewerkers", currentScreen == Screen.EMPLOYEES || currentScreen == Screen.EMPLOYEE_DETAIL) { currentScreen = Screen.EMPLOYEES }
-                    NavLink("Projecten", currentScreen == Screen.PROJECTS) { currentScreen = Screen.PROJECTS }
+                    NavLink("Projecten", currentScreen == Screen.PROJECTS || currentScreen == Screen.PROJECT_DETAIL) { currentScreen = Screen.PROJECTS }
 
                     Div({
                         style {
@@ -128,9 +129,15 @@ fun main() {
                                 selectedUserId = id
                                 currentScreen = Screen.EMPLOYEE_DETAIL
                             }
-                            Screen.PROJECTS -> ProjectsScreen(apiClient, scope)
+                            Screen.PROJECTS -> ProjectsScreen(apiClient, scope) { id ->
+                                selectedProjectId = id
+                                currentScreen = Screen.PROJECT_DETAIL
+                            }
                             Screen.EMPLOYEE_DETAIL -> EmployeeDetailScreen(selectedUserId!!, apiClient, scope) {
                                 currentScreen = Screen.EMPLOYEES
+                            }
+                            Screen.PROJECT_DETAIL -> ProjectDetailScreen(selectedProjectId!!, apiClient, scope) {
+                                currentScreen = Screen.PROJECTS
                             }
                             Screen.WORK_LOGS -> WorkLogRegistrationScreen(apiClient, scope)
                             else -> {}

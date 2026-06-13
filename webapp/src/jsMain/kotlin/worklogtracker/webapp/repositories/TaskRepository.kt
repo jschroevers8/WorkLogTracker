@@ -10,9 +10,12 @@ import worklogtracker.shared.dto.task.CreateTaskRequest
 import worklogtracker.shared.dto.task.AssignTaskRequest
 
 class TaskRepository(private val client: HttpClient, private val baseUrl: String, private val getToken: () -> String?) {
-    suspend fun getTasks(): List<TaskResponse> {
+    suspend fun getTasks(projectId: Int? = null): List<TaskResponse> {
         return client.get("$baseUrl/tasks") {
             header(HttpHeaders.Authorization, "Bearer ${getToken()}")
+            if (projectId != null) {
+                parameter("projectId", projectId)
+            }
         }.body()
     }
 

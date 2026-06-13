@@ -2,17 +2,23 @@ package worklogtracker.backend.application.usecases.worklog
 
 import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.backend.domain.repositories.TimeEntryRepositoryInterface
+import worklogtracker.backend.domain.valueobjects.task.TaskAssignmentId
 import worklogtracker.backend.domain.valueobjects.user.UserId
-import java.time.LocalDateTime
 
 class GetUserWorkLogsUseCase(
     private val timeEntryRepository: TimeEntryRepositoryInterface
 ) {
     
     suspend operator fun invoke(
-        userId: UserId
+        userId: UserId,
+        taskAssignmentId: TaskAssignmentId? = null
     ): List<WorkLogResponse> {
-        return timeEntryRepository.findByUser(userId).map { 
+        val entries = if (taskAssignmentId != null) {
+            timeEntryRepository.findByAssignment(taskAssignmentId)
+        } else {
+            timeEntryRepository.findByUser(userId)
+        }
+        return entries.map { 
             WorkLogResponse(
                 id = it.id?.value,
                 taskAssignmentId = it.taskAssignmentId.value,

@@ -17,7 +17,7 @@ import org.jetbrains.compose.web.attributes.placeholder
 import org.jetbrains.compose.web.attributes.selected
 
 @Composable
-fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
+fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onSeeProjectDetails: (Int) -> Unit) {
     var activeProjects by remember { mutableStateOf<List<ProjectResponse>>(emptyList()) }
     var completedProjects by remember { mutableStateOf<List<ProjectResponse>>(emptyList()) }
     var selectedTab by remember { mutableStateOf("ACTIVE") }
@@ -244,7 +244,11 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope) {
             }
         }) {
             currentProjects.forEach { project ->
-                ProjectCard(project, onAddTask = { selectedProjectIdForTask = project.id })
+                ProjectCard(
+                    project = project,
+                    onAddTask = { selectedProjectIdForTask = project.id },
+                    onSeeDetails = { onSeeProjectDetails(project.id!!) }
+                )
             }
         }
     }
