@@ -7,10 +7,7 @@ import worklogtracker.webapp.viewmodel.*
 
 val appModule = module {
     singleOf(::ApiClient)
-    
-    // Repositories are currently inside ApiClient, we might want to expose them directly if needed
-    // or keep using ApiClient for now to minimize changes in repositories.
-    
+
     factory { DashboardViewModel(get()) }
     factory { EmployeesViewModel(get()) }
     factory { (id: Long) -> EmployeeDetailViewModel(id, get()) }
