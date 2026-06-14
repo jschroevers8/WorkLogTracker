@@ -90,7 +90,11 @@ dependencies {
 
     // Testing
     testImplementation("junit:junit:4.13.2")
+    testImplementation("io.mockk:mockk:1.14.6")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
     testImplementation("io.ktor:ktor-client-mock:3.3.2")
+    androidTestImplementation("io.mockk:mockk-android:1.14.6")
+    androidTestImplementation("io.mockk:mockk-agent:1.14.6")
     androidTestImplementation("io.ktor:ktor-client-mock:3.3.2")
     androidTestImplementation("androidx.test.ext:junit:1.3.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.7.0")

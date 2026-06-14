@@ -39,9 +39,8 @@ abstract class BaseViewModel<S : BaseUiState>(
 
             property.annotations.filterIsInstance<Email>().forEach { email ->
                 if (value is String &&
-                    !android.util.Patterns.EMAIL_ADDRESS
-                        .matcher(value)
-                        .matches()
+                    !Regex("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Z|a-z]{2,}$")
+                        .matches(value)
                 ) {
                     setError(email.message)
                     return false

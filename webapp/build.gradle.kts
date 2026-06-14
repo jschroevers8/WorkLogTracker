@@ -40,5 +40,11 @@ kotlin {
                 implementation("io.insert-koin:koin-compose:4.1.1")
             }
         }
+        val jsTest by getting {
+            dependencies {
+                implementation(kotlin("test-js"))
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+            }
+        }
     }
 }
