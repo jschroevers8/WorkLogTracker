@@ -14,8 +14,8 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.time.Instant
-import java.time.ZoneId
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
 import org.jetbrains.exposed.sql.JoinType
@@ -33,7 +33,7 @@ class TaskRepository : TaskRepositoryInterface {
 
     override suspend fun save(task: TaskEntity): TaskEntity =
         transaction {
-            val now = Instant.now().toEpochMilli()
+            val now = LocalDateTime.now().toKotlinLocalDateTime()
 
             val id = TaskTable.insert {
                 it[projectId] = task.projectId.value
@@ -50,7 +50,7 @@ class TaskRepository : TaskRepositoryInterface {
 
     override suspend fun update(task: TaskEntity): Boolean =
         transaction {
-            val now = Instant.now().toEpochMilli()
+            val now = LocalDateTime.now().toKotlinLocalDateTime()
 
             TaskTable.update({ TaskTable.id eq task.id!!.value }) {
                 it[title] = task.title

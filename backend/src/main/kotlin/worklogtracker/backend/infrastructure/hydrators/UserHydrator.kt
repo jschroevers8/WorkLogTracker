@@ -7,8 +7,7 @@ import worklogtracker.backend.domain.valueobjects.user.Password
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.tables.UserTable
 import org.jetbrains.exposed.sql.ResultRow
-import java.time.Instant
-import java.time.ZoneId
+import kotlinx.datetime.toJavaLocalDateTime
 
 fun ResultRow.hydrateUser() =
     UserEntity(
@@ -20,10 +19,6 @@ fun ResultRow.hydrateUser() =
         firstName = this[UserTable.firstName],
         lastName = this[UserTable.lastName],
         role = UserRole.valueOf(this[UserTable.role]),
-        createdAt = Instant.ofEpochMilli(this[UserTable.createdAt])
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime(),
-        updatedAt = Instant.ofEpochMilli(this[UserTable.updatedAt])
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime()
+        createdAt = this[UserTable.createdAt].toJavaLocalDateTime(),
+        updatedAt = this[UserTable.updatedAt].toJavaLocalDateTime()
     )

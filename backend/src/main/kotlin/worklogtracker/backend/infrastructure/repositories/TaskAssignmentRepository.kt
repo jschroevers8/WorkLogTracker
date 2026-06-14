@@ -11,7 +11,8 @@ import worklogtracker.backend.domain.valueobjects.task.TaskId
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.hydrators.hydrateTaskAssignment
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
-import java.time.Instant
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 class TaskAssignmentRepository : TaskAssignmentRepositoryInterface {
     override suspend fun findById(id: TaskAssignmentId): TaskAssignmentEntity? = transaction {
@@ -23,7 +24,7 @@ class TaskAssignmentRepository : TaskAssignmentRepositoryInterface {
     }
 
     override suspend fun save(assignment: TaskAssignmentEntity): TaskAssignmentEntity = transaction {
-        val now = Instant.now().toEpochMilli()
+        val now = LocalDateTime.now().toKotlinLocalDateTime()
         val id = TaskAssignmentTable.insert {
             it[taskId] = assignment.taskId.value
             it[userId] = assignment.userId.value

@@ -7,14 +7,17 @@ import worklogtracker.backend.domain.valueobjects.project.ProjectId
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.hydrators.hydrateProject
 import worklogtracker.backend.infrastructure.tables.ProjectTable
+import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
+import worklogtracker.backend.infrastructure.tables.TaskTable
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.time.Instant
-import java.time.ZoneId
+import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 class ProjectRepository : ProjectRepositoryInterface {
 
@@ -29,22 +32,14 @@ class ProjectRepository : ProjectRepositoryInterface {
 
     override suspend fun save(project: ProjectEntity): ProjectEntity =
         transaction {
-            val now = Instant.now().toEpochMilli()
+            val now = LocalDateTime.now().toKotlinLocalDateTime()
 
             ProjectTable.insert {
                 it[name] = project.name
                 it[description] = project.description
                 it[status] = project.status.name
-                it[startDate] = project.startDate?.let { date ->
-                    Instant.from(
-                        date.atStartOfDay(ZoneId.systemDefault())
-                    ).toEpochMilli()
-                }
-                it[endDate] = project.endDate?.let { date ->
-                    Instant.from(
-                        date.atStartOfDay(ZoneId.systemDefault())
-                    ).toEpochMilli()
-                }
+                it[startDate] = project.startDate?.toKotlinLocalDate()
+                it[endDate] = project.endDate?.toKotlinLocalDate()
                 it[createdById] = project.createdById.value
                 it[createdAt] = now
                 it[updatedAt] = now
@@ -55,17 +50,13 @@ class ProjectRepository : ProjectRepositoryInterface {
 
     override suspend fun update(project: ProjectEntity): Boolean =
         transaction {
-            val now = Instant.now().toEpochMilli()
+            val now = LocalDateTime.now().toKotlinLocalDateTime()
 
             ProjectTable.update({ ProjectTable.id eq project.id!!.value }) {
                 it[name] = project.name
                 it[description] = project.description
                 it[status] = project.status.name
-                it[endDate] = project.endDate?.let { date ->
-                    Instant.from(
-                        date.atStartOfDay(ZoneId.systemDefault())
-                    ).toEpochMilli()
-                }
+                it[endDate] = project.endDate?.toKotlinLocalDate()
                 it[updatedAt] = now
             } > 0
         }
@@ -103,5 +94,20 @@ class ProjectRepository : ProjectRepositoryInterface {
                 .selectAll()
                 .where { ProjectTable.createdById eq userId.value }
                 .map { it.hydrateProject() }
+        }
+
+    override suspend fun findByInvolvedUser(userId: UserId): List<ProjectEntity> =
+        transaction {
+            val projectsFromAssignments = (ProjectTable innerJoin TaskTable innerJoin TaskAssignmentTable)
+                .select(ProjectTable.columns)
+                .where { TaskAssignmentTable.userId eq userId.value }
+                .map { it.hydrateProject() }
+
+            val projectsCreatedByUser = ProjectTable
+                .selectAll()
+                .where { ProjectTable.createdById eq userId.value }
+                .map { it.hydrateProject() }
+
+            (projectsFromAssignments + projectsCreatedByUser).distinctBy { it.id }
         }
 }

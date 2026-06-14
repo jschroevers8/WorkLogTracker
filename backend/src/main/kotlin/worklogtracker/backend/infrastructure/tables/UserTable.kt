@@ -1,6 +1,7 @@
 package worklogtracker.backend.infrastructure.tables
 
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 object UserTable : Table("users") {
     val id = integer("id").autoIncrement()
@@ -9,7 +10,7 @@ object UserTable : Table("users") {
     val firstName = varchar("first_name", 255)
     val lastName = varchar("last_name", 255)
     val role = varchar("role", 50)
-    val createdAt = long("created_at")
-    val updatedAt = long("updated_at")
+    val createdAt = datetime("created_at")
+    val updatedAt = datetime("updated_at")
     override val primaryKey = PrimaryKey(id)
 }

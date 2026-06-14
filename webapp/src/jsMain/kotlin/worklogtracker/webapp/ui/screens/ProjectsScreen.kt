@@ -12,6 +12,7 @@ import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.ProjectCard
+import worklogtracker.webapp.ui.components.ErrorPopup
 import worklogtracker.webapp.viewmodel.ProjectsViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
@@ -25,6 +26,8 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
     LaunchedEffect(Unit) {
         viewModel.refreshData()
     }
+
+    ErrorPopup(viewModel.error) { viewModel.clearError() }
 
     Div({
         style {
@@ -179,8 +182,6 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
 
     if (viewModel.loading) {
         P { Text("Laden...") }
-    } else if (viewModel.error.isNotEmpty()) {
-        P({ style { color(Styles.Error) } }) { Text(viewModel.error) }
     } else {
         val currentProjects = if (viewModel.selectedTab == "ACTIVE") viewModel.activeProjects else viewModel.completedProjects
 

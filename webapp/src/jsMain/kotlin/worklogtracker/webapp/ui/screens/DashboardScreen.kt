@@ -12,11 +12,11 @@ import kotlinx.coroutines.launch
 import worklogtracker.webapp.ApiClient
 
 @Composable
-fun DashboardScreen(apiClient: ApiClient, scope: CoroutineScope) {
+fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
     val viewModel = remember { DashboardViewModel(apiClient) }
-
+    
     LaunchedEffect(Unit) {
-        viewModel.loadDashboardData()
+        viewModel.startPeriodicRefresh()
     }
 
     H2({
@@ -46,9 +46,22 @@ fun DashboardScreen(apiClient: ApiClient, scope: CoroutineScope) {
             borderRadius(12.px)
             border(1.px, LineStyle.Solid, Styles.Border)
             property("box-shadow", "0 1px 3px 0 rgba(0, 0, 0, 0.1)")
+            position(Position.Relative)
         }
     }) {
-        H3({ style { marginBottom(24.px); color(Styles.TextPrimary) } }) { Text("Gewerkte uren per dag") }
+        H3({ style { marginBottom(24.px); color(Styles.TextPrimary) } }) { 
+            Text("Gewerkte uren per dag") 
+            if (viewModel.isLoading) {
+                Span({
+                    style {
+                        fontSize(0.6.em)
+                        marginLeft(12.px)
+                        color(Styles.TextSecondary)
+                        fontWeight("normal")
+                    }
+                }) { Text("(bijwerken...)") }
+            }
+        }
 
         Div({
             style {
@@ -71,9 +84,10 @@ fun DashboardScreen(apiClient: ApiClient, scope: CoroutineScope) {
                     }
                 }) {
                     Div({
+                        val barHeight = (hours * 15).coerceAtMost(180.0)
                         style {
                             width(100.percent)
-                            height((hours * 15).px) // Schaal uren naar pixels
+                            height(barHeight.px) // Schaal uren naar pixels
                             backgroundColor(Styles.Primary)
                             borderRadius(4.px, 4.px, 0.px, 0.px)
                             property("transition", "height 0.5s ease-in-out")

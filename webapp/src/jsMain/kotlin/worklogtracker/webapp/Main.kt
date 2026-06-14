@@ -42,7 +42,7 @@ fun main() {
             }
         }
 
-        var selectedUserId by remember { mutableStateOf<Int?>(null) }
+        var selectedUserId by remember { mutableStateOf<Long?>(null) }
         var selectedProjectId by remember { mutableStateOf<Int?>(null) }
         val scope = rememberCoroutineScope()
 

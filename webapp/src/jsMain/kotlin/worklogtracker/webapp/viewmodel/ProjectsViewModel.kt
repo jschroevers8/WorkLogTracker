@@ -85,7 +85,7 @@ class ProjectsViewModel(
         }
     }
 
-    private suspend fun performAssignTask(taskId: Int, userId: Int) {
-        api.tasks.assignTask(taskId, AssignTaskRequest(userId))
+    fun clearError() {
+        error = ""
     }
 }

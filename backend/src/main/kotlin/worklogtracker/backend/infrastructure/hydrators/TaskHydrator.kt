@@ -7,8 +7,7 @@ import worklogtracker.backend.domain.valueobjects.task.TaskId
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.tables.TaskTable
 import org.jetbrains.exposed.sql.ResultRow
-import java.time.Instant
-import java.time.ZoneId
+import kotlinx.datetime.toJavaLocalDateTime
 
 fun ResultRow.hydrateTask() =
     TaskEntity(
@@ -18,10 +17,6 @@ fun ResultRow.hydrateTask() =
         description = this[TaskTable.description],
         status = TaskStatus.valueOf(this[TaskTable.status]),
         createdBy = UserId(this[TaskTable.createdBy]),
-        createdAt = Instant.ofEpochMilli(this[TaskTable.createdAt])
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime(),
-        updatedAt = Instant.ofEpochMilli(this[TaskTable.updatedAt])
-            .atZone(ZoneId.systemDefault())
-            .toLocalDateTime()
+        createdAt = this[TaskTable.createdAt].toJavaLocalDateTime(),
+        updatedAt = this[TaskTable.updatedAt].toJavaLocalDateTime()
     )

@@ -20,4 +20,8 @@ class EmployeesViewModel(private val api: ApiClient) {
             loading = false
         }
     }
+
+    fun clearError() {
+        error = ""
+    }
 }

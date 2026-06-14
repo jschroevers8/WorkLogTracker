@@ -9,7 +9,8 @@ import worklogtracker.backend.domain.valueobjects.task.TaskId
 import worklogtracker.backend.domain.valueobjects.task.TaskPhotoId
 import worklogtracker.backend.infrastructure.hydrators.hydrateTaskPhoto
 import worklogtracker.backend.infrastructure.tables.TaskPhotoTable
-import java.time.Instant
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 class TaskPhotoRepository : TaskPhotoRepositoryInterface {
     override suspend fun findById(id: TaskPhotoId): TaskPhotoEntity? = transaction {
@@ -21,7 +22,7 @@ class TaskPhotoRepository : TaskPhotoRepositoryInterface {
     }
 
     override suspend fun save(photo: TaskPhotoEntity): TaskPhotoEntity = transaction {
-        val now = Instant.now().toEpochMilli()
+        val now = LocalDateTime.now().toKotlinLocalDateTime()
         val id = TaskPhotoTable.insert {
             it[taskId] = photo.taskId.value
             it[photoUrl] = photo.photoUrl

@@ -9,7 +9,8 @@ import worklogtracker.backend.domain.valueobjects.task.TaskId
 import worklogtracker.backend.domain.valueobjects.task.TaskLocationId
 import worklogtracker.backend.infrastructure.hydrators.hydrateTaskLocation
 import worklogtracker.backend.infrastructure.tables.TaskLocationTable
-import java.time.Instant
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 class TaskLocationRepository : TaskLocationRepositoryInterface {
     override suspend fun findById(id: TaskLocationId): TaskLocationEntity? = transaction {
@@ -21,7 +22,7 @@ class TaskLocationRepository : TaskLocationRepositoryInterface {
     }
 
     override suspend fun save(location: TaskLocationEntity): TaskLocationEntity = transaction {
-        val now = Instant.now().toEpochMilli()
+        val now = LocalDateTime.now().toKotlinLocalDateTime()
         val id = TaskLocationTable.insert {
             it[taskId] = location.taskId.value
             it[latitude] = location.latitude

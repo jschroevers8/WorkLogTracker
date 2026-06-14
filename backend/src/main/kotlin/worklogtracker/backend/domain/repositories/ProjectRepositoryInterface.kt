@@ -13,5 +13,6 @@ interface ProjectRepositoryInterface {
     suspend fun findAll(status: ProjectStatus? = null): List<ProjectEntity>
     suspend fun findAllExcludingStatus(status: ProjectStatus): List<ProjectEntity>
     suspend fun findByUser(userId: UserId): List<ProjectEntity>
+    suspend fun findByInvolvedUser(userId: UserId): List<ProjectEntity>
 }
 

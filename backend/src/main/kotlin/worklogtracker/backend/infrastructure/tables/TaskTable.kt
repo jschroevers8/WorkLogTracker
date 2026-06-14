@@ -1,6 +1,7 @@
 package worklogtracker.backend.infrastructure.tables
 
 import org.jetbrains.exposed.sql.Table
+import org.jetbrains.exposed.sql.kotlin.datetime.datetime
 
 object TaskTable : Table("tasks") {
     val id = integer("id").autoIncrement()
@@ -9,7 +10,7 @@ object TaskTable : Table("tasks") {
     val description = text("description").nullable()
     val status = varchar("status", 50)
     val createdBy = integer("created_by").references(UserTable.id)
-    val createdAt = long("created_at")
-    val updatedAt = long("updated_at")
+    val createdAt = datetime("created_at")
+    val updatedAt = datetime("updated_at")
     override val primaryKey = PrimaryKey(id)
 }

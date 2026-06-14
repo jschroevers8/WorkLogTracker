@@ -13,8 +13,9 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.time.Instant
-import java.time.ZoneId
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 class UserRepository : UserRepositoryInterface {
 
@@ -38,7 +39,7 @@ class UserRepository : UserRepositoryInterface {
 
     override suspend fun save(user: UserEntity): UserEntity =
         transaction {
-            val now = Instant.now().toEpochMilli()
+            val now = LocalDateTime.now().toKotlinLocalDateTime()
 
             val id = UserTable.insert {
                 it[email] = user.email.value
@@ -52,18 +53,14 @@ class UserRepository : UserRepositoryInterface {
 
             user.copy(
                 id = UserId(id),
-                createdAt = Instant.ofEpochMilli(now)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime(),
-                updatedAt = Instant.ofEpochMilli(now)
-                    .atZone(ZoneId.systemDefault())
-                    .toLocalDateTime()
+                createdAt = now.toJavaLocalDateTime(),
+                updatedAt = now.toJavaLocalDateTime()
             )
         }
 
     override suspend fun update(user: UserEntity): Boolean =
         transaction {
-            val now = Instant.now().toEpochMilli()
+            val now = LocalDateTime.now().toKotlinLocalDateTime()
 
             UserTable.update({ UserTable.id eq user.id!!.value }) {
                 it[firstName] = user.firstName

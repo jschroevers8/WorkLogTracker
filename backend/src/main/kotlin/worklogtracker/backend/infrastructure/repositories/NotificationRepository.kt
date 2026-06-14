@@ -13,8 +13,8 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import java.time.Instant
-import java.time.ZoneId
+import kotlinx.datetime.toKotlinLocalDateTime
+import java.time.LocalDateTime
 
 class NotificationRepository : NotificationRepositoryInterface {
 
@@ -35,11 +35,9 @@ class NotificationRepository : NotificationRepositoryInterface {
                 it[title] = notification.title
                 it[message] = notification.message
                 it[type] = notification.type.name
-                it[sentAt] =
-                    Instant.from(notification.sentAt.atZone(ZoneId.systemDefault())).toEpochMilli()
+                it[sentAt] = notification.sentAt.toKotlinLocalDateTime()
                 it[isRead] = notification.isRead
-                it[createdAt] =
-                    Instant.from(notification.createdAt.atZone(ZoneId.systemDefault())).toEpochMilli()
+                it[createdAt] = notification.createdAt.toKotlinLocalDateTime()
             }
         }
 
@@ -87,8 +85,7 @@ class NotificationRepository : NotificationRepositoryInterface {
 
     override suspend fun deleteOlderThan(days: Int): Int =
         transaction {
-            val cutoffDate =
-                System.currentTimeMillis() - (days * 24L * 60L * 60L * 1000L)
+            val cutoffDate = LocalDateTime.now().minusDays(days.toLong()).toKotlinLocalDateTime()
 
             NotificationTable.deleteWhere {
                 NotificationTable.createdAt lessEq cutoffDate

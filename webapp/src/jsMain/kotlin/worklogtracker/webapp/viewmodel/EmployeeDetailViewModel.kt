@@ -9,7 +9,7 @@ class EmployeeDetailViewModel(private val api: ApiClient) {
     var loading by mutableStateOf(true)
     var error by mutableStateOf("")
 
-    suspend fun loadWorkLogs(userId: Int) {
+    suspend fun loadWorkLogs(userId: Long) {
         loading = true
         error = ""
         try {

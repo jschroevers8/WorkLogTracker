@@ -8,7 +8,7 @@ import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.shared.dto.worklog.CreateWorkLogRequest
 
 class WorkLogRepository(private val client: HttpClient, private val baseUrl: String, private val getToken: () -> String?) {
-    suspend fun getUserWorkLogs(userId: Int, taskAssignmentId: Int? = null): List<WorkLogResponse> {
+    suspend fun getUserWorkLogs(userId: Long, taskAssignmentId: Int? = null): List<WorkLogResponse> {
         return client.get("$baseUrl/worklogs") {
             header(HttpHeaders.Authorization, "Bearer ${getToken()}")
             parameter("userId", userId)

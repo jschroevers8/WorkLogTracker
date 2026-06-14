@@ -9,7 +9,7 @@ import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.viewmodel.EmployeeDetailViewModel
 
 @Composable
-fun EmployeeDetailScreen(userId: Int, api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onBack: () -> Unit) {
+fun EmployeeDetailScreen(userId: Long, api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onBack: () -> Unit) {
     val viewModel = remember { EmployeeDetailViewModel(api) }
 
     LaunchedEffect(userId) {

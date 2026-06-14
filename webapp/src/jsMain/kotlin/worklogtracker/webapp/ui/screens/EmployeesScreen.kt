@@ -6,17 +6,20 @@ import org.jetbrains.compose.web.css.*
 import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
+import worklogtracker.webapp.ui.components.ErrorPopup
 import kotlinx.coroutines.launch
 
 import worklogtracker.webapp.viewmodel.EmployeesViewModel
 
 @Composable
-fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onUserSelected: (Int) -> Unit) {
+fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onUserSelected: (Long) -> Unit) {
     val viewModel = remember { EmployeesViewModel(api) }
 
     LaunchedEffect(Unit) {
         viewModel.loadUsers()
     }
+
+    ErrorPopup(viewModel.error) { viewModel.clearError() }
 
     H2({
         style {
@@ -27,8 +30,6 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
 
     if (viewModel.loading) {
         P { Text("Laden...") }
-    } else if (viewModel.error.isNotEmpty()) {
-        P({ style { color(Styles.Error) } }) { Text(viewModel.error) }
     } else {
         Div({
             style {
@@ -96,7 +97,7 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
                                         fontSize(0.9.em)
                                         fontWeight("500")
                                     }
-                                    onClick { onUserSelected(user.id.toInt()) }
+                                    onClick { onUserSelected(user.id) }
                                 }) { Text("Bekijk uren") }
                             }
                         }

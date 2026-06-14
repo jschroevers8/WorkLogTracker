@@ -21,12 +21,9 @@ class ListProjectsUseCase(
         val user = userRepository.findById(userId) ?: throw Exception("User not found")
         
         // Admins can see everything based on filter
-        // Others see only their projects (or nothing if we want to restrict project list)
-
-
-        //TODO ervoor zrogen dat je wel proejcten mag zien die aan je taak vast zitten
+        // Others see projects they created OR projects they are involved in via tasks
         if (user.role != UserRole.ADMIN) {
-            return projectRepository.findByUser(userId).map { it.toResponse() }
+            return projectRepository.findByInvolvedUser(userId).map { it.toResponse() }
         }
 
         return when {

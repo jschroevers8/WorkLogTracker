@@ -7,9 +7,7 @@ import worklogtracker.backend.domain.valueobjects.task.TaskId
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.tables.NotificationTable
 import org.jetbrains.exposed.sql.ResultRow
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
+import kotlinx.datetime.toJavaLocalDateTime
 
 fun ResultRow.hydrateNotification() =
     NotificationEntity(
@@ -19,13 +17,7 @@ fun ResultRow.hydrateNotification() =
         title = this[NotificationTable.title],
         message = this[NotificationTable.message],
         type = NotificationType.valueOf(this[NotificationTable.type]),
-        sentAt = LocalDateTime.ofInstant(
-            Instant.ofEpochMilli(this[NotificationTable.sentAt]),
-            ZoneId.systemDefault()
-        ),
+        sentAt = this[NotificationTable.sentAt].toJavaLocalDateTime(),
         isRead = this[NotificationTable.isRead],
-        createdAt = LocalDateTime.ofInstant(
-            Instant.ofEpochMilli(this[NotificationTable.createdAt]),
-            ZoneId.systemDefault()
-        )
+        createdAt = this[NotificationTable.createdAt].toJavaLocalDateTime()
     )
