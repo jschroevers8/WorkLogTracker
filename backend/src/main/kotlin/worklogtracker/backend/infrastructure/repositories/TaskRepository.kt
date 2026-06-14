@@ -16,9 +16,8 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
 import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
-
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
-import org.jetbrains.exposed.sql.JoinType
+import org.jetbrains.exposed.sql.slice
 
 class TaskRepository : TaskRepositoryInterface {
 
@@ -75,10 +74,17 @@ class TaskRepository : TaskRepositoryInterface {
 
     override suspend fun findByUser(userId: UserId): List<TaskEntity> =
         transaction {
-            // Find tasks where the user is assigned
-            (TaskTable innerJoin TaskAssignmentTable)
+            val taskIds = TaskAssignmentTable
                 .selectAll()
                 .where { TaskAssignmentTable.userId eq userId.value }
+                .map { it[TaskAssignmentTable.taskId] }
+                .distinct()
+
+            if (taskIds.isEmpty()) return@transaction emptyList()
+
+            TaskTable
+                .selectAll()
+                .where { TaskTable.id inList taskIds }
                 .map { it.hydrateTask() }
         }
 

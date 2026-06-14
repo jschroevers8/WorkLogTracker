@@ -5,8 +5,8 @@ import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
-
 import worklogtracker.webapp.viewmodel.EmployeeDetailViewModel
+import kotlin.js.Date
 
 @Composable
 fun EmployeeDetailScreen(userId: Long, api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onBack: () -> Unit) {
@@ -94,7 +94,23 @@ fun EmployeeDetailScreen(userId: Long, api: ApiClient, scope: kotlinx.coroutines
                                 property("border-bottom", "1px solid ${Styles.Border}")
                             }
                         }) {
-                            Td({ style { padding(16.px); color(Styles.TextPrimary) } }) { Text(log.createdAt) }
+                            Td({
+                                style {
+                                    padding(16.px)
+                                    color(Styles.TextPrimary)
+                                }
+                            }) {
+                                val date = Date(log.createdAt)
+
+                                val formatted =
+                                    "${date.getDate().toString().padStart(2, '0')}-" +
+                                            "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
+                                            "${date.getFullYear()} " +
+                                            "${date.getHours().toString().padStart(2, '0')}:" +
+                                            date.getMinutes().toString().padStart(2, '0')
+
+                                Text(formatted)
+                            }
                             Td({ style { padding(16.px); color(Styles.TextPrimary) } }) {
                                 Span({
                                     style {

@@ -11,6 +11,7 @@ import worklogtracker.webapp.ui.Styles
 import kotlinx.coroutines.launch
 
 import worklogtracker.webapp.viewmodel.ProjectDetailViewModel
+import kotlin.js.Date
 
 @Composable
 fun ProjectDetailScreen(
@@ -176,7 +177,16 @@ fun TaskDetailCard(task: TaskResponse) {
                             borderRadius(6.px)
                         }
                     }) {
-                        Text("📍 ${location.latitude}, ${location.longitude} (${location.recordedAt})")
+                        val date = Date(location.recordedAt)
+
+                        val formatted =
+                            "${date.getDate().toString().padStart(2, '0')}-" +
+                                    "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
+                                    "${date.getFullYear()} " +
+                                    "${date.getHours().toString().padStart(2, '0')}:" +
+                                    date.getMinutes().toString().padStart(2, '0')
+
+                        Text("📍 ${location.latitude}, ${location.longitude} (${formatted})")
                         A(href = "https://www.google.com/maps?q=${location.latitude},${location.longitude}", attrs = {
                             attr("target", "_blank")
                             style { color(Styles.Primary); fontWeight("600") }

@@ -80,20 +80,33 @@ fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
                         display(DisplayStyle.Flex)
                         flexDirection(FlexDirection.Column)
                         alignItems(AlignItems.Center)
-                        width(40.px)
+                        width(50.px)
                     }
                 }) {
+
+                    Span({
+                        style {
+                            marginBottom(4.px)
+                            fontSize(0.75.em)
+                            color(Styles.TextPrimary)
+                            fontWeight("600")
+                        }
+                    }) {
+                        Text("${hours}")
+                    }
+
                     Div({
                         val barHeight = (hours * 15).coerceAtMost(180.0)
                         style {
                             width(100.percent)
-                            height(barHeight.px) // Schaal uren naar pixels
+                            height(barHeight.px)
                             backgroundColor(Styles.Primary)
                             borderRadius(4.px, 4.px, 0.px, 0.px)
                             property("transition", "height 0.5s ease-in-out")
                         }
                         title("$hours uur")
                     })
+
                     Span({
                         style {
                             marginTop(8.px)
@@ -101,7 +114,9 @@ fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
                             color(Styles.TextSecondary)
                             fontWeight("600")
                         }
-                    }) { Text(day) }
+                    }) {
+                        Text(day)
+                    }
                 }
             }
         }

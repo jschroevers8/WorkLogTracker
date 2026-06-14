@@ -18,7 +18,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import worklogtracker.frontend.presentation.framework.components.text.WltPrimaryText
 import worklogtracker.frontend.presentation.framework.components.text.WltSecondaryText
-
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import worklogtracker.frontend.presentation.framework.theme.WltColors
 
 @Composable
@@ -55,6 +56,6 @@ fun NotificationCard(
             WltSecondaryText(notification.message)
         }
 
-        WltSecondaryText(notification.time, 12)
+        WltSecondaryText(OffsetDateTime.parse(notification.time).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")), 12)
     }
 }

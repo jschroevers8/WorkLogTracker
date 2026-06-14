@@ -28,6 +28,8 @@ class ListTasksUseCase(
             taskRepository.findByUser(userId)
         }
 
+        println(tasks)
+
         return tasks.map { task ->
             val taskId = task.id!!
             val photos = taskPhotoRepository.findByTask(taskId)
