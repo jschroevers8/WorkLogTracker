@@ -1,13 +1,12 @@
 package worklogtracker.webapp.navigation
 
-import androidx.navigation3.runtime.NavKey
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 sealed class Screen(
     val requiresAuth: Boolean = true,
-) : NavKey {
+) {
     @Serializable
     @SerialName("login")
     object Login : Screen(requiresAuth = false)

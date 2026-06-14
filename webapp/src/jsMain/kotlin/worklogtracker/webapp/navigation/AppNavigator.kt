@@ -1,9 +1,6 @@
 package worklogtracker.webapp.navigation
 
 import androidx.compose.runtime.*
-import androidx.navigation3.runtime.NavEntry
-import androidx.navigation3.runtime.rememberNavBackStack
-import androidx.navigation3.ui.NavDisplay
 import kotlinx.browser.localStorage
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -36,63 +33,66 @@ fun AppNavigator() {
         apiClient.setToken(currentUser?.token)
     }
 
-    val backStack = rememberNavBackStack(if (currentUser != null) Screen.Dashboard else Screen.Login)
+    val backStack = remember { mutableStateListOf<Screen>(if (currentUser != null) Screen.Dashboard else Screen.Login) }
+    val currentScreen = backStack.lastOrNull() ?: Screen.Login
     val scope = rememberCoroutineScope()
 
-    NavDisplay(
-        backStack = backStack,
-        onBack = {
-            if (backStack.size > 1) {
-                backStack.removeLastOrNull()
-            }
-        },
-        entryProvider = entryProvider@{ navKey ->
-            val screen = navKey as? Screen ?: return@entryProvider NavEntry(navKey) { }
-            NavEntry(screen) {
-                if (screen.requiresAuth && currentUser == null) {
-                    LaunchedEffect(screen) {
-                        backStack.add(Screen.Login)
-                    }
-                    return@NavEntry
-                }
+    val onNavigate: (Screen) -> Unit = { screen ->
+        backStack.add(screen)
+    }
 
-                if (screen is Screen.Login) {
-                    LoginScreen(scope) { user ->
-                        currentUser = user
-                        localStorage.setItem("auth_response", Json.encodeToString(user))
-                        apiClient.setToken(user.token)
-                        backStack.add(Screen.Dashboard)
+    val onBack: () -> Unit = {
+        if (backStack.size > 1) {
+            backStack.removeAt(backStack.size - 1)
+        }
+    }
+
+    if (currentScreen.requiresAuth && currentUser == null) {
+        LaunchedEffect(currentScreen) {
+            backStack.clear()
+            backStack.add(Screen.Login)
+        }
+    } else {
+        if (currentScreen is Screen.Login) {
+            LoginScreen(scope) { user ->
+                currentUser = user
+                localStorage.setItem("auth_response", Json.encodeToString(user))
+                apiClient.setToken(user.token)
+                backStack.clear()
+                backStack.add(Screen.Dashboard)
+            }
+        } else {
+            MainLayout(
+                currentUser,
+                onLogout = {
+                    currentUser = null
+                    localStorage.removeItem("auth_response")
+                    apiClient.setToken(null)
+                    backStack.clear()
+                    backStack.add(Screen.Login)
+                },
+                currentScreen = currentScreen,
+                onNavigate = onNavigate
+            ) {
+                when (currentScreen) {
+                    is Screen.Dashboard -> DashboardScreen()
+                    is Screen.Employees -> EmployeesScreen { userId ->
+                        onNavigate(Screen.EmployeeDetail(userId))
                     }
-                } else {
-                    MainLayout(currentUser, onLogout = {
-                        currentUser = null
-                        localStorage.removeItem("auth_response")
-                        apiClient.setToken(null)
-                        backStack.add(Screen.Login)
-                    }, currentScreen = screen, onNavigate = { target ->
-                        backStack.add(target)
-                    }) {
-                        when (screen) {
-                            is Screen.Dashboard -> DashboardScreen()
-                            is Screen.Employees -> EmployeesScreen { userId ->
-                                backStack.add(Screen.EmployeeDetail(userId))
-                            }
-                            is Screen.Projects -> ProjectsScreen { projectId ->
-                                backStack.add(Screen.ProjectDetail(projectId))
-                            }
-                            is Screen.EmployeeDetail -> EmployeeDetailScreen(screen.userId) {
-                                backStack.removeLastOrNull()
-                            }
-                            is Screen.ProjectDetail -> ProjectDetailScreen(screen.projectId) {
-                                backStack.removeLastOrNull()
-                            }
-                            else -> {}
-                        }
+                    is Screen.Projects -> ProjectsScreen { projectId ->
+                        onNavigate(Screen.ProjectDetail(projectId))
                     }
+                    is Screen.EmployeeDetail -> EmployeeDetailScreen(currentScreen.userId) {
+                        onBack()
+                    }
+                    is Screen.ProjectDetail -> ProjectDetailScreen(currentScreen.projectId) {
+                        onBack()
+                    }
+                    else -> {}
                 }
             }
         }
-    )
+    }
 }
 
 @Composable
@@ -158,7 +158,7 @@ fun MainLayout(
                 style {
                     display(DisplayStyle.Flex)
                     alignItems(AlignItems.Center)
-                    marginLeft(Auto)
+                    property("margin-left", "auto")
                 }
             }) {
                 Div({

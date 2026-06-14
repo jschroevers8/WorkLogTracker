@@ -38,10 +38,6 @@ kotlin {
                 // Koin
                 implementation("io.insert-koin:koin-core:4.1.1")
                 implementation("io.insert-koin:koin-compose:4.1.1")
-
-                // Navigation
-                implementation("androidx.navigation3:navigation3-runtime:1.0.0")
-                implementation("androidx.navigation3:navigation3-ui:1.0.0")
             }
         }
     }
