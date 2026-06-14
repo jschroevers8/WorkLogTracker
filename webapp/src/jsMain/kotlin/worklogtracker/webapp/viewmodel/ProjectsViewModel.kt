@@ -11,7 +11,7 @@ import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 
 class ProjectsViewModel(
-    private val api: ApiClient,
+    val api: ApiClient,
     private val scope: CoroutineScope,
 ) {
     var activeProjects by mutableStateOf<List<ProjectResponse>>(emptyList())

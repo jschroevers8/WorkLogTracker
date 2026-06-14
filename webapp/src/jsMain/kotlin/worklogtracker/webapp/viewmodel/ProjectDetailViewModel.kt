@@ -6,6 +6,7 @@ import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.webapp.ApiClient
 
 class ProjectDetailViewModel(
+    private val projectId: Int,
     private val api: ApiClient,
 ) {
     var project by mutableStateOf<ProjectResponse?>(null)
@@ -13,7 +14,7 @@ class ProjectDetailViewModel(
     var loading by mutableStateOf(true)
     var error by mutableStateOf("")
 
-    suspend fun loadProjectDetails(projectId: Int) {
+    suspend fun loadProjectDetails() {
         try {
             loading = true
             error = ""

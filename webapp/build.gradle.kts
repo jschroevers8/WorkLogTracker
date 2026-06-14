@@ -34,6 +34,14 @@ kotlin {
                 implementation("io.ktor:ktor-client-js:3.3.2")
                 implementation("io.ktor:ktor-client-content-negotiation:3.3.2")
                 implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.2")
+
+                // Koin
+                implementation("io.insert-koin:koin-core:4.1.1")
+                implementation("io.insert-koin:koin-compose:4.1.1")
+
+                // Navigation
+                implementation("androidx.navigation3:navigation3-runtime:1.0.0")
+                implementation("androidx.navigation3:navigation3-ui:1.0.0")
             }
         }
     }

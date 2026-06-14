@@ -3,7 +3,8 @@ package worklogtracker.webapp.ui.screens
 import androidx.compose.runtime.*
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
-import worklogtracker.webapp.ApiClient
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.viewmodel.EmployeeDetailViewModel
 import kotlin.js.Date
@@ -11,14 +12,12 @@ import kotlin.js.Date
 @Composable
 fun EmployeeDetailScreen(
     userId: Long,
-    api: ApiClient,
-    scope: kotlinx.coroutines.CoroutineScope,
     onBack: () -> Unit,
 ) {
-    val viewModel = remember { EmployeeDetailViewModel(api) }
+    val viewModel = koinInject<EmployeeDetailViewModel> { parametersOf(userId) }
 
-    LaunchedEffect(userId) {
-        viewModel.loadWorkLogs(userId)
+    LaunchedEffect(Unit) {
+        viewModel.loadWorkLogs()
     }
 
     Div({
@@ -126,14 +125,14 @@ fun EmployeeDetailScreen(
                                     color(Styles.TextPrimary)
                                 }
                             }) {
-                                val date = Date(log.createdAt)
+                                val logDate = Date(log.createdAt)
 
                                 val formatted =
-                                    "${date.getDate().toString().padStart(2, '0')}-" +
-                                        "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
-                                        "${date.getFullYear()} " +
-                                        "${date.getHours().toString().padStart(2, '0')}:" +
-                                        date.getMinutes().toString().padStart(2, '0')
+                                    "${logDate.getDate().toString().padStart(2, '0')}-" +
+                                        "${(logDate.getMonth() + 1).toString().padStart(2, '0')}-" +
+                                        "${logDate.getFullYear()} " +
+                                        "${logDate.getHours().toString().padStart(2, '0')}:" +
+                                        logDate.getMinutes().toString().padStart(2, '0')
 
                                 Text(formatted)
                             }

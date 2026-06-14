@@ -4,7 +4,8 @@ import androidx.compose.runtime.*
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import worklogtracker.shared.dto.task.TaskResponse
-import worklogtracker.webapp.ApiClient
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.viewmodel.ProjectDetailViewModel
 import kotlin.js.Date
@@ -12,14 +13,12 @@ import kotlin.js.Date
 @Composable
 fun ProjectDetailScreen(
     projectId: Int,
-    api: ApiClient,
-    scope: kotlinx.coroutines.CoroutineScope,
     onBack: () -> Unit,
 ) {
-    val viewModel = remember { ProjectDetailViewModel(api) }
+    val viewModel = koinInject<ProjectDetailViewModel> { parametersOf(projectId) }
 
-    LaunchedEffect(projectId) {
-        viewModel.loadProjectDetails(projectId)
+    LaunchedEffect(Unit) {
+        viewModel.loadProjectDetails()
     }
 
     Div({

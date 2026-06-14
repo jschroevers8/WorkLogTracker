@@ -3,18 +3,16 @@ package worklogtracker.webapp.ui.screens
 import androidx.compose.runtime.*
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
-import worklogtracker.webapp.ApiClient
+import org.koin.compose.koinInject
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.ErrorPopup
 import worklogtracker.webapp.viewmodel.EmployeesViewModel
 
 @Composable
 fun EmployeesScreen(
-    api: ApiClient,
-    scope: kotlinx.coroutines.CoroutineScope,
     onUserSelected: (Long) -> Unit,
 ) {
-    val viewModel = remember { EmployeesViewModel(api) }
+    val viewModel = koinInject<EmployeesViewModel>()
 
     LaunchedEffect(Unit) {
         viewModel.loadUsers()

@@ -4,18 +4,18 @@ import androidx.compose.runtime.*
 import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import worklogtracker.shared.dto.auth.AuthResponse
-import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.viewmodel.LoginViewModel
 
 @Composable
 fun LoginScreen(
-    api: ApiClient,
     scope: kotlinx.coroutines.CoroutineScope,
     onLoginSuccess: (AuthResponse) -> Unit,
 ) {
-    val viewModel = remember { LoginViewModel(api, scope, onLoginSuccess) }
+    val viewModel = koinInject<LoginViewModel> { parametersOf(scope, onLoginSuccess) }
 
     Div({
         style {

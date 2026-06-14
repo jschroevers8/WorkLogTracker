@@ -5,13 +5,14 @@ import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.webapp.ApiClient
 
 class EmployeeDetailViewModel(
+    private val userId: Long,
     private val api: ApiClient,
 ) {
     var worklogs by mutableStateOf<List<WorkLogResponse>>(emptyList())
     var loading by mutableStateOf(true)
     var error by mutableStateOf("")
 
-    suspend fun loadWorkLogs(userId: Long) {
+    suspend fun loadWorkLogs() {
         loading = true
         error = ""
         try {

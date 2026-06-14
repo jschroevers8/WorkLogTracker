@@ -1,20 +1,16 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
-import worklogtracker.webapp.ApiClient
+import org.koin.compose.koinInject
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.StatCard
 import worklogtracker.webapp.viewmodel.DashboardViewModel
 
 @Composable
-fun DashboardScreen(
-    apiClient: ApiClient,
-    externalScope: CoroutineScope,
-) {
-    val viewModel = remember { DashboardViewModel(apiClient) }
+fun DashboardScreen() {
+    val viewModel = koinInject<DashboardViewModel>()
 
     LaunchedEffect(Unit) {
         viewModel.startPeriodicRefresh()

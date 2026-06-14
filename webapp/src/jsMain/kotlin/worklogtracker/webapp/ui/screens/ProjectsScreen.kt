@@ -8,19 +8,19 @@ import org.jetbrains.compose.web.attributes.selected
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import worklogtracker.shared.dto.project.UpdateProjectRequest
-import worklogtracker.webapp.ApiClient
+import org.koin.compose.koinInject
+import org.koin.core.parameter.parametersOf
 import worklogtracker.webapp.ui.Styles
-import worklogtracker.webapp.ui.components.ErrorPopup
 import worklogtracker.webapp.ui.components.ProjectCard
+import worklogtracker.webapp.ui.components.ErrorPopup
 import worklogtracker.webapp.viewmodel.ProjectsViewModel
 
 @Composable
 fun ProjectsScreen(
-    api: ApiClient,
-    scope: kotlinx.coroutines.CoroutineScope,
     onSeeProjectDetails: (Int) -> Unit,
 ) {
-    val viewModel = remember { ProjectsViewModel(api, scope) }
+    val scope = rememberCoroutineScope()
+    val viewModel = koinInject<ProjectsViewModel> { parametersOf(scope) }
 
     LaunchedEffect(Unit) {
         viewModel.refreshData()
@@ -253,7 +253,7 @@ fun ProjectsScreen(
                     onCloseProject = {
                         scope.launch {
                             try {
-                                val tasks = api.tasks.getTasks(projectId = project.id)
+                                val tasks = viewModel.api.tasks.getTasks(projectId = project.id)
                                 val hasUnfinishedTasks = tasks.any { it.status != "COMPLETED" }
 
                                 if (hasUnfinishedTasks) {
@@ -261,7 +261,7 @@ fun ProjectsScreen(
                                     return@launch
                                 }
 
-                                api.projects.updateProject(project.id!!, UpdateProjectRequest(status = "COMPLETED"))
+                                viewModel.api.projects.updateProject(project.id!!, UpdateProjectRequest(status = "COMPLETED"))
                                 viewModel.refreshData()
                             } catch (e: Exception) {
                                 viewModel.error = "Fout bij afsluiten project: ${e.message}"
