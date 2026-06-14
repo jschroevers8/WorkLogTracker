@@ -21,6 +21,7 @@ import worklogtracker.frontend.presentation.framework.components.text.WltSeconda
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
 import worklogtracker.frontend.presentation.framework.theme.WltColors
+import java.time.LocalDateTime
 
 @Composable
 fun NotificationCard(
@@ -56,6 +57,12 @@ fun NotificationCard(
             WltSecondaryText(notification.message)
         }
 
-        WltSecondaryText(OffsetDateTime.parse(notification.time).format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")), 12)
-    }
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
+
+        val dateTime = LocalDateTime.parse(notification.time, formatter)
+
+        WltSecondaryText(
+            dateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")),
+            12
+        )    }
 }

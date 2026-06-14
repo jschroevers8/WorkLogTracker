@@ -37,6 +37,8 @@ fun WorkLogScreen(
     val scrollState = rememberScrollState()
 
     LaunchedEffect(taskId) {
+        viewModel.loadTasks()
+
         taskId?.toLongOrNull()?.let {
             viewModel.onTaskAssignmentSelected(it.toInt())
         }

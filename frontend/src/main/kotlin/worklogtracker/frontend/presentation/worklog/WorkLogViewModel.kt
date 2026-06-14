@@ -13,10 +13,6 @@ class WorkLogViewModel(
     private val workLogRepository: WorkLogRepository
 ) : BaseViewModel<WorkLogUiState>(WorkLogUiState()) {
 
-    init {
-        loadTasks()
-    }
-
     fun loadTasks() {
         launchWithErrorHandling {
             val tasks = taskRepository.getTasks()

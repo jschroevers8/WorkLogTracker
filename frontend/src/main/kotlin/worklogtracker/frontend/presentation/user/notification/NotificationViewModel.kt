@@ -7,11 +7,6 @@ import worklogtracker.shared.dto.notification.NotificationResponse
 class NotificationViewModel(
     private val notificationRepository: NotificationRepository
 ) : BaseViewModel<NotificationListUiState>(NotificationListUiState()) {
-
-    init {
-        loadNotifications()
-    }
-
     fun loadNotifications() {
         launchWithErrorHandling {
             val notifications = notificationRepository.getNotifications()

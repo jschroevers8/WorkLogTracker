@@ -6,11 +6,6 @@ import worklogtracker.frontend.repositories.ProjectRepository
 class ProjectViewModel(
     private val projectRepository: ProjectRepository
 ) : BaseViewModel<ProjectUiState>(ProjectUiState()) {
-
-    init {
-        loadProjects()
-    }
-
     fun loadProjects() {
         launchWithErrorHandling {
             val projects = projectRepository.getProjects()

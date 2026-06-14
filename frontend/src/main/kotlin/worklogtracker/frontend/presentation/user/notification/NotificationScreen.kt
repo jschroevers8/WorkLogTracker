@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
@@ -19,6 +20,10 @@ fun NotificationScreen(
     viewModel: NotificationViewModel = koinViewModel()
 ) {
     val state = viewModel.uiState
+
+    LaunchedEffect(Unit) {
+        viewModel.loadNotifications()
+    }
 
     WltScreen (backStack = backStack) {
         Spacer(Modifier.height(20.dp))
