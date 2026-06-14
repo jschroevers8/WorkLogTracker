@@ -12,8 +12,6 @@ data class SignupUiState(
     @Required("Email field cannot be empty")
     @Email("Please enter a valid email")
     val email: String = "",
-    @Required("PhoneNumber field cannot be empty")
-    val phoneNumber: String = "",
     @Required("Password field cannot be empty")
     val password: String = "",
     override val loading: Boolean = false,

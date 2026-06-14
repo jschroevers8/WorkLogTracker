@@ -22,7 +22,6 @@ class CreateTaskUseCase(
     private val userRepository: UserRepositoryInterface,
     private val projectRepository: ProjectRepositoryInterface,
     private val taskFactory: TaskFactory,
-    private val createNotificationUseCase: CreateNotificationUseCase,
 ) {
     suspend operator fun invoke(
         userId: UserId,
@@ -32,8 +31,8 @@ class CreateTaskUseCase(
         assignedUserId: UserId,
     ): TaskResponse =
         try {
-            val user = userRepository.findById(userId) ?: throw Exception("User not found")
-            val assignedUser = userRepository.findById(assignedUserId) ?: throw Exception("Assigned user not found")
+            userRepository.findById(userId) ?: throw Exception("User not found")
+            userRepository.findById(assignedUserId) ?: throw Exception("Assigned user not found")
 
             val project =
                 projectRepository.findById(projectId)
@@ -64,15 +63,6 @@ class CreateTaskUseCase(
             if (project.status == ProjectStatus.PLANNING) {
                 projectRepository.update(project.updateStatus(ProjectStatus.ACTIVE))
             }
-
-            // Notify user
-            createNotificationUseCase(
-                userId = assignedUserId,
-                title = "Nieuwe taak toegewezen",
-                message = "Je bent toegewezen aan taak: ${savedTask.title}",
-                type = NotificationType.TASK_ASSIGNED,
-                taskId = taskId,
-            )
 
             TaskResponse(
                 id = savedTask.id.value,

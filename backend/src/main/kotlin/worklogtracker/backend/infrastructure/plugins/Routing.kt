@@ -93,7 +93,6 @@ fun Application.configureRouting() {
             userRepository,
             projectRepository,
             taskFactory,
-            createNotificationUseCaseInstance,
         )
     val updateTaskStatusUseCase = UpdateTaskStatusUseCase(taskRepository, createNotificationUseCaseInstance)
     val assignTaskUseCase =

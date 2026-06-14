@@ -25,7 +25,6 @@ fun SignupScreen(
         onFirstNameChange = viewModel.updateState { value -> copy(firstName = value) },
         onLastNameChange = viewModel.updateState { value -> copy(lastName = value) },
         onEmailChange = viewModel.updateState { value -> copy(email = value) },
-        onPhoneNumberChange = viewModel.updateState { value -> copy(phoneNumber = value) },
         onPasswordChange = viewModel.updateState { value -> copy(password = value) },
         onSignupClick = viewModel::signup,
         onLoginClick = {

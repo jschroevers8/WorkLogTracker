@@ -29,7 +29,6 @@ fun SignupContent(
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
-    onPhoneNumberChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onSignupClick: () -> Unit,
     onLoginClick: () -> Unit,
@@ -59,14 +58,6 @@ fun SignupContent(
             "Email",
             onEmailChange,
             modifier = Modifier.testTag("emailField"),
-        )
-        Spacer(Modifier.height(16.dp))
-
-        TextField(
-            state.phoneNumber,
-            "Phone Number",
-            onPhoneNumberChange,
-            modifier = Modifier.testTag("phoneNumberField"),
         )
         Spacer(Modifier.height(16.dp))
 
