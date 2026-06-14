@@ -1,26 +1,25 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
-import org.jetbrains.compose.web.css.*
-import worklogtracker.shared.dto.project.ProjectResponse
-import worklogtracker.shared.dto.project.CreateProjectRequest
-import worklogtracker.shared.dto.project.UpdateProjectRequest
-import worklogtracker.shared.dto.task.CreateTaskRequest
-import worklogtracker.shared.dto.task.AssignTaskRequest
-import worklogtracker.shared.dto.user.UserResponse
-import worklogtracker.webapp.ApiClient
-import worklogtracker.webapp.ui.Styles
-import worklogtracker.webapp.ui.components.ProjectCard
-import worklogtracker.webapp.ui.components.ErrorPopup
-import worklogtracker.webapp.viewmodel.ProjectsViewModel
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.web.attributes.InputType
 import org.jetbrains.compose.web.attributes.placeholder
 import org.jetbrains.compose.web.attributes.selected
+import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
+import worklogtracker.shared.dto.project.UpdateProjectRequest
+import worklogtracker.webapp.ApiClient
+import worklogtracker.webapp.ui.Styles
+import worklogtracker.webapp.ui.components.ErrorPopup
+import worklogtracker.webapp.ui.components.ProjectCard
+import worklogtracker.webapp.viewmodel.ProjectsViewModel
 
 @Composable
-fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onSeeProjectDetails: (Int) -> Unit) {
+fun ProjectsScreen(
+    api: ApiClient,
+    scope: kotlinx.coroutines.CoroutineScope,
+    onSeeProjectDetails: (Int) -> Unit,
+) {
     val viewModel = remember { ProjectsViewModel(api, scope) }
 
     LaunchedEffect(Unit) {
@@ -73,19 +72,39 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                 placeholder("Projectnaam")
                 value(viewModel.newProjectName)
                 onInput { viewModel.newProjectName = it.value }
-                style { width(100.percent); padding(8.px); marginBottom(8.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
+                style {
+                    width(100.percent)
+                    padding(8.px)
+                    marginBottom(8.px)
+                    borderRadius(6.px)
+                    border(1.px, LineStyle.Solid, Styles.Border)
+                }
             }
             TextArea {
                 placeholder("Beschrijving")
                 value(viewModel.newProjectDesc)
                 onInput { viewModel.newProjectDesc = it.value }
-                style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
+                style {
+                    width(100.percent)
+                    padding(8.px)
+                    marginBottom(16.px)
+                    borderRadius(6.px)
+                    border(1.px, LineStyle.Solid, Styles.Border)
+                    minHeight(60.px)
+                }
             }
             Button({
                 onClick {
                     viewModel.createProject()
                 }
-                style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
+                style {
+                    padding(8.px, 16.px)
+                    backgroundColor(Styles.Success)
+                    color(Color.white)
+                    border(0.px)
+                    borderRadius(6.px)
+                    cursor("pointer")
+                }
             }) { Text("Project Opslaan") }
         }
     }
@@ -105,19 +124,38 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                 placeholder("Taak Titel")
                 value(viewModel.newTaskTitle)
                 onInput { viewModel.newTaskTitle = it.value }
-                style { width(100.percent); padding(8.px); marginBottom(8.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
+                style {
+                    width(100.percent)
+                    padding(8.px)
+                    marginBottom(8.px)
+                    borderRadius(6.px)
+                    border(1.px, LineStyle.Solid, Styles.Border)
+                }
             }
             TextArea {
                 placeholder("Beschrijving")
                 value(viewModel.newTaskDesc)
                 onInput { viewModel.newTaskDesc = it.value }
-                style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border); minHeight(60.px) }
+                style {
+                    width(100.percent)
+                    padding(8.px)
+                    marginBottom(16.px)
+                    borderRadius(6.px)
+                    border(1.px, LineStyle.Solid, Styles.Border)
+                    minHeight(60.px)
+                }
             }
 
             H4 { Text("Toewijzen aan medewerker") }
             Select({
                 onInput { viewModel.selectedUserIdForTask = it.value?.toIntOrNull() }
-                style { width(100.percent); padding(8.px); marginBottom(16.px); borderRadius(6.px); border(1.px, LineStyle.Solid, Styles.Border) }
+                style {
+                    width(100.percent)
+                    padding(8.px)
+                    marginBottom(16.px)
+                    borderRadius(6.px)
+                    border(1.px, LineStyle.Solid, Styles.Border)
+                }
             }) {
                 Option("", {
                     if (viewModel.selectedUserIdForTask == null) selected()
@@ -138,11 +176,26 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                 onClick {
                     viewModel.createTask()
                 }
-                style { padding(8.px, 16.px); backgroundColor(Styles.Success); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
+                style {
+                    padding(8.px, 16.px)
+                    backgroundColor(Styles.Success)
+                    color(Color.white)
+                    border(0.px)
+                    borderRadius(6.px)
+                    cursor("pointer")
+                }
             }) { Text("Taak Opslaan & Toewijzen") }
             Button({
                 onClick { viewModel.selectedProjectIdForTask = null }
-                style { marginLeft(8.px); padding(8.px, 16.px); backgroundColor(Styles.Secondary); color(Color.white); border(0.px); borderRadius(6.px); cursor("pointer") }
+                style {
+                    marginLeft(8.px)
+                    padding(8.px, 16.px)
+                    backgroundColor(Styles.Secondary)
+                    color(Color.white)
+                    border(0.px)
+                    borderRadius(6.px)
+                    cursor("pointer")
+                }
             }) { Text("Annuleren") }
         }
     }
@@ -202,7 +255,7 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                             try {
                                 val tasks = api.tasks.getTasks(projectId = project.id)
                                 val hasUnfinishedTasks = tasks.any { it.status != "COMPLETED" }
-                                
+
                                 if (hasUnfinishedTasks) {
                                     viewModel.error = "Kan project '${project.name}' niet afsluiten: er zijn nog onvoltooide taken."
                                     return@launch
@@ -214,10 +267,9 @@ fun ProjectsScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onS
                                 viewModel.error = "Fout bij afsluiten project: ${e.message}"
                             }
                         }
-                    }
+                    },
                 )
             }
         }
     }
 }
-

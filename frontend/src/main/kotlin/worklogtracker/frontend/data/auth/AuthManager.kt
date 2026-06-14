@@ -1,6 +1,5 @@
 package worklogtracker.frontend.data.auth
 
-
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -10,8 +9,9 @@ import kotlinx.coroutines.flow.map
 
 private val Context.dataStore by preferencesDataStore("auth_prefs")
 
-class AuthManager(context: Context) : AuthManagerInterface {
-
+class AuthManager(
+    context: Context,
+) : AuthManagerInterface {
     private val dataStore = context.dataStore
 
     companion object {
@@ -22,17 +22,19 @@ class AuthManager(context: Context) : AuthManagerInterface {
         val ROLE = stringPreferencesKey("role")
     }
 
-    override val authTokenFlow: Flow<String?> = dataStore.data.map { prefs ->
-        prefs[AUTH_TOKEN]
-    }
+    override val authTokenFlow: Flow<String?> =
+        dataStore.data.map { prefs ->
+            prefs[AUTH_TOKEN]
+        }
 
-    override val userDataFlow: Flow<UserData?> = dataStore.data.map { prefs ->
-        val firstName = prefs[FIRST_NAME] ?: return@map null
-        val lastName = prefs[LAST_NAME] ?: ""
-        val email = prefs[EMAIL] ?: ""
-        val role = prefs[ROLE] ?: ""
-        UserData(firstName, lastName, email, role)
-    }
+    override val userDataFlow: Flow<UserData?> =
+        dataStore.data.map { prefs ->
+            val firstName = prefs[FIRST_NAME] ?: return@map null
+            val lastName = prefs[LAST_NAME] ?: ""
+            val email = prefs[EMAIL] ?: ""
+            val role = prefs[ROLE] ?: ""
+            UserData(firstName, lastName, email, role)
+        }
 
     override suspend fun saveAuthToken(token: String) {
         dataStore.edit { prefs ->

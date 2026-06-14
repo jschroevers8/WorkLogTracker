@@ -1,2 +1,5 @@
 package worklogtracker.backend.domain.exceptions
-class InvalidTaskStatusTransitionException(message: String) : DomainException(message)
+
+class InvalidTaskStatusTransitionException(
+    message: String,
+) : DomainException(message)

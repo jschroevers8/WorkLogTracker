@@ -12,11 +12,5 @@ data class WorkLogUiState(
     val longitude: Double? = null,
     val success: Boolean = false,
     override val loading: Boolean = false,
-    override val error: String? = null
+    override val error: String? = null,
 ) : BaseUiState
-
-data class TaskItem(
-    val id: Int,
-    val title: String,
-    val assignmentId: Int? = null
-)

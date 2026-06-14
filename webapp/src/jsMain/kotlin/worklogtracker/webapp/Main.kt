@@ -1,20 +1,25 @@
 package worklogtracker.webapp
 
 import androidx.compose.runtime.*
+import kotlinx.browser.localStorage
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.renderComposable
-import org.jetbrains.compose.web.css.*
-import kotlinx.browser.localStorage
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.decodeFromString
 import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.NavLink
 import worklogtracker.webapp.ui.screens.*
 
 enum class Screen {
-    LOGIN, DASHBOARD, EMPLOYEES, PROJECTS, EMPLOYEE_DETAIL, PROJECT_DETAIL
+    LOGIN,
+    DASHBOARD,
+    EMPLOYEES,
+    PROJECTS,
+    EMPLOYEE_DETAIL,
+    PROJECT_DETAIL,
 }
 
 val apiClient = ApiClient()
@@ -29,7 +34,7 @@ fun main() {
                     } catch (e: Exception) {
                         null
                     }
-                }
+                },
             )
         }
         var currentScreen by remember {
@@ -87,16 +92,25 @@ fun main() {
                             gap(8.px)
                         }
                         onClick { currentScreen = Screen.DASHBOARD }
-                    }) { 
+                    }) {
                         Img(src = "https://img.icons8.com/fluency/48/work.png") {
-                            style { width(24.px); height(24.px) }
+                            style {
+                                width(24.px)
+                                height(24.px)
+                            }
                         }
-                        Text("WLT Admin") 
+                        Text("WLT Admin")
                     }
 
                     NavLink("Dashboard", currentScreen == Screen.DASHBOARD) { currentScreen = Screen.DASHBOARD }
-                    NavLink("Medewerkers", currentScreen == Screen.EMPLOYEES || currentScreen == Screen.EMPLOYEE_DETAIL) { currentScreen = Screen.EMPLOYEES }
-                    NavLink("Projecten", currentScreen == Screen.PROJECTS || currentScreen == Screen.PROJECT_DETAIL) { currentScreen = Screen.PROJECTS }
+                    NavLink("Medewerkers", currentScreen == Screen.EMPLOYEES || currentScreen == Screen.EMPLOYEE_DETAIL) {
+                        currentScreen =
+                            Screen.EMPLOYEES
+                    }
+                    NavLink("Projecten", currentScreen == Screen.PROJECTS || currentScreen == Screen.PROJECT_DETAIL) {
+                        currentScreen =
+                            Screen.PROJECTS
+                    }
 
                     Div({
                         style {
@@ -110,14 +124,25 @@ fun main() {
                                 textAlign("right")
                             }
                         }) {
-                            Div({ style { fontWeight("600"); fontSize(0.9.em); color(Styles.TextPrimary) } }) {
+                            Div({
+                                style {
+                                    fontWeight("600")
+                                    fontSize(0.9.em)
+                                    color(Styles.TextPrimary)
+                                }
+                            }) {
                                 Text("${currentUser?.firstName} ${currentUser?.lastName}")
                             }
-                            Div({ style { fontSize(0.75.em); color(Styles.TextSecondary) } }) {
+                            Div({
+                                style {
+                                    fontSize(0.75.em)
+                                    color(Styles.TextSecondary)
+                                }
+                            }) {
                                 Text(currentUser?.role ?: "")
                             }
                         }
-                        
+
                         Button({
                             style {
                                 backgroundColor(Color.white)
@@ -156,20 +181,24 @@ fun main() {
                     }) {
                         when (currentScreen) {
                             Screen.DASHBOARD -> DashboardScreen(apiClient, scope)
-                            Screen.EMPLOYEES -> EmployeesScreen(apiClient, scope) { id ->
-                                selectedUserId = id
-                                currentScreen = Screen.EMPLOYEE_DETAIL
-                            }
-                            Screen.PROJECTS -> ProjectsScreen(apiClient, scope) { id ->
-                                selectedProjectId = id
-                                currentScreen = Screen.PROJECT_DETAIL
-                            }
-                            Screen.EMPLOYEE_DETAIL -> EmployeeDetailScreen(selectedUserId!!, apiClient, scope) {
-                                currentScreen = Screen.EMPLOYEES
-                            }
-                            Screen.PROJECT_DETAIL -> ProjectDetailScreen(selectedProjectId!!, apiClient, scope) {
-                                currentScreen = Screen.PROJECTS
-                            }
+                            Screen.EMPLOYEES ->
+                                EmployeesScreen(apiClient, scope) { id ->
+                                    selectedUserId = id
+                                    currentScreen = Screen.EMPLOYEE_DETAIL
+                                }
+                            Screen.PROJECTS ->
+                                ProjectsScreen(apiClient, scope) { id ->
+                                    selectedProjectId = id
+                                    currentScreen = Screen.PROJECT_DETAIL
+                                }
+                            Screen.EMPLOYEE_DETAIL ->
+                                EmployeeDetailScreen(selectedUserId!!, apiClient, scope) {
+                                    currentScreen = Screen.EMPLOYEES
+                                }
+                            Screen.PROJECT_DETAIL ->
+                                ProjectDetailScreen(selectedProjectId!!, apiClient, scope) {
+                                    currentScreen = Screen.PROJECTS
+                                }
                             else -> {}
                         }
                     }

@@ -19,8 +19,8 @@ fun Route.getProjectsRoute(listProjectsUseCase: ListProjectsUseCase) {
                 listProjectsUseCase(
                     userId = call.getUserId(),
                     status = status,
-                    excludeStatus = excludeStatus
-                )
+                    excludeStatus = excludeStatus,
+                ),
             )
         }
     }

@@ -9,5 +9,5 @@ data class TaskLocationEntity(
     val taskId: TaskId,
     val latitude: Double,
     val longitude: Double,
-    val recordedAt: LocalDateTime
+    val recordedAt: LocalDateTime,
 )

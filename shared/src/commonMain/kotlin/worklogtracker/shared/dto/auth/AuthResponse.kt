@@ -9,5 +9,5 @@ data class AuthResponse(
     val firstName: String,
     val lastName: String,
     val role: String,
-    val token: String
+    val token: String,
 )

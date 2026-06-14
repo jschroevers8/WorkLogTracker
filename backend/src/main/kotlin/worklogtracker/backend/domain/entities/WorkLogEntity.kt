@@ -7,10 +7,10 @@ import java.time.LocalDateTime
 
 /**
  * WorkLog Aggregate Root
- * 
+ *
  * Represents logged time against a task.
  * Inherits from concept of "Rental" and "RentalTrip" (time-based tracking).
- * 
+ *
  * Domain Rules:
  * - EndTime must be after StartTime
  * - WorkLog cannot record time in the future
@@ -29,9 +29,8 @@ data class WorkLogEntity(
     val longitude: Double? = null,
     val isSynced: Boolean = false,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 ) {
-    
     init {
         if (endTime != null) {
             require(endTime > startTime) { "EndTime must be after StartTime" }
@@ -42,13 +41,12 @@ data class WorkLogEntity(
     /**
      * Calculate duration from start and end times
      */
-    fun calculateDuration(): Int? {
-        return if (endTime != null) {
+    fun calculateDuration(): Int? =
+        if (endTime != null) {
             ((endTime.toLocalTime().toNanoOfDay() - startTime.toLocalTime().toNanoOfDay()) / 60_000_000_000L).toInt()
         } else {
             null
         }
-    }
 
     /**
      * Mark work log as synced
@@ -60,4 +58,3 @@ data class WorkLogEntity(
      */
     fun isComplete(): Boolean = endTime != null
 }
-

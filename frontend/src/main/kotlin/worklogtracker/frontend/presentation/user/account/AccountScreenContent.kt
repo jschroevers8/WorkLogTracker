@@ -17,15 +17,15 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import worklogtracker.frontend.presentation.framework.components.ConfirmDialog
-import worklogtracker.frontend.presentation.framework.components.WltScreen
-import worklogtracker.frontend.presentation.framework.theme.WltColors
+import worklogtracker.frontend.presentation.framework.components.Screen
+import worklogtracker.frontend.presentation.framework.theme.Colors
 
 @Composable
 fun AccountScreenContent(
     state: AccountUiState,
     onLoadUser: () -> Unit,
     onLogout: () -> Unit,
-    backStack: NavBackStack<NavKey>
+    backStack: NavBackStack<NavKey>,
 ) {
     var showLogoutDialog by remember { mutableStateOf(false) }
 
@@ -33,24 +33,25 @@ fun AccountScreenContent(
         onLoadUser()
     }
 
-    WltScreen(backStack = backStack) {
+    Screen(backStack = backStack) {
         Spacer(Modifier.height(24.dp))
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
-                modifier = Modifier
-                    .size(90.dp)
-                    .background(WltColors.Surface, CircleShape),
-                contentAlignment = Alignment.Center
+                modifier =
+                    Modifier
+                        .size(90.dp)
+                        .background(Colors.Surface, CircleShape),
+                contentAlignment = Alignment.Center,
             ) {
                 Icon(
                     imageVector = Icons.Default.Person,
                     contentDescription = null,
-                    tint = WltColors.Primary,
-                    modifier = Modifier.size(48.dp)
+                    tint = Colors.Primary,
+                    modifier = Modifier.size(48.dp),
                 )
             }
 
@@ -58,31 +59,31 @@ fun AccountScreenContent(
 
             Text(
                 text = "${state.firstName} ${state.lastName}".trim().ifEmpty { "Loading..." },
-                color = WltColors.TextPrimary,
+                color = Colors.TextPrimary,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                modifier = Modifier.testTag("AccountUserName")
+                modifier = Modifier.testTag("AccountUserName"),
             )
 
             Text(
                 text = state.email,
-                color = WltColors.TextSecondary,
+                color = Colors.TextSecondary,
                 fontSize = 14.sp,
-                modifier = Modifier.testTag("AccountUserEmail")
+                modifier = Modifier.testTag("AccountUserEmail"),
             )
 
             Spacer(Modifier.height(8.dp))
 
             Surface(
-                color = WltColors.Primary.copy(alpha = 0.1f),
-                shape = RoundedCornerShape(16.dp)
+                color = Colors.Primary.copy(alpha = 0.1f),
+                shape = RoundedCornerShape(16.dp),
             ) {
                 Text(
                     text = "Worklog Tracker Profile",
-                    color = WltColors.Primary,
+                    color = Colors.Primary,
                     fontSize = 12.sp,
                     fontWeight = FontWeight.Medium,
-                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp)
+                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 4.dp),
                 )
             }
         }
@@ -91,7 +92,7 @@ fun AccountScreenContent(
 
         Spacer(Modifier.weight(1f))
 
-        AccountRow("Log out", "log_out", Icons.Default.Logout, iconTint = WltColors.Error) { showLogoutDialog = true }
+        AccountRow("Log out", "log_out", Icons.Default.Logout, iconTint = Colors.Error) { showLogoutDialog = true }
 
         if (showLogoutDialog) {
             ConfirmDialog(
@@ -101,13 +102,13 @@ fun AccountScreenContent(
                     showLogoutDialog = false
                     onLogout()
                 },
-                onDismiss = { showLogoutDialog = false }
+                onDismiss = { showLogoutDialog = false },
             )
         }
 
         state.error?.let {
             Spacer(Modifier.height(16.dp))
-            Text(it, color = WltColors.Error)
+            Text(it, color = Colors.Error)
         }
 
         Spacer(Modifier.height(16.dp))

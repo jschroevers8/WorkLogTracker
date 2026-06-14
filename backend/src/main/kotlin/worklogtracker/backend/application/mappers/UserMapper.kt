@@ -1,7 +1,6 @@
 package worklogtracker.backend.application.mappers
 
 import worklogtracker.backend.domain.entities.UserEntity
-import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.shared.dto.user.UserResponse
 
 fun UserEntity.toUserResponse() =
@@ -10,5 +9,5 @@ fun UserEntity.toUserResponse() =
         email = email.value,
         firstName = firstName,
         lastName = lastName,
-        role = role.name
+        role = role.name,
     )

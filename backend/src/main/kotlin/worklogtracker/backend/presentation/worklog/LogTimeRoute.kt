@@ -18,12 +18,13 @@ fun Route.logTimeRoute(logTimeUseCase: LogTimeUseCase) {
             val request = call.receive<CreateWorkLogRequest>()
 
             call.respond(
-                HttpStatusCode.Created, logTimeUseCase(
+                HttpStatusCode.Created,
+                logTimeUseCase(
                     userId = userId,
                     taskAssignmentId = TaskAssignmentId(request.taskAssignmentId),
                     hours = BigDecimal.valueOf(request.hours),
-                    description = request.description
-                )
+                    description = request.description,
+                ),
             )
         }
     }

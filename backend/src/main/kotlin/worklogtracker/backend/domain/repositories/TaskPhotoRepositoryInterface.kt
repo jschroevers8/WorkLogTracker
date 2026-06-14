@@ -6,6 +6,8 @@ import worklogtracker.backend.domain.valueobjects.task.TaskPhotoId
 
 interface TaskPhotoRepositoryInterface {
     suspend fun findById(id: TaskPhotoId): TaskPhotoEntity?
+
     suspend fun save(photo: TaskPhotoEntity): TaskPhotoEntity
+
     suspend fun findByTask(taskId: TaskId): List<TaskPhotoEntity>
 }

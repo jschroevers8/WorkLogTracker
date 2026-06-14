@@ -9,5 +9,5 @@ data class WorkLogResponse(
     val userId: Int,
     val hours: Double,
     val description: String?,
-    val createdAt: String
+    val createdAt: String,
 )

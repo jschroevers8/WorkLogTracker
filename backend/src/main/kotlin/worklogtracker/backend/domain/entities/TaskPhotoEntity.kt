@@ -10,5 +10,5 @@ data class TaskPhotoEntity(
     val taskId: TaskId,
     val photoUrl: String,
     val uploadedBy: UserId,
-    val uploadedAt: LocalDateTime
+    val uploadedAt: LocalDateTime,
 )

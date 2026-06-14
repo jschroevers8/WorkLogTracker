@@ -7,7 +7,10 @@ import org.koin.androidx.compose.koinViewModel
 import worklogtracker.frontend.navigation.Screen
 
 @Composable
-fun LoginScreen(backStack: NavBackStack<NavKey>, previousScreen: NavKey?) {
+fun LoginScreen(
+    backStack: NavBackStack<NavKey>,
+    previousScreen: NavKey?,
+) {
     val viewModel: LoginViewModel = koinViewModel()
     val state = viewModel.uiState
 
@@ -21,6 +24,6 @@ fun LoginScreen(backStack: NavBackStack<NavKey>, previousScreen: NavKey?) {
         onPasswordChange = viewModel.updateState { copy(password = it) },
         onLoginClick = viewModel::login,
         onSignupClick = { backStack.add(Screen.Signup(previousScreen as Screen?)) },
-        backStack = backStack
+        backStack = backStack,
     )
 }

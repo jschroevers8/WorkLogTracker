@@ -1,18 +1,18 @@
 package worklogtracker.frontend.repositories
 
 import io.ktor.client.statement.bodyAsText
+import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.decodeFromString
 import worklogtracker.frontend.data.remote.ApiClient
-import worklogtracker.shared.dto.task.AssignTaskRequest
-import worklogtracker.shared.dto.task.CreateTaskRequest
-import worklogtracker.shared.dto.task.UpdateTaskStatusRequest
-import worklogtracker.shared.dto.task.TaskResponse
-import worklogtracker.shared.dto.task.UploadTaskPhotoRequest
 import worklogtracker.shared.dto.task.RecordTaskLocationRequest
+import worklogtracker.shared.dto.task.TaskResponse
+import worklogtracker.shared.dto.task.UpdateTaskStatusRequest
+import worklogtracker.shared.dto.task.UploadTaskPhotoRequest
 
-class TaskRepository(private val api: ApiClient) {
+class TaskRepository(
+    private val api: ApiClient,
+) {
     private val baseUrl = "http://10.0.2.2:8080/api/tasks"
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -21,7 +21,10 @@ class TaskRepository(private val api: ApiClient) {
         return json.decodeFromString(response.bodyAsText())
     }
 
-    suspend fun updateTaskStatus(id: String, request: UpdateTaskStatusRequest) {
+    suspend fun updateTaskStatus(
+        id: String,
+        request: UpdateTaskStatusRequest,
+    ) {
         val body = json.encodeToString(request)
         api.post("$baseUrl/$id/status", body)
     }

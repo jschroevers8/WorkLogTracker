@@ -1,12 +1,16 @@
 package worklogtracker.webapp.ui.components
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.webapp.ui.Styles
 
 @Composable
-fun StatCard(title: String, value: String, accentColor: CSSColorValue) {
+fun StatCard(
+    title: String,
+    value: String,
+    accentColor: CSSColorValue,
+) {
     Div({
         style {
             backgroundColor(Styles.Surface)

@@ -12,5 +12,5 @@ data class NotificationResponse(
     val type: String,
     val sentAt: String,
     val isRead: Boolean,
-    val createdAt: String
+    val createdAt: String,
 )

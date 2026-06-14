@@ -10,22 +10,21 @@ import worklogtracker.frontend.presentation.framework.annotations.Email
 import worklogtracker.frontend.presentation.framework.annotations.Required
 import kotlin.reflect.full.memberProperties
 
+// TODO dit effe chekcen
 abstract class BaseViewModel<S : BaseUiState>(
-    private val initialState: S
+    private val initialState: S,
 ) : ViewModel() {
-
     protected var _uiState by mutableStateOf(initialState)
     val uiState: S get() = _uiState
 
-    protected fun resetState(
-        transform: (S) -> S = { initialState }
-    ) {
+    protected fun resetState(transform: (S) -> S = { initialState }) {
         _uiState = transform(initialState)
     }
 
-    fun <T> updateState(update: S.(T) -> S): (T) -> Unit = { value ->
-        _uiState = uiState.update(value)
-    }
+    fun <T> updateState(update: S.(T) -> S): (T) -> Unit =
+        { value ->
+            _uiState = uiState.update(value)
+        }
 
     fun <T : BaseUiState> T.validate(setError: (String) -> Unit): Boolean {
         val kClass = this::class
@@ -39,7 +38,11 @@ abstract class BaseViewModel<S : BaseUiState>(
             }
 
             property.annotations.filterIsInstance<Email>().forEach { email ->
-                if (value is String && !android.util.Patterns.EMAIL_ADDRESS.matcher(value).matches()) {
+                if (value is String &&
+                    !android.util.Patterns.EMAIL_ADDRESS
+                        .matcher(value)
+                        .matches()
+                ) {
                     setError(email.message)
                     return false
                 }
@@ -48,21 +51,19 @@ abstract class BaseViewModel<S : BaseUiState>(
         return true
     }
 
-
-    protected fun launchWithErrorHandling(
-        block: suspend () -> Unit
-    ) {
+    protected fun launchWithErrorHandling(block: suspend () -> Unit) {
         viewModelScope.launch {
             try {
                 setLoading(true)
                 block()
             } catch (e: Exception) {
-                val message = when {
-                    e.message?.contains("401") == true -> "Ongeldig e-mailadres of wachtwoord."
-                    e.message?.contains("403") == true -> "Geen toegang."
-                    e.message?.contains("Unable to resolve host") == true -> "Geen internetverbinding."
-                    else -> e.message ?: "Er is iets misgegaan"
-                }
+                val message =
+                    when {
+                        e.message?.contains("401") == true -> "Ongeldig e-mailadres of wachtwoord."
+                        e.message?.contains("403") == true -> "Geen toegang."
+                        e.message?.contains("Unable to resolve host") == true -> "Geen internetverbinding."
+                        else -> e.message ?: "Er is iets misgegaan"
+                    }
                 setError(message)
             } finally {
                 setLoading(false)
@@ -71,5 +72,6 @@ abstract class BaseViewModel<S : BaseUiState>(
     }
 
     protected abstract fun setLoading(value: Boolean)
+
     protected abstract fun setError(message: String?)
 }

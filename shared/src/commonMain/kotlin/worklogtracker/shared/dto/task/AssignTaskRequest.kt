@@ -4,5 +4,5 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class AssignTaskRequest(
-    val assignedUserId: Int
+    val assignedUserId: Int,
 )

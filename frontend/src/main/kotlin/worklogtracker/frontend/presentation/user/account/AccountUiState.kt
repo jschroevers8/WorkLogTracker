@@ -10,7 +10,5 @@ data class AccountUiState(
     val userPoints: Int = 0,
     val renterRightsRequested: Boolean = false,
     override val loading: Boolean = false,
-    override val error: String? = null
-): BaseUiState
-
-
+    override val error: String? = null,
+) : BaseUiState

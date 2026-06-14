@@ -12,7 +12,7 @@ fun ConfirmDialog(
     confirmText: String = "Bevestigen",
     dismissText: String = "Annuleren",
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -31,6 +31,6 @@ fun ConfirmDialog(
             TextButton(onClick = onDismiss, modifier = Modifier.testTag("DialogDismiss")) {
                 Text(dismissText)
             }
-        }
+        },
     )
 }

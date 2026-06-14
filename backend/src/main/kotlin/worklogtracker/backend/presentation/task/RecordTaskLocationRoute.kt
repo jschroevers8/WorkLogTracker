@@ -15,11 +15,12 @@ fun Route.recordTaskLocationRoute(recordTaskLocationUseCase: RecordTaskLocationU
             val request = call.receive<RecordTaskLocationRequest>()
 
             call.respond(
-                HttpStatusCode.Created, recordTaskLocationUseCase(
+                HttpStatusCode.Created,
+                recordTaskLocationUseCase(
                     taskId = TaskId(request.taskId),
                     latitude = request.latitude,
-                    longitude = request.longitude
-                )
+                    longitude = request.longitude,
+                ),
             )
         }
     }

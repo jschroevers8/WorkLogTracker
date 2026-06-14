@@ -1,4 +1,5 @@
 package worklogtracker.backend.presentation.auth
+
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

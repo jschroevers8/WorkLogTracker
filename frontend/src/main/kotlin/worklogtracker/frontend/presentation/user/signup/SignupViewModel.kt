@@ -5,21 +5,21 @@ import worklogtracker.frontend.repositories.UserRepository
 import worklogtracker.shared.dto.auth.RegisterUserRequest
 
 class SignupViewModel(
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
 ) : BaseViewModel<SignupUiState>(SignupUiState()) {
-
     var onSuccess: (() -> Unit)? = null
 
     fun signup() {
         if (uiState.validate(::setError)) {
             launchWithErrorHandling {
                 try {
-                    val request = RegisterUserRequest(
-                        email = uiState.email,
-                        password = uiState.password,
-                        firstName = uiState.firstName,
-                        lastName = uiState.lastName
-                    )
+                    val request =
+                        RegisterUserRequest(
+                            email = uiState.email,
+                            password = uiState.password,
+                            firstName = uiState.firstName,
+                            lastName = uiState.lastName,
+                        )
 
                     userRepository.register(request)
                     onSuccess?.invoke()

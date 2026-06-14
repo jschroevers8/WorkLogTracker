@@ -5,15 +5,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed class Screen(val requiresAuth: Boolean = false) : NavKey {
-
+sealed class Screen(
+    val requiresAuth: Boolean = false,
+) : NavKey {
     @Serializable
     @SerialName("login")
-    data class Login(val targetScreen: Screen? = null) : Screen(requiresAuth = false)
+    data class Login(
+        val targetScreen: Screen? = null,
+    ) : Screen(requiresAuth = false)
 
     @Serializable
     @SerialName("signup")
-    data class Signup(val targetScreen: Screen? = null) : Screen(requiresAuth = false)
+    data class Signup(
+        val targetScreen: Screen? = null,
+    ) : Screen(requiresAuth = false)
 
     @Serializable
     @SerialName("projects")
@@ -25,7 +30,9 @@ sealed class Screen(val requiresAuth: Boolean = false) : NavKey {
 
     @Serializable
     @SerialName("worklogs")
-    data class WorkLogs(val taskId: String? = null) : Screen(requiresAuth = false)
+    data class WorkLogs(
+        val taskId: String? = null,
+    ) : Screen(requiresAuth = false)
 
     @Serializable
     @SerialName("notification")

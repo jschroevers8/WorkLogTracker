@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.core.graphics.scale
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import com.google.android.gms.location.LocationServices
@@ -30,7 +31,7 @@ import java.io.ByteArrayOutputStream
 fun WorkLogScreen(
     backStack: NavBackStack<NavKey>,
     taskId: String? = null,
-    viewModel: WorkLogViewModel = koinViewModel()
+    viewModel: WorkLogViewModel = koinViewModel(),
 ) {
     val uiState = viewModel.uiState
     val context = LocalContext.current
@@ -45,52 +46,56 @@ fun WorkLogScreen(
     }
 
     // Camera Launcher
-    val cameraLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.TakePicturePreview()
-    ) { bitmap ->
-        if (bitmap != null) {
-            val base64 = bitmapToBase64(bitmap)
-            viewModel.onPhotoCaptured(base64)
+    val cameraLauncher =
+        rememberLauncherForActivityResult(
+            contract = ActivityResultContracts.TakePicturePreview(),
+        ) { bitmap ->
+            if (bitmap != null) {
+                val base64 = bitmapToBase64(bitmap)
+                viewModel.onPhotoCaptured(base64)
+            }
         }
-    }
 
     // Permission Launchers
-    val cameraPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
-    ) { isGranted ->
-        if (isGranted) {
-            cameraLauncher.launch()
+    val cameraPermissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestPermission(),
+        ) { isGranted ->
+            if (isGranted) {
+                cameraLauncher.launch()
+            }
         }
-    }
 
-    val locationPermissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) { permissions ->
-        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
-            permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
-        ) {
-            captureLocation(context, viewModel)
+    val locationPermissionLauncher =
+        rememberLauncherForActivityResult(
+            ActivityResultContracts.RequestMultiplePermissions(),
+        ) { permissions ->
+            if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true ||
+                permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true
+            ) {
+                captureLocation(context, viewModel)
+            }
         }
-    }
 
     Scaffold(
         bottomBar = {
             BottomNavigationBar(
                 backStack = backStack,
-                onItemSelected = { screen -> backStack.add(screen) }
+                onItemSelected = { screen -> backStack.add(screen) },
             )
-        }
+        },
     ) { padding ->
         Column(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-                .padding(16.dp)
-                .verticalScroll(scrollState)
+            modifier =
+                Modifier
+                    .padding(padding)
+                    .fillMaxSize()
+                    .padding(16.dp)
+                    .verticalScroll(scrollState),
         ) {
             Text(
                 text = "Uren Registreren",
-                style = MaterialTheme.typography.headlineMedium
+                style = MaterialTheme.typography.headlineMedium,
             )
 
             Spacer(modifier = Modifier.height(24.dp))
@@ -99,10 +104,10 @@ fun WorkLogScreen(
             Text("Selecteer Taak", style = MaterialTheme.typography.labelLarge)
             var expanded by remember { mutableStateOf(false) }
             val selectedAssignment = uiState.tasks.find { it.id == uiState.selectedTaskAssignmentId }
-            
+
             ExposedDropdownMenuBox(
                 expanded = expanded,
-                onExpandedChange = { expanded = !expanded }
+                onExpandedChange = { expanded = !expanded },
             ) {
                 TextField(
                     value = selectedAssignment?.title ?: "Selecteer een taak",
@@ -110,11 +115,11 @@ fun WorkLogScreen(
                     readOnly = true,
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier.fillMaxWidth().menuAnchor(),
-                    colors = ExposedDropdownMenuDefaults.textFieldColors()
+                    colors = ExposedDropdownMenuDefaults.textFieldColors(),
                 )
                 ExposedDropdownMenu(
                     expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                    onDismissRequest = { expanded = false },
                 ) {
                     uiState.tasks.forEach { task ->
                         DropdownMenuItem(
@@ -122,7 +127,7 @@ fun WorkLogScreen(
                             onClick = {
                                 viewModel.onTaskAssignmentSelected(task.id)
                                 expanded = false
-                            }
+                            },
                         )
                     }
                 }
@@ -137,9 +142,10 @@ fun WorkLogScreen(
                 label = { Text("Aantal uren") },
                 placeholder = { Text("Bijv. 2.5") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardOptions = androidx.compose.foundation.text.KeyboardOptions(
-                    keyboardType = androidx.compose.ui.text.input.KeyboardType.Number
-                )
+                keyboardOptions =
+                    androidx.compose.foundation.text.KeyboardOptions(
+                        keyboardType = androidx.compose.ui.text.input.KeyboardType.Number,
+                    ),
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -151,7 +157,7 @@ fun WorkLogScreen(
                 label = { Text("Omschrijving") },
                 placeholder = { Text("Wat heb je gedaan?") },
                 modifier = Modifier.fillMaxWidth(),
-                minLines = 3
+                minLines = 3,
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -162,8 +168,8 @@ fun WorkLogScreen(
                     locationPermissionLauncher.launch(
                         arrayOf(
                             Manifest.permission.ACCESS_FINE_LOCATION,
-                            Manifest.permission.ACCESS_COARSE_LOCATION
-                        )
+                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                        ),
                     )
                 }) {
                     Text(if (uiState.latitude != null) "Locatie OK ✓" else "Haal GPS Locatie op")
@@ -172,7 +178,7 @@ fun WorkLogScreen(
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
                         "Lat: ${uiState.latitude?.toString()?.take(8)}, Lon: ${uiState.longitude?.toString()?.take(8)}",
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }
@@ -186,12 +192,12 @@ fun WorkLogScreen(
                     Image(
                         bitmap = it.asImageBitmap(),
                         contentDescription = "Captured photo",
-                        modifier = Modifier.fillMaxWidth().height(200.dp)
+                        modifier = Modifier.fillMaxWidth().height(200.dp),
                     )
                 }
                 Button(
                     onClick = { viewModel.onPhotoCaptured("") },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error),
                 ) {
                     Text("Opnieuw")
                 }
@@ -209,7 +215,7 @@ fun WorkLogScreen(
             Button(
                 onClick = { viewModel.submitWorkLog() },
                 modifier = Modifier.fillMaxWidth(),
-                enabled = uiState.selectedTaskAssignmentId != null && uiState.hours.isNotEmpty() && !uiState.loading
+                enabled = uiState.selectedTaskAssignmentId != null && uiState.hours.isNotEmpty() && !uiState.loading,
             ) {
                 if (uiState.loading) {
                     CircularProgressIndicator(modifier = Modifier.size(24.dp), color = MaterialTheme.colorScheme.onPrimary)
@@ -231,14 +237,17 @@ fun WorkLogScreen(
                         TextButton(onClick = { viewModel.resetSuccess() }) {
                             Text("OK")
                         }
-                    }
+                    },
                 )
             }
         }
     }
 }
 
-private fun captureLocation(context: Context, viewModel: WorkLogViewModel) {
+private fun captureLocation(
+    context: Context,
+    viewModel: WorkLogViewModel,
+) {
     val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
     try {
         fusedLocationClient.lastLocation.addOnSuccessListener { location ->
@@ -247,32 +256,30 @@ private fun captureLocation(context: Context, viewModel: WorkLogViewModel) {
             }
         }
     } catch (e: SecurityException) {
-        // Handle exception
     }
 }
 
 private fun bitmapToBase64(bitmap: Bitmap): String {
-    // Scale down if necessary to reduce Base64 length
     val maxWidth = 1024
-    val scaledBitmap = if (bitmap.width > maxWidth) {
-        val scale = maxWidth.toDouble() / bitmap.width
-        Bitmap.createScaledBitmap(bitmap, maxWidth, (bitmap.height * scale).toInt(), true)
-    } else {
-        bitmap
-    }
-    
+    val scaledBitmap =
+        if (bitmap.width > maxWidth) {
+            val scale = maxWidth.toDouble() / bitmap.width
+            bitmap.scale(maxWidth, (bitmap.height * scale).toInt())
+        } else {
+            bitmap
+        }
+
     val byteArrayOutputStream = ByteArrayOutputStream()
     scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 70, byteArrayOutputStream)
     val byteArray = byteArrayOutputStream.toByteArray()
     return "data:image/jpeg;base64," + Base64.encodeToString(byteArray, Base64.DEFAULT)
 }
 
-private fun base64ToBitmap(base64Str: String): Bitmap? {
-    return try {
+private fun base64ToBitmap(base64Str: String): Bitmap? =
+    try {
         val pureBase64 = if (base64Str.contains(",")) base64Str.split(",")[1] else base64Str
         val decodedBytes = Base64.decode(pureBase64, Base64.DEFAULT)
         BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
     } catch (e: Exception) {
         null
     }
-}

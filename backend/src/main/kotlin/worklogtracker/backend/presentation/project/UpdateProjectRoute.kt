@@ -17,8 +17,16 @@ fun Route.updateProjectRoute(updateProjectUseCase: UpdateProjectUseCase) {
             val userId = call.getUserId()
             val projectId = ProjectId(call.parameters["id"]?.toInt() ?: error("Project ID required"))
             val request = call.receive<UpdateProjectRequest>()
-            val response = updateProjectUseCase(userId, projectId, request.name, request.description, request.status?.let(
-                ProjectStatus::valueOf))
+            val response =
+                updateProjectUseCase(
+                    userId,
+                    projectId,
+                    request.name,
+                    request.description,
+                    request.status?.let(
+                        ProjectStatus::valueOf,
+                    ),
+                )
 
             call.respond(HttpStatusCode.OK, response)
         }

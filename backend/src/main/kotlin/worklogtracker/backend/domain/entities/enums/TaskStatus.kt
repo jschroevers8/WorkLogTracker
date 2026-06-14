@@ -4,6 +4,5 @@ enum class TaskStatus {
     OPEN,
     IN_PROGRESS,
     COMPLETED,
-    CANCELLED
+    CANCELLED,
 }
-

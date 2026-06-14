@@ -1,5 +1,13 @@
 package worklogtracker.backend.infrastructure.repositories
 
+import kotlinx.datetime.toJavaLocalDateTime
+import kotlinx.datetime.toKotlinLocalDateTime
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import worklogtracker.backend.domain.entities.UserEntity
 import worklogtracker.backend.domain.entities.enums.UserRole
 import worklogtracker.backend.domain.repositories.UserRepositoryInterface
@@ -7,18 +15,9 @@ import worklogtracker.backend.domain.valueobjects.user.Email
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.hydrators.hydrateUser
 import worklogtracker.backend.infrastructure.tables.UserTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
-import kotlinx.datetime.toJavaLocalDateTime
-import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
 class UserRepository : UserRepositoryInterface {
-
     override suspend fun findById(id: UserId): UserEntity? =
         transaction {
             UserTable
@@ -41,20 +40,21 @@ class UserRepository : UserRepositoryInterface {
         transaction {
             val now = LocalDateTime.now().toKotlinLocalDateTime()
 
-            val id = UserTable.insert {
-                it[email] = user.email.value
-                it[passwordHash] = user.passwordHash.hash
-                it[firstName] = user.firstName
-                it[lastName] = user.lastName
-                it[role] = user.role.name
-                it[createdAt] = now
-                it[updatedAt] = now
-            } get UserTable.id
+            val id =
+                UserTable.insert {
+                    it[email] = user.email.value
+                    it[passwordHash] = user.passwordHash.hash
+                    it[firstName] = user.firstName
+                    it[lastName] = user.lastName
+                    it[role] = user.role.name
+                    it[createdAt] = now
+                    it[updatedAt] = now
+                } get UserTable.id
 
             user.copy(
                 id = UserId(id),
                 createdAt = now.toJavaLocalDateTime(),
-                updatedAt = now.toJavaLocalDateTime()
+                updatedAt = now.toJavaLocalDateTime(),
             )
         }
 

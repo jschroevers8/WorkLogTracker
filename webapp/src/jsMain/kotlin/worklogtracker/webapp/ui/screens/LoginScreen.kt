@@ -1,17 +1,20 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
+import org.jetbrains.compose.web.attributes.disabled
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.shared.dto.auth.AuthResponse
-import worklogtracker.shared.dto.auth.LoginRequest
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
-import org.jetbrains.compose.web.attributes.disabled
 import worklogtracker.webapp.viewmodel.LoginViewModel
 
 @Composable
-fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLoginSuccess: (AuthResponse) -> Unit) {
+fun LoginScreen(
+    api: ApiClient,
+    scope: kotlinx.coroutines.CoroutineScope,
+    onLoginSuccess: (AuthResponse) -> Unit,
+) {
     val viewModel = remember { LoginViewModel(api, scope, onLoginSuccess) }
 
     Div({
@@ -66,7 +69,12 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                 }) { Text(viewModel.error) }
             }
 
-            Div({ style { marginBottom(16.px); width(100.percent) } }) {
+            Div({
+                style {
+                    marginBottom(16.px)
+                    width(100.percent)
+                }
+            }) {
                 Label(forId = "email", attrs = {
                     style {
                         display(DisplayStyle.Block)
@@ -90,7 +98,12 @@ fun LoginScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onLogi
                 }
             }
 
-            Div({ style { marginBottom(24.px); width(100.percent)  } }) {
+            Div({
+                style {
+                    marginBottom(24.px)
+                    width(100.percent)
+                }
+            }) {
                 Label(forId = "password", attrs = {
                     style {
                         display(DisplayStyle.Block)

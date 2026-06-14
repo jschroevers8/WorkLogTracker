@@ -1,11 +1,11 @@
 package worklogtracker.backend
 
 import io.ktor.http.*
-import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.*
 import io.ktor.server.netty.*
-import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.cors.routing.CORS
 import worklogtracker.backend.infrastructure.plugins.configureRouting
 import worklogtracker.backend.infrastructure.plugins.configureSecurity
 import worklogtracker.backend.infrastructure.plugins.configureStatusPages

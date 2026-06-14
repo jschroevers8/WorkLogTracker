@@ -7,8 +7,12 @@ import worklogtracker.backend.domain.valueobjects.user.UserId
 
 interface TaskAssignmentRepositoryInterface {
     suspend fun findById(id: TaskAssignmentId): TaskAssignmentEntity?
+
     suspend fun save(assignment: TaskAssignmentEntity): TaskAssignmentEntity
+
     suspend fun update(assignment: TaskAssignmentEntity): Boolean
+
     suspend fun findByTask(taskId: TaskId): List<TaskAssignmentEntity>
+
     suspend fun findByUser(userId: UserId): List<TaskAssignmentEntity>
 }

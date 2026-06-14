@@ -15,30 +15,33 @@ class LogTimeUseCase(
     private val timeEntryRepository: TimeEntryRepositoryInterface,
     private val taskAssignmentRepository: TaskAssignmentRepositoryInterface,
     private val taskRepository: TaskRepositoryInterface,
-    private val generateAiDescriptionUseCase: GenerateAiDescriptionUseCase
+    private val generateAiDescriptionUseCase: GenerateAiDescriptionUseCase,
 ) {
     suspend operator fun invoke(
         userId: UserId,
         taskAssignmentId: TaskAssignmentId,
         hours: BigDecimal,
-        description: String?
+        description: String?,
     ): Boolean {
-        val assignment = taskAssignmentRepository.findById(taskAssignmentId)
-            ?: throw Exception("Task assignment not found")
+        val assignment =
+            taskAssignmentRepository.findById(taskAssignmentId)
+                ?: throw Exception("Task assignment not found")
 
-        val task = taskRepository.findById(assignment.taskId)
-            ?: throw Exception("Task not found")
+        val task =
+            taskRepository.findById(assignment.taskId)
+                ?: throw Exception("Task not found")
 
         val aiDescription = generateAiDescriptionUseCase(task.title, description)
 
-        val timeEntry = TimeEntryEntity(
-            taskAssignmentId = taskAssignmentId,
-            userId = userId,
-            hours = hours,
-            description = description,
-            aiDescription = aiDescription,
-            createdAt = LocalDateTime.now()
-        )
+        val timeEntry =
+            TimeEntryEntity(
+                taskAssignmentId = taskAssignmentId,
+                userId = userId,
+                hours = hours,
+                description = description,
+                aiDescription = aiDescription,
+                createdAt = LocalDateTime.now(),
+            )
         timeEntryRepository.save(timeEntry)
 
         // Mark task as completed

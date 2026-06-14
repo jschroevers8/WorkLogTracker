@@ -9,7 +9,7 @@ import java.time.LocalDateTime
 
 /**
  * User Aggregate Root
- * 
+ *
  * Principal actor in the system. Manages authentication and role-based access control.
  * Domain Rules:
  * - Email must be unique
@@ -24,9 +24,8 @@ data class UserEntity(
     val lastName: String,
     val role: UserRole,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 ) {
-    
     /**
      * Authorization check: Only admins can perform admin operations
      */
@@ -48,8 +47,5 @@ data class UserEntity(
     /**
      * Verify password matches stored hash
      */
-    fun verifyPassword(plainPassword: String): Boolean {
-        return Password.Companion.verify(plainPassword, passwordHash.hash)
-    }
+    fun verifyPassword(plainPassword: String): Boolean = Password.Companion.verify(plainPassword, passwordHash.hash)
 }
-

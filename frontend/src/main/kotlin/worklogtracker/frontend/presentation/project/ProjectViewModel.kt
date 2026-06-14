@@ -1,23 +1,23 @@
 package worklogtracker.frontend.presentation.project
 
 import worklogtracker.frontend.presentation.framework.viewmodel.BaseViewModel
+import worklogtracker.frontend.presentation.project.item.ProjectItem
 import worklogtracker.frontend.repositories.ProjectRepository
 
 class ProjectViewModel(
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
 ) : BaseViewModel<ProjectUiState>(ProjectUiState()) {
     fun loadProjects() {
         launchWithErrorHandling {
-            val projects = projectRepository.getProjects()
-
-            val projectList = projects.map { response ->
-                ProjectItem(
-                    id = response.id?.toString() ?: "",
-                    name = response.name,
-                    description = response.description ?: "",
-                    status = response.status
-                )
-            }
+            val projectList =
+                projectRepository.getProjects().map { response ->
+                    ProjectItem(
+                        id = response.id?.toString() ?: "",
+                        name = response.name,
+                        description = response.description ?: "",
+                        status = response.status,
+                    )
+                }
 
             _uiState = uiState.copy(projects = projectList)
         }

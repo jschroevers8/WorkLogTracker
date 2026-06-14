@@ -1,5 +1,10 @@
 package worklogtracker.backend.infrastructure.plugins
 
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
+import io.ktor.server.application.*
+import io.ktor.server.routing.routing
+import worklogtracker.backend.application.usecases.ai.GenerateAiDescriptionUseCase
 import worklogtracker.backend.application.usecases.auth.LoginUserUseCase
 import worklogtracker.backend.application.usecases.auth.RegisterUserUseCase
 import worklogtracker.backend.application.usecases.notification.CreateNotificationUseCase
@@ -11,11 +16,11 @@ import worklogtracker.backend.application.usecases.project.UpdateProjectUseCase
 import worklogtracker.backend.application.usecases.task.AssignTaskUseCase
 import worklogtracker.backend.application.usecases.task.CreateTaskUseCase
 import worklogtracker.backend.application.usecases.task.ListTasksUseCase
+import worklogtracker.backend.application.usecases.task.RecordTaskLocationUseCase
 import worklogtracker.backend.application.usecases.task.UpdateTaskStatusUseCase
 import worklogtracker.backend.application.usecases.task.UploadTaskPhotoUseCase
-import worklogtracker.backend.application.usecases.task.RecordTaskLocationUseCase
-import worklogtracker.backend.application.usecases.worklog.LogTimeUseCase
 import worklogtracker.backend.application.usecases.worklog.GetUserWorkLogsUseCase
+import worklogtracker.backend.application.usecases.worklog.LogTimeUseCase
 import worklogtracker.backend.domain.factories.NotificationFactory
 import worklogtracker.backend.domain.factories.ProjectFactory
 import worklogtracker.backend.domain.factories.TaskFactory
@@ -24,11 +29,11 @@ import worklogtracker.backend.domain.validations.user.ExistingUserValidator
 import worklogtracker.backend.infrastructure.auth.JwtTokenGenerator
 import worklogtracker.backend.infrastructure.repositories.NotificationRepository
 import worklogtracker.backend.infrastructure.repositories.ProjectRepository
-import worklogtracker.backend.infrastructure.repositories.TaskRepository
 import worklogtracker.backend.infrastructure.repositories.TaskAssignmentRepository
-import worklogtracker.backend.infrastructure.repositories.TimeEntryRepository
-import worklogtracker.backend.infrastructure.repositories.TaskPhotoRepository
 import worklogtracker.backend.infrastructure.repositories.TaskLocationRepository
+import worklogtracker.backend.infrastructure.repositories.TaskPhotoRepository
+import worklogtracker.backend.infrastructure.repositories.TaskRepository
+import worklogtracker.backend.infrastructure.repositories.TimeEntryRepository
 import worklogtracker.backend.infrastructure.repositories.UserRepository
 import worklogtracker.backend.presentation.auth.loginRoute
 import worklogtracker.backend.presentation.auth.registerRoute
@@ -40,25 +45,19 @@ import worklogtracker.backend.presentation.project.updateProjectRoute
 import worklogtracker.backend.presentation.task.assignTaskRoute
 import worklogtracker.backend.presentation.task.createTaskRoute
 import worklogtracker.backend.presentation.task.getTasksRoute
+import worklogtracker.backend.presentation.task.recordTaskLocationRoute
 import worklogtracker.backend.presentation.task.updateTaskStatusRoute
 import worklogtracker.backend.presentation.task.uploadTaskPhotoRoute
-import worklogtracker.backend.presentation.task.recordTaskLocationRoute
-import worklogtracker.backend.presentation.worklog.logTimeRoute
-import worklogtracker.backend.presentation.worklog.getWorkLogsRoute
 import worklogtracker.backend.presentation.user.getUsersRoute
-import io.ktor.server.application.*
-import io.ktor.server.routing.routing
-
-import worklogtracker.backend.application.usecases.ai.GenerateAiDescriptionUseCase
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
+import worklogtracker.backend.presentation.worklog.getWorkLogsRoute
+import worklogtracker.backend.presentation.worklog.logTimeRoute
 
 fun Application.configureRouting() {
-    val httpClient = HttpClient(CIO)
-    // Client configuration is moved to Use Case to avoid import conflicts
-
+    // JWT
     val jwtSecret = environment.config.property("jwt.secret").getString()
+    val tokenGenerator = JwtTokenGenerator(jwtSecret)
 
+    // Repositories
     val userRepository = UserRepository()
     val projectRepository = ProjectRepository()
     val taskRepository = TaskRepository()
@@ -67,32 +66,51 @@ fun Application.configureRouting() {
     val taskPhotoRepository = TaskPhotoRepository()
     val taskLocationRepository = TaskLocationRepository()
     val notificationRepository = NotificationRepository()
-    
+
+    // Factories
     val userFactory = UserFactory()
     val projectFactory = ProjectFactory()
     val taskFactory = TaskFactory()
     val notificationFactory = NotificationFactory()
-    
+
+    // Validator
     val existingUserValidator = ExistingUserValidator(userRepository)
-    val tokenGenerator = JwtTokenGenerator(jwtSecret)
-    
+
+    // Http
+    val httpClient = HttpClient(CIO)
+
+    // Usecase
     val registerUseCase = RegisterUserUseCase(userRepository, existingUserValidator, userFactory, tokenGenerator)
     val loginUseCase = LoginUserUseCase(userRepository, tokenGenerator)
     val createProjectUseCase = CreateProjectUseCase(projectRepository, userRepository, projectFactory)
     val updateProjectUseCase = UpdateProjectUseCase(projectRepository, userRepository, taskRepository)
     val listProjectsUseCase = ListProjectsUseCase(projectRepository, userRepository)
     val createNotificationUseCaseInstance = CreateNotificationUseCase(notificationRepository, notificationFactory)
-    val createTaskUseCase = CreateTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, projectRepository, taskFactory, createNotificationUseCaseInstance)
+    val createTaskUseCase =
+        CreateTaskUseCase(
+            taskRepository,
+            taskAssignmentRepository,
+            userRepository,
+            projectRepository,
+            taskFactory,
+            createNotificationUseCaseInstance,
+        )
     val updateTaskStatusUseCase = UpdateTaskStatusUseCase(taskRepository, createNotificationUseCaseInstance)
-    val assignTaskUseCase = AssignTaskUseCase(taskRepository, taskAssignmentRepository, userRepository, createNotificationUseCaseInstance, updateTaskStatusUseCase)
-    val listTasksUseCase = ListTasksUseCase(taskRepository, taskPhotoRepository, taskLocationRepository, taskAssignmentRepository, timeEntryRepository)
-    
+    val assignTaskUseCase =
+        AssignTaskUseCase(
+            taskRepository,
+            taskAssignmentRepository,
+            userRepository,
+            createNotificationUseCaseInstance,
+            updateTaskStatusUseCase,
+        )
+    val listTasksUseCase =
+        ListTasksUseCase(taskRepository, taskPhotoRepository, taskLocationRepository, taskAssignmentRepository, timeEntryRepository)
     val generateAiDescriptionUseCase = GenerateAiDescriptionUseCase(httpClient)
     val logTimeUseCase = LogTimeUseCase(timeEntryRepository, taskAssignmentRepository, taskRepository, generateAiDescriptionUseCase)
     val uploadTaskPhotoUseCase = UploadTaskPhotoUseCase(taskPhotoRepository)
     val recordTaskLocationUseCase = RecordTaskLocationUseCase(taskLocationRepository)
     val getUserWorkLogsUseCase = GetUserWorkLogsUseCase(timeEntryRepository)
-    
     val getUserNotificationsUseCase = GetUserNotificationsUseCase(notificationRepository)
     val markNotificationAsReadUseCase = MarkNotificationAsReadUseCase(notificationRepository)
 

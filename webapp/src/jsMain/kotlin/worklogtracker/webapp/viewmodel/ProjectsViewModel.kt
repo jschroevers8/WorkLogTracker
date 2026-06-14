@@ -3,16 +3,16 @@ package worklogtracker.webapp.viewmodel
 import androidx.compose.runtime.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.shared.dto.project.CreateProjectRequest
-import worklogtracker.shared.dto.task.CreateTaskRequest
+import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.shared.dto.task.AssignTaskRequest
+import worklogtracker.shared.dto.task.CreateTaskRequest
 import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 
 class ProjectsViewModel(
     private val api: ApiClient,
-    private val scope: CoroutineScope
+    private val scope: CoroutineScope,
 ) {
     var activeProjects by mutableStateOf<List<ProjectResponse>>(emptyList())
     var completedProjects by mutableStateOf<List<ProjectResponse>>(emptyList())
@@ -65,7 +65,7 @@ class ProjectsViewModel(
         val currentProjectId = selectedProjectIdForTask
         val currentUserId = selectedUserIdForTask
         if (currentProjectId == null || currentUserId == null) return
-        
+
         val pid: Int = currentProjectId
         val uid: Int = currentUserId
 

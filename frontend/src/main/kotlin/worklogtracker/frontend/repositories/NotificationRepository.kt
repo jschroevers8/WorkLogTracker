@@ -7,7 +7,9 @@ import kotlinx.serialization.json.Json
 import worklogtracker.frontend.data.remote.ApiClient
 import worklogtracker.shared.dto.notification.NotificationResponse
 
-class NotificationRepository(private val api: ApiClient) {
+class NotificationRepository(
+    private val api: ApiClient,
+) {
     private val baseUrl = "http://10.0.2.2:8080/api/notifications"
     private val json = Json { ignoreUnknownKeys = true }
 
@@ -16,7 +18,5 @@ class NotificationRepository(private val api: ApiClient) {
         return json.decodeFromString(response.bodyAsText())
     }
 
-    suspend fun markAsRead(id: Int): HttpResponse {
-        return api.postWithoutBody("$baseUrl/$id/read")
-    }
+    suspend fun markAsRead(id: Int): HttpResponse = api.postWithoutBody("$baseUrl/$id/read")
 }

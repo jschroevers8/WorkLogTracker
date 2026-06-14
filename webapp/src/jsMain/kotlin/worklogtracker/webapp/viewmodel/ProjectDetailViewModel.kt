@@ -5,7 +5,9 @@ import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.webapp.ApiClient
 
-class ProjectDetailViewModel(private val api: ApiClient) {
+class ProjectDetailViewModel(
+    private val api: ApiClient,
+) {
     var project by mutableStateOf<ProjectResponse?>(null)
     var tasks by mutableStateOf<List<TaskResponse>>(emptyList())
     var loading by mutableStateOf(true)
@@ -17,7 +19,7 @@ class ProjectDetailViewModel(private val api: ApiClient) {
             error = ""
             val projects = api.projects.getProjects()
             project = projects.find { it.id == projectId }
-            
+
             if (project != null) {
                 tasks = api.tasks.getTasks(projectId = projectId)
             } else {

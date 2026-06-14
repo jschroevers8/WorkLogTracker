@@ -1,11 +1,6 @@
 package worklogtracker.backend.infrastructure.repositories
 
-import worklogtracker.backend.domain.entities.NotificationEntity
-import worklogtracker.backend.domain.repositories.NotificationRepositoryInterface
-import worklogtracker.backend.domain.valueobjects.notification.NotificationId
-import worklogtracker.backend.domain.valueobjects.user.UserId
-import worklogtracker.backend.infrastructure.hydrators.hydrateNotification
-import worklogtracker.backend.infrastructure.tables.NotificationTable
+import kotlinx.datetime.toKotlinLocalDateTime
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.lessEq
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
@@ -13,11 +8,15 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.jetbrains.exposed.sql.update
-import kotlinx.datetime.toKotlinLocalDateTime
+import worklogtracker.backend.domain.entities.NotificationEntity
+import worklogtracker.backend.domain.repositories.NotificationRepositoryInterface
+import worklogtracker.backend.domain.valueobjects.notification.NotificationId
+import worklogtracker.backend.domain.valueobjects.user.UserId
+import worklogtracker.backend.infrastructure.hydrators.hydrateNotification
+import worklogtracker.backend.infrastructure.tables.NotificationTable
 import java.time.LocalDateTime
 
 class NotificationRepository : NotificationRepositoryInterface {
-
     override suspend fun findById(id: NotificationId): NotificationEntity? =
         transaction {
             NotificationTable
@@ -47,7 +46,7 @@ class NotificationRepository : NotificationRepositoryInterface {
     override suspend fun update(notification: NotificationEntity): Boolean =
         transaction {
             NotificationTable.update(
-                { NotificationTable.id eq notification.id!!.value }
+                { NotificationTable.id eq notification.id!!.value },
             ) {
                 it[isRead] = notification.isRead
             } > 0
@@ -56,7 +55,7 @@ class NotificationRepository : NotificationRepositoryInterface {
     override suspend fun markAsRead(id: NotificationId): Boolean =
         transaction {
             NotificationTable.update(
-                { NotificationTable.id eq id.value }
+                { NotificationTable.id eq id.value },
             ) {
                 it[isRead] = true
             } > 0
@@ -64,7 +63,7 @@ class NotificationRepository : NotificationRepositoryInterface {
 
     override suspend fun findByUser(
         userId: UserId,
-        unreadOnly: Boolean
+        unreadOnly: Boolean,
     ): List<NotificationEntity> =
         transaction {
             if (unreadOnly) {
@@ -72,9 +71,8 @@ class NotificationRepository : NotificationRepositoryInterface {
                     .selectAll()
                     .where {
                         (NotificationTable.userId eq userId.value) and
-                                (NotificationTable.isRead eq false)
-                    }
-                    .map { it.hydrateNotification() }
+                            (NotificationTable.isRead eq false)
+                    }.map { it.hydrateNotification() }
             } else {
                 NotificationTable
                     .selectAll()

@@ -7,5 +7,5 @@ data class CreateProjectRequest(
     val name: String,
     val description: String? = null,
     val startDate: String? = null,
-    val endDate: String? = null
+    val endDate: String? = null,
 )

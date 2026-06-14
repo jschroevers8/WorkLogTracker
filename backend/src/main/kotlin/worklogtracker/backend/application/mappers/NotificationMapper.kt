@@ -1,7 +1,7 @@
 package worklogtracker.backend.application.mappers
 
-import worklogtracker.shared.dto.notification.NotificationResponse
 import worklogtracker.backend.domain.entities.NotificationEntity
+import worklogtracker.shared.dto.notification.NotificationResponse
 import java.time.format.DateTimeFormatter
 
 fun NotificationEntity.toResponse() =
@@ -14,5 +14,5 @@ fun NotificationEntity.toResponse() =
         type = this.type.name,
         sentAt = this.sentAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
         isRead = this.isRead,
-        createdAt = this.createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        createdAt = this.createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
     )

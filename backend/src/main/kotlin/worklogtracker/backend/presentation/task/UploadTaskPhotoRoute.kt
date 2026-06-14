@@ -17,11 +17,12 @@ fun Route.uploadTaskPhotoRoute(uploadTaskPhotoUseCase: UploadTaskPhotoUseCase) {
             val request = call.receive<UploadTaskPhotoRequest>()
 
             call.respond(
-                HttpStatusCode.Created, uploadTaskPhotoUseCase(
+                HttpStatusCode.Created,
+                uploadTaskPhotoUseCase(
                     userId = userId,
                     taskId = TaskId(request.taskId),
-                    photoUrl = request.photoUrl
-                )
+                    photoUrl = request.photoUrl,
+                ),
             )
         }
     }

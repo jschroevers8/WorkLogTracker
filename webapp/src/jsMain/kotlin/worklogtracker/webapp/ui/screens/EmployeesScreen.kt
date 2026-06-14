@@ -1,18 +1,19 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
-import worklogtracker.shared.dto.user.UserResponse
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.ErrorPopup
-import kotlinx.coroutines.launch
-
 import worklogtracker.webapp.viewmodel.EmployeesViewModel
 
 @Composable
-fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onUserSelected: (Long) -> Unit) {
+fun EmployeesScreen(
+    api: ApiClient,
+    scope: kotlinx.coroutines.CoroutineScope,
+    onUserSelected: (Long) -> Unit,
+) {
     val viewModel = remember { EmployeesViewModel(api) }
 
     LaunchedEffect(Unit) {
@@ -52,10 +53,38 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
                             property("border-bottom", "1px solid ${Styles.Border}")
                         }
                     }) {
-                        Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Naam") }
-                        Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Email") }
-                        Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Rol") }
-                        Th({ style { textAlign("right"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Acties") }
+                        Th({
+                            style {
+                                textAlign("left")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Naam") }
+                        Th({
+                            style {
+                                textAlign("left")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Email") }
+                        Th({
+                            style {
+                                textAlign("left")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Rol") }
+                        Th({
+                            style {
+                                textAlign("right")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Acties") }
                     }
                 }
                 Tbody {
@@ -66,8 +95,18 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
                                 property("transition", "background-color 0.2s")
                             }
                         }) {
-                            Td({ style { padding(16.px); color(Styles.TextPrimary) } }) { Text("${user.firstName} ${user.lastName}") }
-                            Td({ style { padding(16.px); color(Styles.TextSecondary) } }) { Text(user.email) }
+                            Td({
+                                style {
+                                    padding(16.px)
+                                    color(Styles.TextPrimary)
+                                }
+                            }) { Text("${user.firstName} ${user.lastName}") }
+                            Td({
+                                style {
+                                    padding(16.px)
+                                    color(Styles.TextSecondary)
+                                }
+                            }) { Text(user.email) }
                             Td({ style { padding(16.px) } }) {
                                 Span({
                                     style {
@@ -85,7 +124,12 @@ fun EmployeesScreen(api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, on
                                     }
                                 }) { Text(user.role) }
                             }
-                            Td({ style { padding(16.px); textAlign("right") } }) {
+                            Td({
+                                style {
+                                    padding(16.px)
+                                    textAlign("right")
+                                }
+                            }) {
                                 Button({
                                     style {
                                         padding(8.px, 12.px)

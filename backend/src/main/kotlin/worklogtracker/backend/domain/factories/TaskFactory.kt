@@ -7,22 +7,19 @@ import worklogtracker.backend.domain.valueobjects.user.UserId
 import java.time.LocalDateTime
 
 class TaskFactory {
-    
     fun create(
         projectId: ProjectId,
         createdBy: UserId,
         title: String,
-        description: String? = null
-    ): TaskEntity {
-        return TaskEntity(
+        description: String? = null,
+    ): TaskEntity =
+        TaskEntity(
             projectId = projectId,
             title = title,
             description = description,
             status = TaskStatus.OPEN,
             createdBy = createdBy,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
-    }
 }
-

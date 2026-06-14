@@ -1,20 +1,21 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
+import kotlinx.coroutines.CoroutineScope
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
+import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.ui.components.StatCard
 import worklogtracker.webapp.viewmodel.DashboardViewModel
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
-import worklogtracker.webapp.ApiClient
-
 @Composable
-fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
+fun DashboardScreen(
+    apiClient: ApiClient,
+    externalScope: CoroutineScope,
+) {
     val viewModel = remember { DashboardViewModel(apiClient) }
-    
+
     LaunchedEffect(Unit) {
         viewModel.startPeriodicRefresh()
     }
@@ -49,8 +50,13 @@ fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
             position(Position.Relative)
         }
     }) {
-        H3({ style { marginBottom(24.px); color(Styles.TextPrimary) } }) { 
-            Text("Gewerkte uren per dag") 
+        H3({
+            style {
+                marginBottom(24.px)
+                color(Styles.TextPrimary)
+            }
+        }) {
+            Text("Gewerkte uren per dag")
             if (viewModel.isLoading) {
                 Span({
                     style {
@@ -83,7 +89,6 @@ fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
                         width(50.px)
                     }
                 }) {
-
                     Span({
                         style {
                             marginBottom(4.px)
@@ -92,7 +97,7 @@ fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
                             fontWeight("600")
                         }
                     }) {
-                        Text("${hours}")
+                        Text("$hours")
                     }
 
                     Div({
@@ -122,4 +127,3 @@ fun DashboardScreen(apiClient: ApiClient, externalScope: CoroutineScope) {
         }
     }
 }
-

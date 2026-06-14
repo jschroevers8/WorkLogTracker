@@ -8,10 +8,10 @@ import java.time.LocalDateTime
 
 /**
  * Project Aggregate Root
- * 
+ *
  * Represents a project/scope that contains multiple tasks.
  * All tasks belong to exactly one project.
- * 
+ *
  * Domain Rules:
  * - StartDate must be before EndDate
  * - Only admins can create/modify projects
@@ -26,31 +26,31 @@ data class ProjectEntity(
     val endDate: LocalDate?,
     val createdById: UserId,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 ) {
-    
     init {
         if (startDate != null && endDate != null) {
             require(startDate < endDate) { "Start date must be before end date" }
         }
     }
-    
+
     /**
      * Update project status with validation
      */
     fun updateStatus(newStatus: ProjectStatus): ProjectEntity {
-        val validTransitions = mapOf(
-            ProjectStatus.PLANNING to setOf(ProjectStatus.ACTIVE, ProjectStatus.ON_HOLD),
-            ProjectStatus.ACTIVE to setOf(ProjectStatus.COMPLETED, ProjectStatus.ON_HOLD),
-            ProjectStatus.ON_HOLD to setOf(ProjectStatus.ACTIVE),
-            ProjectStatus.COMPLETED to setOf()
-        )
-        
+        val validTransitions =
+            mapOf(
+                ProjectStatus.PLANNING to setOf(ProjectStatus.ACTIVE, ProjectStatus.ON_HOLD),
+                ProjectStatus.ACTIVE to setOf(ProjectStatus.COMPLETED, ProjectStatus.ON_HOLD),
+                ProjectStatus.ON_HOLD to setOf(ProjectStatus.ACTIVE),
+                ProjectStatus.COMPLETED to setOf(),
+            )
+
         val allowed = validTransitions[status] ?: emptySet()
-        require(newStatus in allowed) { 
-            "Cannot transition from $status to $newStatus" 
+        require(newStatus in allowed) {
+            "Cannot transition from $status to $newStatus"
         }
-        
+
         return this.copy(status = newStatus, updatedAt = LocalDateTime.now())
     }
 
@@ -59,4 +59,3 @@ data class ProjectEntity(
      */
     fun isActive(): Boolean = status == ProjectStatus.ACTIVE
 }
-

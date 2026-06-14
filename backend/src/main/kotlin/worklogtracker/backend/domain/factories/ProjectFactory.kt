@@ -7,15 +7,14 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 class ProjectFactory {
-    
     fun create(
         name: String,
         description: String? = null,
         startDate: LocalDate? = null,
         endDate: LocalDate? = null,
-        createdById: UserId
-    ): ProjectEntity {
-        return ProjectEntity(
+        createdById: UserId,
+    ): ProjectEntity =
+        ProjectEntity(
             name = name,
             description = description,
             status = ProjectStatus.PLANNING,
@@ -23,8 +22,6 @@ class ProjectFactory {
             endDate = endDate,
             createdById = createdById,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
-    }
 }
-

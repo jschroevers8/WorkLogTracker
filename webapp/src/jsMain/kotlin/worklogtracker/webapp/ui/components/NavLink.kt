@@ -1,12 +1,16 @@
 package worklogtracker.webapp.ui.components
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.webapp.ui.Styles
 
 @Composable
-fun NavLink(text: String, active: Boolean, onClick: () -> Unit) {
+fun NavLink(
+    text: String,
+    active: Boolean,
+    onClick: () -> Unit,
+) {
     Div({
         style {
             marginRight(24.px)

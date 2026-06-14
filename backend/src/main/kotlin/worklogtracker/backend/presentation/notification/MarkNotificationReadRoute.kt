@@ -15,10 +15,13 @@ fun Route.markNotificationReadRoute(markNotificationAsReadUseCase: MarkNotificat
 
             call.respond(
                 HttpStatusCode.OK,
-                mapOf("success" to markNotificationAsReadUseCase(
-                    call.getUserId(),
-                    notificationId,
-                ))
+                mapOf(
+                    "success" to
+                        markNotificationAsReadUseCase(
+                            call.getUserId(),
+                            notificationId,
+                        ),
+                ),
             )
         }
     }

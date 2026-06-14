@@ -1,5 +1,12 @@
 package worklogtracker.backend.infrastructure.repositories
 
+import kotlinx.datetime.toKotlinLocalDateTime
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import worklogtracker.backend.domain.entities.TaskEntity
 import worklogtracker.backend.domain.entities.enums.TaskStatus
 import worklogtracker.backend.domain.repositories.TaskRepositoryInterface
@@ -7,20 +14,11 @@ import worklogtracker.backend.domain.valueobjects.project.ProjectId
 import worklogtracker.backend.domain.valueobjects.task.TaskId
 import worklogtracker.backend.domain.valueobjects.user.UserId
 import worklogtracker.backend.infrastructure.hydrators.hydrateTask
-import worklogtracker.backend.infrastructure.tables.TaskTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
-import kotlinx.datetime.toKotlinLocalDateTime
-import java.time.LocalDateTime
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
-import org.jetbrains.exposed.sql.slice
+import worklogtracker.backend.infrastructure.tables.TaskTable
+import java.time.LocalDateTime
 
 class TaskRepository : TaskRepositoryInterface {
-
     override suspend fun findById(id: TaskId): TaskEntity? =
         transaction {
             TaskTable
@@ -34,15 +32,16 @@ class TaskRepository : TaskRepositoryInterface {
         transaction {
             val now = LocalDateTime.now().toKotlinLocalDateTime()
 
-            val id = TaskTable.insert {
-                it[projectId] = task.projectId.value
-                it[title] = task.title
-                it[description] = task.description
-                it[status] = task.status.name
-                it[createdBy] = task.createdBy.value
-                it[createdAt] = now
-                it[updatedAt] = now
-            } get TaskTable.id
+            val id =
+                TaskTable.insert {
+                    it[projectId] = task.projectId.value
+                    it[title] = task.title
+                    it[description] = task.description
+                    it[status] = task.status.name
+                    it[createdBy] = task.createdBy.value
+                    it[createdAt] = now
+                    it[updatedAt] = now
+                } get TaskTable.id
 
             task.copy(id = TaskId(id))
         }
@@ -74,11 +73,12 @@ class TaskRepository : TaskRepositoryInterface {
 
     override suspend fun findByUser(userId: UserId): List<TaskEntity> =
         transaction {
-            val taskIds = TaskAssignmentTable
-                .selectAll()
-                .where { TaskAssignmentTable.userId eq userId.value }
-                .map { it[TaskAssignmentTable.taskId] }
-                .distinct()
+            val taskIds =
+                TaskAssignmentTable
+                    .selectAll()
+                    .where { TaskAssignmentTable.userId eq userId.value }
+                    .map { it[TaskAssignmentTable.taskId] }
+                    .distinct()
 
             if (taskIds.isEmpty()) return@transaction emptyList()
 

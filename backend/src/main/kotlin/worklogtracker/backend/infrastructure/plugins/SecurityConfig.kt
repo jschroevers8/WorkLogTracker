@@ -2,10 +2,10 @@ package worklogtracker.backend.infrastructure.plugins
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import worklogtracker.backend.domain.exceptions.UnauthorizedException
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import worklogtracker.backend.domain.exceptions.UnauthorizedException
 
 fun Application.configureSecurity() {
     val jwtSecret = environment.config.property("jwt.secret").getString()
@@ -17,7 +17,7 @@ fun Application.configureSecurity() {
             verifier(
                 JWT
                     .require(algorithm)
-                    .build()
+                    .build(),
             )
             validate { credential ->
                 val userId = credential.payload.getClaim("userId").asInt()
@@ -34,5 +34,3 @@ fun Application.configureSecurity() {
         }
     }
 }
-
-

@@ -10,12 +10,12 @@ import androidx.navigation3.runtime.NavEntry
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.ui.NavDisplay
 import worklogtracker.frontend.data.auth.AuthManager
-import worklogtracker.frontend.presentation.user.account.AccountScreen
-import worklogtracker.frontend.presentation.user.notification.NotificationScreen
-import worklogtracker.frontend.presentation.user.login.LoginScreen
-import worklogtracker.frontend.presentation.user.signup.SignupScreen
 import worklogtracker.frontend.presentation.project.ProjectScreen
 import worklogtracker.frontend.presentation.task.TaskScreen
+import worklogtracker.frontend.presentation.user.account.AccountScreen
+import worklogtracker.frontend.presentation.user.login.LoginScreen
+import worklogtracker.frontend.presentation.user.notification.NotificationScreen
+import worklogtracker.frontend.presentation.user.signup.SignupScreen
 import worklogtracker.frontend.presentation.worklog.WorkLogScreen
 
 @Composable
@@ -34,10 +34,10 @@ fun AppNavigator() {
             }
         },
         entryProvider = entryProvider@{ navKey ->
-            val screen = navKey as? Screen
-                ?: return@entryProvider NavEntry(navKey) { }
+            val screen =
+                navKey as? Screen
+                    ?: return@entryProvider NavEntry(navKey) { }
             NavEntry(screen) {
-
                 if (screen.requiresAuth && token == null) {
                     LaunchedEffect(screen) {
                         backStack.add(Screen.Login(screen))
@@ -47,7 +47,7 @@ fun AppNavigator() {
                 }
 
                 when (screen) {
-                    is Screen.Login -> LoginScreen(backStack,screen.targetScreen)
+                    is Screen.Login -> LoginScreen(backStack, screen.targetScreen)
                     is Screen.Signup -> SignupScreen(backStack, screen.targetScreen)
                     is Screen.Projects -> ProjectScreen(backStack)
                     is Screen.Tasks -> TaskScreen(backStack)
@@ -56,6 +56,6 @@ fun AppNavigator() {
                     is Screen.Notification -> NotificationScreen(backStack)
                 }
             }
-        }
+        },
     )
 }

@@ -1,15 +1,20 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.viewmodel.EmployeeDetailViewModel
 import kotlin.js.Date
 
 @Composable
-fun EmployeeDetailScreen(userId: Long, api: ApiClient, scope: kotlinx.coroutines.CoroutineScope, onBack: () -> Unit) {
+fun EmployeeDetailScreen(
+    userId: Long,
+    api: ApiClient,
+    scope: kotlinx.coroutines.CoroutineScope,
+    onBack: () -> Unit,
+) {
     val viewModel = remember { EmployeeDetailViewModel(api) }
 
     LaunchedEffect(userId) {
@@ -82,9 +87,30 @@ fun EmployeeDetailScreen(userId: Long, api: ApiClient, scope: kotlinx.coroutines
                             property("border-bottom", "1px solid ${Styles.Border}")
                         }
                     }) {
-                        Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Datum") }
-                        Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Uren") }
-                        Th({ style { textAlign("left"); padding(16.px); color(Styles.TextSecondary); fontWeight("600") } }) { Text("Beschrijving") }
+                        Th({
+                            style {
+                                textAlign("left")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Datum") }
+                        Th({
+                            style {
+                                textAlign("left")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Uren") }
+                        Th({
+                            style {
+                                textAlign("left")
+                                padding(16.px)
+                                color(Styles.TextSecondary)
+                                fontWeight("600")
+                            }
+                        }) { Text("Beschrijving") }
                     }
                 }
                 Tbody {
@@ -104,21 +130,31 @@ fun EmployeeDetailScreen(userId: Long, api: ApiClient, scope: kotlinx.coroutines
 
                                 val formatted =
                                     "${date.getDate().toString().padStart(2, '0')}-" +
-                                            "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
-                                            "${date.getFullYear()} " +
-                                            "${date.getHours().toString().padStart(2, '0')}:" +
-                                            date.getMinutes().toString().padStart(2, '0')
+                                        "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
+                                        "${date.getFullYear()} " +
+                                        "${date.getHours().toString().padStart(2, '0')}:" +
+                                        date.getMinutes().toString().padStart(2, '0')
 
                                 Text(formatted)
                             }
-                            Td({ style { padding(16.px); color(Styles.TextPrimary) } }) {
+                            Td({
+                                style {
+                                    padding(16.px)
+                                    color(Styles.TextPrimary)
+                                }
+                            }) {
                                 Span({
                                     style {
                                         fontWeight("600")
                                     }
                                 }) { Text(log.hours.toString()) }
                             }
-                            Td({ style { padding(16.px); color(Styles.TextSecondary) } }) { Text(log.description ?: "") }
+                            Td({
+                                style {
+                                    padding(16.px)
+                                    color(Styles.TextSecondary)
+                                }
+                            }) { Text(log.description ?: "") }
                         }
                     }
                 }

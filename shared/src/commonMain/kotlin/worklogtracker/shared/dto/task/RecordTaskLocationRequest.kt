@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 data class RecordTaskLocationRequest(
     val taskId: Int,
     val latitude: Double,
-    val longitude: Double
+    val longitude: Double,
 )

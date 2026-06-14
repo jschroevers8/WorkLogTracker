@@ -15,21 +15,21 @@ data class TaskEntity(
     val status: TaskStatus,
     val createdBy: UserId,
     val createdAt: LocalDateTime,
-    val updatedAt: LocalDateTime
+    val updatedAt: LocalDateTime,
 ) {
-    
     fun updateStatus(newStatus: TaskStatus): TaskEntity {
-        val validTransitions = mapOf(
-            TaskStatus.OPEN to setOf(TaskStatus.IN_PROGRESS, TaskStatus.CANCELLED),
-            TaskStatus.IN_PROGRESS to setOf(TaskStatus.COMPLETED, TaskStatus.CANCELLED),
-            TaskStatus.COMPLETED to setOf(),
-            TaskStatus.CANCELLED to setOf()
-        )
+        val validTransitions =
+            mapOf(
+                TaskStatus.OPEN to setOf(TaskStatus.IN_PROGRESS, TaskStatus.CANCELLED),
+                TaskStatus.IN_PROGRESS to setOf(TaskStatus.COMPLETED, TaskStatus.CANCELLED),
+                TaskStatus.COMPLETED to setOf(),
+                TaskStatus.CANCELLED to setOf(),
+            )
 
         val allowed = validTransitions[status] ?: emptySet()
         if (newStatus !in allowed) {
             throw InvalidTaskStatusTransitionException(
-                "Cannot transition from $status to $newStatus"
+                "Cannot transition from $status to $newStatus",
             )
         }
 
@@ -40,4 +40,3 @@ data class TaskEntity(
 
     fun cancel(): TaskEntity = updateStatus(TaskStatus.CANCELLED)
 }
-

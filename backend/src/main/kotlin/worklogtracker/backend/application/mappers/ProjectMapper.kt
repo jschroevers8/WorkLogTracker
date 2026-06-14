@@ -1,7 +1,7 @@
 package worklogtracker.backend.application.mappers
 
-import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.backend.domain.entities.ProjectEntity
+import worklogtracker.shared.dto.project.ProjectResponse
 import java.time.format.DateTimeFormatter
 
 fun ProjectEntity.toResponse() =
@@ -12,5 +12,5 @@ fun ProjectEntity.toResponse() =
         status = status.name,
         startDate = startDate?.format(DateTimeFormatter.ISO_LOCAL_DATE),
         endDate = endDate?.format(DateTimeFormatter.ISO_LOCAL_DATE),
-        createdAt = createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+        createdAt = createdAt.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME),
     )

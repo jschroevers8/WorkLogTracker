@@ -11,5 +11,5 @@ data class TaskAssignmentEntity(
     val taskId: TaskId,
     val userId: UserId,
     val assignedAt: LocalDateTime,
-    val status: TaskStatus
+    val status: TaskStatus,
 )

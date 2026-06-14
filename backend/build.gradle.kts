@@ -22,7 +22,7 @@ dependencies {
 
     // Backend
     implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
-    implementation("io.ktor:ktor-server-cors-jvm:${ktorVersion}")
+    implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
     implementation("io.ktor:ktor-server-core:$ktorVersion")

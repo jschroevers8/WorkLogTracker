@@ -1,16 +1,16 @@
 package worklogtracker.backend.infrastructure.plugins
 
+import io.github.cdimascio.dotenv.dotenv
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import io.github.cdimascio.dotenv.dotenv
 import worklogtracker.backend.infrastructure.tables.NotificationTable
 import worklogtracker.backend.infrastructure.tables.ProjectTable
-import worklogtracker.backend.infrastructure.tables.TaskTable
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
-import worklogtracker.backend.infrastructure.tables.TimeEntryTable
-import worklogtracker.backend.infrastructure.tables.TaskPhotoTable
 import worklogtracker.backend.infrastructure.tables.TaskLocationTable
+import worklogtracker.backend.infrastructure.tables.TaskPhotoTable
+import worklogtracker.backend.infrastructure.tables.TaskTable
+import worklogtracker.backend.infrastructure.tables.TimeEntryTable
 import worklogtracker.backend.infrastructure.tables.UserTable
 
 fun initializeDatabase() {
@@ -47,8 +47,7 @@ fun initializeDatabase() {
             TimeEntryTable,
             TaskPhotoTable,
             TaskLocationTable,
-            NotificationTable
+            NotificationTable,
         )
     }
 }
-

@@ -13,5 +13,5 @@ data class TimeEntryEntity(
     val hours: BigDecimal,
     val description: String?,
     val aiDescription: String? = null,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
 )

@@ -11,14 +11,17 @@ import worklogtracker.webapp.repositories.UserRepository
 import worklogtracker.webapp.repositories.WorkLogRepository
 
 class ApiClient {
-    private val client = HttpClient {
-        install(ContentNegotiation) {
-            json(Json {
-                ignoreUnknownKeys = true
-                coerceInputValues = true
-            })
+    private val client =
+        HttpClient {
+            install(ContentNegotiation) {
+                json(
+                    Json {
+                        ignoreUnknownKeys = true
+                        coerceInputValues = true
+                    },
+                )
+            }
         }
-    }
 
     private val baseUrl = "http://localhost:8080/api"
     private var token: String? = null

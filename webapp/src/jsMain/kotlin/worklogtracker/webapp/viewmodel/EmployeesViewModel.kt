@@ -4,7 +4,9 @@ import androidx.compose.runtime.*
 import worklogtracker.shared.dto.user.UserResponse
 import worklogtracker.webapp.ApiClient
 
-class EmployeesViewModel(private val api: ApiClient) {
+class EmployeesViewModel(
+    private val api: ApiClient,
+) {
     var users by mutableStateOf<List<UserResponse>>(emptyList())
     var loading by mutableStateOf(true)
     var error by mutableStateOf("")

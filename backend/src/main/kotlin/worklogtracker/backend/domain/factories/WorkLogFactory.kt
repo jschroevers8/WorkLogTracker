@@ -7,7 +7,6 @@ import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
 
 class WorkLogFactory {
-    
     fun create(
         taskId: TaskId,
         userId: UserId,
@@ -16,14 +15,15 @@ class WorkLogFactory {
         notes: String? = null,
         photoUrl: String? = null,
         latitude: Double? = null,
-        longitude: Double? = null
+        longitude: Double? = null,
     ): WorkLogEntity {
-        val durationMinutes = if (endTime != null) {
-            ChronoUnit.MINUTES.between(startTime, endTime).toInt()
-        } else {
-            null
-        }
-        
+        val durationMinutes =
+            if (endTime != null) {
+                ChronoUnit.MINUTES.between(startTime, endTime).toInt()
+            } else {
+                null
+            }
+
         return WorkLogEntity(
             taskId = taskId,
             userId = userId,
@@ -36,8 +36,7 @@ class WorkLogFactory {
             longitude = longitude,
             isSynced = true,
             createdAt = LocalDateTime.now(),
-            updatedAt = LocalDateTime.now()
+            updatedAt = LocalDateTime.now(),
         )
     }
 }
-

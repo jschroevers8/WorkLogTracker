@@ -9,15 +9,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
-import worklogtracker.frontend.presentation.framework.components.WltScreen
-import worklogtracker.frontend.presentation.framework.components.text.HeaderText
-
 import org.koin.androidx.compose.koinViewModel
+import worklogtracker.frontend.presentation.framework.components.Screen
+import worklogtracker.frontend.presentation.framework.components.text.HeaderText
+import worklogtracker.frontend.presentation.user.notification.item.NotificationCard
 
 @Composable
 fun NotificationScreen(
     backStack: NavBackStack<NavKey>,
-    viewModel: NotificationViewModel = koinViewModel()
+    viewModel: NotificationViewModel = koinViewModel(),
 ) {
     val state = viewModel.uiState
 
@@ -25,7 +25,7 @@ fun NotificationScreen(
         viewModel.loadNotifications()
     }
 
-    WltScreen (backStack = backStack) {
+    Screen(backStack = backStack) {
         Spacer(Modifier.height(20.dp))
 
         HeaderText("Notifications")
@@ -34,7 +34,7 @@ fun NotificationScreen(
 
         LazyColumn(
             verticalArrangement = Arrangement.spacedBy(12.dp),
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         ) {
             items(state.notifications) { notification ->
                 NotificationCard(notification) {

@@ -1,15 +1,11 @@
 package worklogtracker.webapp.ui.screens
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
-import worklogtracker.shared.dto.project.ProjectResponse
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.shared.dto.task.TaskResponse
-import worklogtracker.shared.dto.worklog.WorkLogResponse
 import worklogtracker.webapp.ApiClient
 import worklogtracker.webapp.ui.Styles
-import kotlinx.coroutines.launch
-
 import worklogtracker.webapp.viewmodel.ProjectDetailViewModel
 import kotlin.js.Date
 
@@ -18,7 +14,7 @@ fun ProjectDetailScreen(
     projectId: Int,
     api: ApiClient,
     scope: kotlinx.coroutines.CoroutineScope,
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val viewModel = remember { ProjectDetailViewModel(api) }
 
@@ -49,19 +45,26 @@ fun ProjectDetailScreen(
             P { Text("Project details laden...") }
         } else if (viewModel.error.isNotEmpty()) {
             P({ style { color(Styles.Error) } }) { Text(viewModel.error) }
-        } else viewModel.project?.let { p ->
-            H2 { Text("Project: ${p.name}") }
-            P({ style { color(Styles.TextSecondary); marginBottom(24.px) } }) { 
-                Text(p.description ?: "Geen beschrijving beschikbaar.") 
-            }
+        } else {
+            viewModel.project?.let { p ->
+                H2 { Text("Project: ${p.name}") }
+                P({
+                    style {
+                        color(Styles.TextSecondary)
+                        marginBottom(24.px)
+                    }
+                }) {
+                    Text(p.description ?: "Geen beschrijving beschikbaar.")
+                }
 
-            H3 { Text("Taken") }
-            
-            if (viewModel.tasks.isEmpty()) {
-                P { Text("Geen taken gevonden voor dit project.") }
-            } else {
-                viewModel.tasks.forEach { task ->
-                    TaskDetailCard(task)
+                H3 { Text("Taken") }
+
+                if (viewModel.tasks.isEmpty()) {
+                    P { Text("Geen taken gevonden voor dit project.") }
+                } else {
+                    viewModel.tasks.forEach { task ->
+                        TaskDetailCard(task)
+                    }
                 }
             }
         }
@@ -88,7 +91,12 @@ fun TaskDetailCard(task: TaskResponse) {
                 marginBottom(12.px)
             }
         }) {
-            H4({ style { margin(0.px); color(Styles.TextPrimary) } }) { Text(task.title) }
+            H4({
+                style {
+                    margin(0.px)
+                    color(Styles.TextPrimary)
+                }
+            }) { Text(task.title) }
             Div({
                 style {
                     display(DisplayStyle.Flex)
@@ -112,22 +120,32 @@ fun TaskDetailCard(task: TaskResponse) {
                         borderRadius(20.px)
                         fontSize(0.8.em)
                         fontWeight("600")
-                        backgroundColor(when(task.status) {
-                            "COMPLETED" -> Color("#DEF7EC")
-                            "IN_PROGRESS" -> Color("#E1EFFE")
-                            else -> Color("#F3F4F6")
-                        })
-                        color(when(task.status) {
-                            "COMPLETED" -> Color("#03543F")
-                            "IN_PROGRESS" -> Color("#1E429F")
-                            else -> Color("#374151")
-                        })
+                        backgroundColor(
+                            when (task.status) {
+                                "COMPLETED" -> Color("#DEF7EC")
+                                "IN_PROGRESS" -> Color("#E1EFFE")
+                                else -> Color("#F3F4F6")
+                            },
+                        )
+                        color(
+                            when (task.status) {
+                                "COMPLETED" -> Color("#03543F")
+                                "IN_PROGRESS" -> Color("#1E429F")
+                                else -> Color("#374151")
+                            },
+                        )
                     }
                 }) { Text(task.status) }
             }
         }
 
-        P({ style { color(Styles.TextSecondary); fontSize(0.95.em); marginBottom(16.px) } }) {
+        P({
+            style {
+                color(Styles.TextSecondary)
+                fontSize(0.95.em)
+                marginBottom(16.px)
+            }
+        }) {
             Text(task.description ?: "Geen beschrijving.")
         }
 
@@ -181,15 +199,18 @@ fun TaskDetailCard(task: TaskResponse) {
 
                         val formatted =
                             "${date.getDate().toString().padStart(2, '0')}-" +
-                                    "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
-                                    "${date.getFullYear()} " +
-                                    "${date.getHours().toString().padStart(2, '0')}:" +
-                                    date.getMinutes().toString().padStart(2, '0')
+                                "${(date.getMonth() + 1).toString().padStart(2, '0')}-" +
+                                "${date.getFullYear()} " +
+                                "${date.getHours().toString().padStart(2, '0')}:" +
+                                date.getMinutes().toString().padStart(2, '0')
 
-                        Text("📍 ${location.latitude}, ${location.longitude} (${formatted})")
+                        Text("📍 ${location.latitude}, ${location.longitude} ($formatted)")
                         A(href = "https://www.google.com/maps?q=${location.latitude},${location.longitude}", attrs = {
                             attr("target", "_blank")
-                            style { color(Styles.Primary); fontWeight("600") }
+                            style {
+                                color(Styles.Primary)
+                                fontWeight("600")
+                            }
                         }) {
                             Text("Kaart")
                         }
@@ -199,7 +220,13 @@ fun TaskDetailCard(task: TaskResponse) {
         }
 
         if (task.photoUrls.isEmpty() && task.locations.isEmpty()) {
-            P({ style { fontSize(0.85.em); color(Styles.TextSecondary); fontStyle("italic") } }) {
+            P({
+                style {
+                    fontSize(0.85.em)
+                    color(Styles.TextSecondary)
+                    fontStyle("italic")
+                }
+            }) {
                 Text("Geen foto's of locaties beschikbaar voor deze taak.")
             }
         }

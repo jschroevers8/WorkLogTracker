@@ -7,5 +7,5 @@ data class CreateTaskRequest(
     val projectId: Int,
     val title: String,
     val description: String? = null,
-    val assignedUserId: Int
+    val assignedUserId: Int,
 )

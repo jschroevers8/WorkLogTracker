@@ -1,13 +1,18 @@
 package worklogtracker.webapp.ui.components
 
 import androidx.compose.runtime.*
-import org.jetbrains.compose.web.dom.*
 import org.jetbrains.compose.web.css.*
+import org.jetbrains.compose.web.dom.*
 import worklogtracker.shared.dto.project.ProjectResponse
 import worklogtracker.webapp.ui.Styles
 
 @Composable
-fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: () -> Unit, onCloseProject: () -> Unit) {
+fun ProjectCard(
+    project: ProjectResponse,
+    onAddTask: () -> Unit,
+    onSeeDetails: () -> Unit,
+    onCloseProject: () -> Unit,
+) {
     Div({
         style {
             backgroundColor(Styles.Surface)
@@ -25,7 +30,7 @@ fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: (
                 marginBottom(8.px)
             }
         }) { Text(project.name) }
-        
+
         P({
             style {
                 color(Styles.TextSecondary)
@@ -80,7 +85,7 @@ fun ProjectCard(project: ProjectResponse, onAddTask: () -> Unit, onSeeDetails: (
                     }
                 }) { Text("Afsluiten") }
             }
-            
+
             Button({
                 onClick { onSeeDetails() }
                 style {

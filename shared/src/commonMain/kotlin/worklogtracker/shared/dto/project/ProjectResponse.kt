@@ -10,5 +10,5 @@ data class ProjectResponse(
     val status: String,
     val startDate: String?,
     val endDate: String?,
-    val createdAt: String
+    val createdAt: String,
 )

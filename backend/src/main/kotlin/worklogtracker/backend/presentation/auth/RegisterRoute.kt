@@ -13,7 +13,7 @@ fun Route.registerRoute(registerUseCase: RegisterUserUseCase) {
 
         call.respond(
             HttpStatusCode.Created,
-            registerUseCase(request.email, request.password, request.firstName, request.lastName)
+            registerUseCase(request.email, request.password, request.firstName, request.lastName),
         )
     }
 }

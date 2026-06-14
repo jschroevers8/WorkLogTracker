@@ -14,13 +14,6 @@ data class TaskResponse(
     val updatedAt: String,
     val assignmentId: Int? = null,
     val photoUrls: List<String> = emptyList(),
-    val locations: List<TaskLocationDto> = emptyList(),
-    val totalHours: Double = 0.0
-)
-
-@Serializable
-data class TaskLocationDto(
-    val latitude: Double,
-    val longitude: Double,
-    val recordedAt: String
+    val locations: List<TaskLocation> = emptyList(),
+    val totalHours: Double = 0.0,
 )

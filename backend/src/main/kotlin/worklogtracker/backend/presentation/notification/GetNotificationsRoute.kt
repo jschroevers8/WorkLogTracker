@@ -1,4 +1,5 @@
 package worklogtracker.backend.presentation.notification
+
 import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -14,7 +15,7 @@ fun Route.getNotificationsRoute(getUserNotificationsUseCase: GetUserNotification
                 getUserNotificationsUseCase(
                     call.getUserId(),
                     call.parameters["unreadOnly"]?.toBoolean() ?: false,
-                )
+                ),
             )
         }
     }

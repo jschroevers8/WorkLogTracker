@@ -2,6 +2,7 @@ plugins {
     kotlin("multiplatform")
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
+    alias(libs.plugins.ktlint)
     kotlin("plugin.serialization")
 }
 
@@ -13,6 +14,10 @@ kotlin {
             }
         }
         binaries.executable()
+    }
+
+    ktlint {
+        ignoreFailures.set(true)
     }
 
     sourceSets {

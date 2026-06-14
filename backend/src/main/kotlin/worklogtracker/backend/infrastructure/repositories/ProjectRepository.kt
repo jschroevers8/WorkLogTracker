@@ -1,5 +1,13 @@
 package worklogtracker.backend.infrastructure.repositories
 
+import kotlinx.datetime.toKotlinLocalDate
+import kotlinx.datetime.toKotlinLocalDateTime
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.sql.update
 import worklogtracker.backend.domain.entities.ProjectEntity
 import worklogtracker.backend.domain.entities.enums.ProjectStatus
 import worklogtracker.backend.domain.repositories.ProjectRepositoryInterface
@@ -9,18 +17,9 @@ import worklogtracker.backend.infrastructure.hydrators.hydrateProject
 import worklogtracker.backend.infrastructure.tables.ProjectTable
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable
 import worklogtracker.backend.infrastructure.tables.TaskTable
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.transactions.transaction
-import org.jetbrains.exposed.sql.update
-import kotlinx.datetime.toKotlinLocalDate
-import kotlinx.datetime.toKotlinLocalDateTime
 import java.time.LocalDateTime
 
 class ProjectRepository : ProjectRepositoryInterface {
-
     override suspend fun findById(id: ProjectId): ProjectEntity? =
         transaction {
             ProjectTable
@@ -98,15 +97,17 @@ class ProjectRepository : ProjectRepositoryInterface {
 
     override suspend fun findByInvolvedUser(userId: UserId): List<ProjectEntity> =
         transaction {
-            val projectsFromAssignments = (ProjectTable innerJoin TaskTable innerJoin TaskAssignmentTable)
-                .select(ProjectTable.columns)
-                .where { TaskAssignmentTable.userId eq userId.value }
-                .map { it.hydrateProject() }
+            val projectsFromAssignments =
+                (ProjectTable innerJoin TaskTable innerJoin TaskAssignmentTable)
+                    .select(ProjectTable.columns)
+                    .where { TaskAssignmentTable.userId eq userId.value }
+                    .map { it.hydrateProject() }
 
-            val projectsCreatedByUser = ProjectTable
-                .selectAll()
-                .where { ProjectTable.createdById eq userId.value }
-                .map { it.hydrateProject() }
+            val projectsCreatedByUser =
+                ProjectTable
+                    .selectAll()
+                    .where { ProjectTable.createdById eq userId.value }
+                    .map { it.hydrateProject() }
 
             (projectsFromAssignments + projectsCreatedByUser).distinctBy { it.id }
         }

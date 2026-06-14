@@ -15,9 +15,8 @@ data class NotificationEntity(
     val type: NotificationType,
     val sentAt: LocalDateTime,
     val isRead: Boolean = false,
-    val createdAt: LocalDateTime
+    val createdAt: LocalDateTime,
 ) {
-    
     /**
      * Mark notification as read
      */
@@ -30,30 +29,31 @@ data class NotificationEntity(
         fun createDeadlineWarning(
             userId: UserId,
             taskId: TaskId,
-            hoursUntilDeadline: Int
-        ): NotificationEntity {
-            return NotificationEntity(
+            hoursUntilDeadline: Int,
+        ): NotificationEntity =
+            NotificationEntity(
                 userId = userId,
                 taskId = taskId,
                 title = "Task Deadline Warning",
                 message = "Task is due in $hoursUntilDeadline hours",
                 type = NotificationType.DEADLINE_WARNING,
                 sentAt = LocalDateTime.now(),
-                createdAt = LocalDateTime.now()
+                createdAt = LocalDateTime.now(),
             )
-        }
 
-        fun createTaskAssigned(userId: UserId, taskId: TaskId, taskTitle: String): NotificationEntity {
-            return NotificationEntity(
+        fun createTaskAssigned(
+            userId: UserId,
+            taskId: TaskId,
+            taskTitle: String,
+        ): NotificationEntity =
+            NotificationEntity(
                 userId = userId,
                 taskId = taskId,
                 title = "New Task Assigned",
                 message = "You have been assigned to: $taskTitle",
                 type = NotificationType.TASK_ASSIGNED,
                 sentAt = LocalDateTime.now(),
-                createdAt = LocalDateTime.now()
+                createdAt = LocalDateTime.now(),
             )
-        }
     }
 }
-

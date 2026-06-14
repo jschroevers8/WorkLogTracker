@@ -6,7 +6,10 @@ import org.jetbrains.compose.web.dom.*
 import worklogtracker.webapp.ui.Styles
 
 @Composable
-fun ErrorPopup(message: String, onClose: () -> Unit) {
+fun ErrorPopup(
+    message: String,
+    onClose: () -> Unit,
+) {
     if (message.isEmpty()) return
 
     Div({

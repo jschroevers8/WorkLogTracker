@@ -11,8 +11,14 @@ import worklogtracker.backend.domain.valueobjects.user.UserId
 fun Route.getWorkLogsRoute(getUserWorkLogsUseCase: GetUserWorkLogsUseCase) {
     authenticate {
         get("/api/worklogs") {
-            val taskAssignmentId = call.request.queryParameters["taskAssignmentId"]?.toInt()?.let(::TaskAssignmentId)
-            val userId = call.request.queryParameters["userId"]?.toInt()?.let(::UserId)
+            val taskAssignmentId =
+                call.request.queryParameters["taskAssignmentId"]
+                    ?.toInt()
+                    ?.let(::TaskAssignmentId)
+            val userId =
+                call.request.queryParameters["userId"]
+                    ?.toInt()
+                    ?.let(::UserId)
 
             call.respond(HttpStatusCode.OK, getUserWorkLogsUseCase(userId!!, taskAssignmentId))
         }
