@@ -44,7 +44,7 @@ fun MainLayout(
     onLogout: () -> Unit,
     currentScreen: Screen,
     onNavigate: (Screen) -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     Div({
         style {

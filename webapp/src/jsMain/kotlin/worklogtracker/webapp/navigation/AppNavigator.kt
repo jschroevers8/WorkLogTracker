@@ -10,8 +10,6 @@ import org.jetbrains.compose.web.dom.*
 import org.koin.compose.koinInject
 import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.webapp.ApiClient
-import worklogtracker.webapp.ui.Styles
-import worklogtracker.webapp.ui.components.NavLink
 import worklogtracker.webapp.ui.screens.*
 
 @Composable
@@ -72,22 +70,26 @@ fun AppNavigator() {
                     backStack.add(Screen.Login)
                 },
                 currentScreen = currentScreen,
-                onNavigate = onNavigate
+                onNavigate = onNavigate,
             ) {
                 when (currentScreen) {
                     is Screen.Dashboard -> DashboardScreen()
-                    is Screen.Employees -> EmployeesScreen { userId ->
-                        onNavigate(Screen.EmployeeDetail(userId))
-                    }
-                    is Screen.Projects -> ProjectsScreen { projectId ->
-                        onNavigate(Screen.ProjectDetail(projectId))
-                    }
-                    is Screen.EmployeeDetail -> EmployeeDetailScreen(currentScreen.userId) {
-                        onBack()
-                    }
-                    is Screen.ProjectDetail -> ProjectDetailScreen(currentScreen.projectId) {
-                        onBack()
-                    }
+                    is Screen.Employees ->
+                        EmployeesScreen { userId ->
+                            onNavigate(Screen.EmployeeDetail(userId))
+                        }
+                    is Screen.Projects ->
+                        ProjectsScreen { projectId ->
+                            onNavigate(Screen.ProjectDetail(projectId))
+                        }
+                    is Screen.EmployeeDetail ->
+                        EmployeeDetailScreen(currentScreen.userId) {
+                            onBack()
+                        }
+                    is Screen.ProjectDetail ->
+                        ProjectDetailScreen(currentScreen.projectId) {
+                            onBack()
+                        }
                     else -> {}
                 }
             }

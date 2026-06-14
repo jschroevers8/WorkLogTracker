@@ -1,9 +1,7 @@
 package worklogtracker.backend.application.usecases.task
 
 import worklogtracker.backend.application.exceptions.TaskCreationFailedException
-import worklogtracker.backend.application.usecases.notification.CreateNotificationUseCase
 import worklogtracker.backend.domain.entities.TaskAssignmentEntity
-import worklogtracker.backend.domain.entities.enums.NotificationType
 import worklogtracker.backend.domain.entities.enums.ProjectStatus
 import worklogtracker.backend.domain.entities.enums.TaskStatus
 import worklogtracker.backend.domain.factories.TaskFactory

@@ -9,9 +9,7 @@ import worklogtracker.webapp.ui.components.ErrorPopup
 import worklogtracker.webapp.viewmodel.EmployeesViewModel
 
 @Composable
-fun EmployeesScreen(
-    onUserSelected: (Long) -> Unit,
-) {
+fun EmployeesScreen(onUserSelected: (Long) -> Unit) {
     val viewModel = koinInject<EmployeesViewModel>()
 
     LaunchedEffect(Unit) {

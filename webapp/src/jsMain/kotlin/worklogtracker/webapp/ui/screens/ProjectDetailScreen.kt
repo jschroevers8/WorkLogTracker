@@ -3,9 +3,9 @@ package worklogtracker.webapp.ui.screens
 import androidx.compose.runtime.*
 import org.jetbrains.compose.web.css.*
 import org.jetbrains.compose.web.dom.*
-import worklogtracker.shared.dto.task.TaskResponse
 import org.koin.compose.koinInject
 import org.koin.core.parameter.parametersOf
+import worklogtracker.shared.dto.task.TaskResponse
 import worklogtracker.webapp.ui.Styles
 import worklogtracker.webapp.viewmodel.ProjectDetailViewModel
 import kotlin.js.Date

@@ -25,9 +25,13 @@ sealed class Screen(
 
     @Serializable
     @SerialName("employee_detail")
-    data class EmployeeDetail(val userId: Long) : Screen(requiresAuth = true)
+    data class EmployeeDetail(
+        val userId: Long,
+    ) : Screen(requiresAuth = true)
 
     @Serializable
     @SerialName("project_detail")
-    data class ProjectDetail(val projectId: Int) : Screen(requiresAuth = true)
+    data class ProjectDetail(
+        val projectId: Int,
+    ) : Screen(requiresAuth = true)
 }
