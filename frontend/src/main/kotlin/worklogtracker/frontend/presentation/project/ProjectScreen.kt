@@ -8,6 +8,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
@@ -21,10 +22,22 @@ fun ProjectScreen(
     backStack: NavBackStack<NavKey>,
     viewModel: ProjectViewModel = koinViewModel(),
 ) {
-    val uiState = viewModel.uiState
+    ProjectContent(
+        uiState = viewModel.uiState,
+        loadProjects = { viewModel.loadProjects() },
+        backStack = backStack
+    )
+}
 
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun ProjectContent(
+    uiState: ProjectUiState,
+    loadProjects: () -> Unit,
+    backStack: NavBackStack<NavKey>,
+) {
     LaunchedEffect(Unit) {
-        viewModel.loadProjects()
+        loadProjects()
     }
 
     Scaffold(
@@ -52,12 +65,16 @@ fun ProjectScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             if (uiState.loading) {
-                CircularProgressIndicator()
+                CircularProgressIndicator(modifier = Modifier.testTag("loadingIndicator"))
             } else if (uiState.error != null) {
-                Text(text = "Error: ${uiState.error}", color = MaterialTheme.colorScheme.error)
+                Text(
+                    text = "Error: ${uiState.error}",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier.testTag("errorMessage")
+                )
             } else {
                 val groupedProjects = uiState.projects.groupBy { it.status }
-                LazyColumn {
+                LazyColumn(modifier = Modifier.testTag("projectList")) {
                     groupedProjects.forEach { (status, projects) ->
                         stickyHeader {
                             Surface(
