@@ -64,9 +64,9 @@ fun NotificationCard(
             .appendPattern("yyyy-MM-dd HH:mm:ss")
             .appendFraction(
                 ChronoField.NANO_OF_SECOND,
-                1,   // min digits
-                9,   // max digits
-                true // decimal point included
+                1,
+                9,
+                true
             )
             .toFormatter()
 
