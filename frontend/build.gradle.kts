@@ -12,6 +12,13 @@ android {
     namespace = "worklogtracker.frontend"
     compileSdk = 36
 
+    packaging {
+        resources {
+            pickFirsts += "/META-INF/LICENSE.md"
+            pickFirsts += "/META-INF/LICENSE-notice.md"
+        }
+    }
+
     defaultConfig {
         applicationId = "worklogtracker.frontend"
         minSdk = 28

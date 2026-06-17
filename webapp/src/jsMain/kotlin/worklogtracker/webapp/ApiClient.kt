@@ -10,7 +10,7 @@ import worklogtracker.webapp.repositories.TaskRepository
 import worklogtracker.webapp.repositories.UserRepository
 import worklogtracker.webapp.repositories.WorkLogRepository
 
-class ApiClient {
+open class ApiClient {
     private val client =
         HttpClient {
             install(ContentNegotiation) {

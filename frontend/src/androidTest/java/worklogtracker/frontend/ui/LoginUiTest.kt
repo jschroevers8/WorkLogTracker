@@ -2,8 +2,6 @@ package worklogtracker.frontend.ui
 
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey

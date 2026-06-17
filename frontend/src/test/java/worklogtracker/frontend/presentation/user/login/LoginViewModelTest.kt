@@ -11,16 +11,16 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import worklogtracker.frontend.data.auth.AuthManagerInterface
 import worklogtracker.frontend.repositories.UserRepository
 import worklogtracker.shared.dto.auth.AuthResponse
 import worklogtracker.shared.dto.auth.LoginRequest
-import kotlin.test.assertEquals
-import kotlin.test.assertNotNull
-import kotlin.test.assertNull
-import kotlin.test.assertTrue
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class LoginViewModelTest {
@@ -52,7 +52,8 @@ class LoginViewModelTest {
             firstName = "John",
             lastName = "Doe",
             email = email,
-            role = "EMPLOYEE"
+            role = "EMPLOYEE",
+            userId = 1
         )
 
         viewModel.updateState<String> { copy(email = it) }(email)
@@ -78,8 +79,8 @@ class LoginViewModelTest {
     @Test
     fun `login should show error with invalid email`() = runTest {
         // Arrange
-        viewModel.updateState<String> { copy(email = "invalid-email") }(email = "invalid-email")
-        viewModel.updateState<String> { copy(password = "Password123!") }(password = "Password123!")
+        viewModel.updateState<String> { copy(email = "invalid-email") }("invalid-email")
+        viewModel.updateState<String> { copy(password = "Password123!") }("Password123!")
 
         // Act
         viewModel.login()

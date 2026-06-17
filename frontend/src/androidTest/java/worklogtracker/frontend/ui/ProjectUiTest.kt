@@ -54,8 +54,8 @@ class ProjectUiTest {
     fun projectScreen_showsProjectList() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
         val projects = listOf(
-            ProjectItem(1, "Project Alpha", "Description Alpha", "ACTIVE"),
-            ProjectItem(2, "Project Beta", "Description Beta", "PLANNING")
+            ProjectItem("1", "Project Alpha", "Description Alpha", "ACTIVE"),
+            ProjectItem("2", "Project Beta", "Description Beta", "PLANNING")
         )
         
         composeTestRule.setContent {
