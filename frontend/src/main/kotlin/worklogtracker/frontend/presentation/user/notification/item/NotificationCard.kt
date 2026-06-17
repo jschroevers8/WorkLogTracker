@@ -22,6 +22,8 @@ import worklogtracker.frontend.presentation.framework.theme.Colors
 import worklogtracker.frontend.presentation.user.notification.item.NotificationItem
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.time.format.DateTimeFormatterBuilder
+import java.time.temporal.ChronoField
 
 @Composable
 fun NotificationCard(
@@ -58,7 +60,15 @@ fun NotificationCard(
             SecondaryText(notification.message)
         }
 
-        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")
+        val formatter = DateTimeFormatterBuilder()
+            .appendPattern("yyyy-MM-dd HH:mm:ss")
+            .appendFraction(
+                ChronoField.NANO_OF_SECOND,
+                1,   // min digits
+                9,   // max digits
+                true // decimal point included
+            )
+            .toFormatter()
 
         val dateTime = LocalDateTime.parse(notification.time, formatter)
 
