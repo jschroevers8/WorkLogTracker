@@ -3,13 +3,10 @@ package worklogtracker.webapp.viewmodel
 import androidx.compose.runtime.snapshots.Snapshot
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runTest
 import worklogtracker.webapp.ApiClient
 import kotlin.test.*
 
 class ProjectsViewModelTest {
-
     @Test
     fun testInitialState() {
         val viewModel = ProjectsViewModel(ApiClient(), CoroutineScope(Dispatchers.Default))
@@ -22,18 +19,18 @@ class ProjectsViewModelTest {
     fun testToggleCreateProject() {
         val viewModel = ProjectsViewModel(ApiClient(), CoroutineScope(Dispatchers.Default))
         assertFalse(viewModel.showCreateProject)
-        
+
         Snapshot.withMutableSnapshot {
             viewModel.toggleCreateProject()
         }
-        
+
         assertTrue(viewModel.showCreateProject)
     }
 
     @Test
     fun testClearError() {
         val viewModel = ProjectsViewModel(ApiClient(), CoroutineScope(Dispatchers.Default))
-        
+
         Snapshot.withMutableSnapshot {
             viewModel.error = "Some error"
         }
@@ -44,16 +41,16 @@ class ProjectsViewModelTest {
         }
         assertEquals("", viewModel.error)
     }
-    
+
     @Test
     fun testUpdateProjectFields() {
         val viewModel = ProjectsViewModel(ApiClient(), CoroutineScope(Dispatchers.Default))
-        
+
         Snapshot.withMutableSnapshot {
             viewModel.newProjectName = "New Project"
             viewModel.newProjectDesc = "New Description"
         }
-        
+
         assertEquals("New Project", viewModel.newProjectName)
         assertEquals("New Description", viewModel.newProjectDesc)
     }

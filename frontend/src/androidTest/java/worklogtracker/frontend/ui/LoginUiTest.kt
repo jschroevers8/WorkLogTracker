@@ -1,8 +1,8 @@
 package worklogtracker.frontend.ui
 
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import io.mockk.mockk
@@ -12,14 +12,13 @@ import worklogtracker.frontend.presentation.user.login.LoginContent
 import worklogtracker.frontend.presentation.user.login.LoginUiState
 
 class LoginUiTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
     fun loginScreen_showsEmailAndPasswordFields() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
-        
+
         composeTestRule.setContent {
             LoginContent(
                 state = LoginUiState(),
@@ -27,7 +26,7 @@ class LoginUiTest {
                 onPasswordChange = {},
                 onLoginClick = {},
                 onSignupClick = {},
-                backStack = mockBackStack
+                backStack = mockBackStack,
             )
         }
 
@@ -40,7 +39,7 @@ class LoginUiTest {
     fun loginScreen_showsErrorMessage() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
         val errorMessage = "Invalid credentials"
-        
+
         composeTestRule.setContent {
             LoginContent(
                 state = LoginUiState(error = errorMessage),
@@ -48,7 +47,7 @@ class LoginUiTest {
                 onPasswordChange = {},
                 onLoginClick = {},
                 onSignupClick = {},
-                backStack = mockBackStack
+                backStack = mockBackStack,
             )
         }
 

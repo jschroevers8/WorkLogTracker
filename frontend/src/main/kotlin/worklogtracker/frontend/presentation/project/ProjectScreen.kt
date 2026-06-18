@@ -25,7 +25,7 @@ fun ProjectScreen(
     ProjectContent(
         uiState = viewModel.uiState,
         loadProjects = { viewModel.loadProjects() },
-        backStack = backStack
+        backStack = backStack,
     )
 }
 
@@ -70,7 +70,7 @@ fun ProjectContent(
                 Text(
                     text = "Error: ${uiState.error}",
                     color = MaterialTheme.colorScheme.error,
-                    modifier = Modifier.testTag("errorMessage")
+                    modifier = Modifier.testTag("errorMessage"),
                 )
             } else {
                 val groupedProjects = uiState.projects.groupBy { it.status }

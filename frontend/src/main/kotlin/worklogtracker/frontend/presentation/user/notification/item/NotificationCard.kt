@@ -60,15 +60,15 @@ fun NotificationCard(
             SecondaryText(notification.message)
         }
 
-        val formatter = DateTimeFormatterBuilder()
-            .appendPattern("yyyy-MM-dd HH:mm:ss")
-            .appendFraction(
-                ChronoField.NANO_OF_SECOND,
-                1,
-                9,
-                true
-            )
-            .toFormatter()
+        val formatter =
+            DateTimeFormatterBuilder()
+                .appendPattern("yyyy-MM-dd HH:mm:ss")
+                .appendFraction(
+                    ChronoField.NANO_OF_SECOND,
+                    1,
+                    9,
+                    true,
+                ).toFormatter()
 
         val dateTime = LocalDateTime.parse(notification.time, formatter)
 

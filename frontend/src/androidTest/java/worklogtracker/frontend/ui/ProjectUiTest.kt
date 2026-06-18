@@ -14,19 +14,18 @@ import worklogtracker.frontend.presentation.project.ProjectUiState
 import worklogtracker.frontend.presentation.project.item.ProjectItem
 
 class ProjectUiTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
     @Test
     fun projectScreen_showsLoading() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
-        
+
         composeTestRule.setContent {
             ProjectContent(
                 uiState = ProjectUiState(loading = true),
                 loadProjects = {},
-                backStack = mockBackStack
+                backStack = mockBackStack,
             )
         }
 
@@ -37,12 +36,12 @@ class ProjectUiTest {
     fun projectScreen_showsError() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
         val errorMessage = "Failed to load projects"
-        
+
         composeTestRule.setContent {
             ProjectContent(
                 uiState = ProjectUiState(loading = false, error = errorMessage),
                 loadProjects = {},
-                backStack = mockBackStack
+                backStack = mockBackStack,
             )
         }
 
@@ -53,16 +52,17 @@ class ProjectUiTest {
     @Test
     fun projectScreen_showsProjectList() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
-        val projects = listOf(
-            ProjectItem("1", "Project Alpha", "Description Alpha", "ACTIVE"),
-            ProjectItem("2", "Project Beta", "Description Beta", "PLANNING")
-        )
-        
+        val projects =
+            listOf(
+                ProjectItem("1", "Project Alpha", "Description Alpha", "ACTIVE"),
+                ProjectItem("2", "Project Beta", "Description Beta", "PLANNING"),
+            )
+
         composeTestRule.setContent {
             ProjectContent(
                 uiState = ProjectUiState(loading = false, projects = projects),
                 loadProjects = {},
-                backStack = mockBackStack
+                backStack = mockBackStack,
             )
         }
 

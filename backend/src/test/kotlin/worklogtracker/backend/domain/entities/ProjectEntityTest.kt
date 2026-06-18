@@ -12,14 +12,13 @@ import kotlin.test.assertFalse
 import kotlin.test.assertTrue
 
 class ProjectEntityTest {
-
     private val now = LocalDateTime.now()
     private val userId = UserId(1)
 
     private fun createProject(
         status: ProjectStatus = ProjectStatus.PLANNING,
         startDate: LocalDate? = null,
-        endDate: LocalDate? = null
+        endDate: LocalDate? = null,
     ) = ProjectEntity(
         id = ProjectId(1),
         name = "Test Project",
@@ -29,7 +28,7 @@ class ProjectEntityTest {
         endDate = endDate,
         createdById = userId,
         createdAt = now,
-        updatedAt = now
+        updatedAt = now,
     )
 
     @Test
@@ -37,17 +36,18 @@ class ProjectEntityTest {
         assertFailsWith<IllegalArgumentException> {
             createProject(
                 startDate = LocalDate.now().plusDays(1),
-                endDate = LocalDate.now()
+                endDate = LocalDate.now(),
             )
         }
     }
 
     @Test
     fun `should succeed when startDate is before endDate`() {
-        val project = createProject(
-            startDate = LocalDate.now(),
-            endDate = LocalDate.now().plusDays(1)
-        )
+        val project =
+            createProject(
+                startDate = LocalDate.now(),
+                endDate = LocalDate.now().plusDays(1),
+            )
         assertNotNull(project)
     }
 

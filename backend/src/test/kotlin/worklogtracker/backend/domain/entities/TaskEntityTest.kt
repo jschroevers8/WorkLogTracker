@@ -11,21 +11,21 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class TaskEntityTest {
-
     private val now = LocalDateTime.now()
     private val projectId = ProjectId(1)
     private val userId = UserId(1)
 
-    private fun createTask(status: TaskStatus) = TaskEntity(
-        id = TaskId(1),
-        projectId = projectId,
-        title = "Test Task",
-        description = "Description",
-        status = status,
-        createdBy = userId,
-        createdAt = now,
-        updatedAt = now
-    )
+    private fun createTask(status: TaskStatus) =
+        TaskEntity(
+            id = TaskId(1),
+            projectId = projectId,
+            title = "Test Task",
+            description = "Description",
+            status = status,
+            createdBy = userId,
+            createdAt = now,
+            updatedAt = now,
+        )
 
     @Test
     fun `should transition from OPEN to IN_PROGRESS`() {
