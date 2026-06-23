@@ -17,6 +17,4 @@ interface NotificationRepositoryInterface {
         userId: UserId,
         unreadOnly: Boolean = false,
     ): List<NotificationEntity>
-
-    suspend fun deleteOlderThan(days: Int): Int
 }

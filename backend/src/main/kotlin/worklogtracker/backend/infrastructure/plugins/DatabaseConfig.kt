@@ -1,9 +1,9 @@
 package worklogtracker.backend.infrastructure.plugins
 
 import io.github.cdimascio.dotenv.dotenv
-import org.jetbrains.exposed.sql.Database
-import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.transactions.transaction
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.SchemaUtils
+import org.jetbrains.exposed.v1.jdbc.transactions.transaction
 import worklogtracker.backend.infrastructure.tables.NotificationTable
 import worklogtracker.backend.infrastructure.tables.ProjectTable
 import worklogtracker.backend.infrastructure.tables.TaskAssignmentTable

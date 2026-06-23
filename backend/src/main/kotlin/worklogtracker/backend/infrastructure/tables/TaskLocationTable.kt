@@ -1,7 +1,7 @@
 package worklogtracker.backend.infrastructure.tables
 
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.kotlin.datetime.datetime
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.datetime.datetime
 
 object TaskLocationTable : Table("task_locations") {
     val id = integer("id").autoIncrement()

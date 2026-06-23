@@ -1,7 +1,7 @@
 package worklogtracker.backend.infrastructure.hydrators
 
 import kotlinx.datetime.toJavaLocalDateTime
-import org.jetbrains.exposed.sql.ResultRow
+import org.jetbrains.exposed.v1.core.ResultRow
 import worklogtracker.backend.domain.entities.NotificationEntity
 import worklogtracker.backend.domain.entities.enums.NotificationType
 import worklogtracker.backend.domain.valueobjects.notification.NotificationId

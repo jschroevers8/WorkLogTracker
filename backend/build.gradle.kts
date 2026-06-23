@@ -9,7 +9,7 @@ plugins {
 group = "worklogtracker"
 version = "0.0.1"
 
-val exposedVersion = "0.61.0"
+val exposedVersion = "1.3.0"
 val ktorVersion = "3.3.2"
 
 application {
