@@ -34,14 +34,7 @@ class LoginViewModel(
                     error = "Toegang geweigerd: Alleen Admins kunnen inloggen op het admin portaal."
                 }
             } catch (e: Throwable) {
-                error =
-                    if (e.message?.contains("401") == true) {
-                        "Ongeldig e-mailadres of wachtwoord."
-                    } else if (e.message?.contains("403") == true) {
-                        "Je hebt geen toegang tot dit portaal."
-                    } else {
-                        e.message ?: "Inloggen mislukt. Controleer je verbinding en probeer het opnieuw."
-                    }
+                error = "Ongeldig e-mailadres of wachtwoord."
             } finally {
                 loading = false
             }

@@ -50,8 +50,15 @@ class ProjectsViewModel(
     fun createProject() {
         scope.launch {
             try {
+                if (newProjectName.isBlank() || newProjectDesc.isBlank()) {
+                    error = "Naam en beschrijving zijn verplicht."
+                    return@launch
+                }
+
                 api.projects.createProject(CreateProjectRequest(newProjectName, newProjectDesc))
+
                 refreshData()
+
                 showCreateProject = false
                 newProjectName = ""
                 newProjectDesc = ""
@@ -64,16 +71,27 @@ class ProjectsViewModel(
     fun createTask() {
         val currentProjectId = selectedProjectIdForTask
         val currentUserId = selectedUserIdForTask
-        if (currentProjectId == null || currentUserId == null) return
-
-        val pid: Int = currentProjectId
-        val uid: Int = currentUserId
 
         scope.launch {
             try {
+                if (currentProjectId == null || currentUserId == null) {
+                    error = "Selecteer een gebruiker."
+                    return@launch
+                }
+
+                val pid: Int = currentProjectId
+                val uid: Int = currentUserId
+
+                if (newTaskTitle.isBlank() || newTaskDesc.isBlank()) {
+                    error = "Titel en beschrijving zijn verplicht."
+                    return@launch
+                }
+
                 val task = api.tasks.createTask(CreateTaskRequest(pid, newTaskTitle, newTaskDesc, uid))
                 val request = AssignTaskRequest(uid)
+
                 api.tasks.assignTask(task.id!!, request)
+
                 refreshData()
                 selectedProjectIdForTask = null
                 newTaskTitle = ""
