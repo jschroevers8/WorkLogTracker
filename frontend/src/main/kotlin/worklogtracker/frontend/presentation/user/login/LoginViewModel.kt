@@ -15,25 +15,29 @@ class LoginViewModel(
     fun login() {
         if (uiState.validate(::setError)) {
             launchWithErrorHandling {
-                val authResponse =
-                    userRepository.login(
-                        LoginRequest(uiState.email, uiState.password),
-                    )
+                try {
+                    val authResponse =
+                        userRepository.login(
+                            LoginRequest(uiState.email, uiState.password),
+                        )
 
-                if (authResponse.token.isNotEmpty()) {
-                    authManager.saveAuthToken(authResponse.token)
-                    authManager.saveUserData(
-                        UserData(
-                            firstName = authResponse.firstName,
-                            lastName = authResponse.lastName,
-                            email = authResponse.email,
-                            role = authResponse.role,
-                        ),
-                    )
-                    onLoginSuccess?.invoke()
-                    resetState()
-                } else {
-                    setError("Login failed")
+                    if (authResponse.token.isNotEmpty()) {
+                        authManager.saveAuthToken(authResponse.token)
+                        authManager.saveUserData(
+                            UserData(
+                                firstName = authResponse.firstName,
+                                lastName = authResponse.lastName,
+                                email = authResponse.email,
+                                role = authResponse.role,
+                            ),
+                        )
+                        onLoginSuccess?.invoke()
+                        resetState()
+                    } else {
+                        setError("Login failed")
+                    }
+                } catch (e: Exception) {
+                    setError("Ongeldig e-mailadres of wachtwoord.")
                 }
             }
         }
