@@ -17,6 +17,27 @@ fun LoginScreen(
 ) {
     val viewModel = koinInject<LoginViewModel> { parametersOf(scope, onLoginSuccess) }
 
+    LoginContent(
+        email = viewModel.email,
+        password = viewModel.password,
+        error = viewModel.error,
+        loading = viewModel.loading,
+        onEmailInput = { viewModel.email = it },
+        onPasswordInput = { viewModel.password = it },
+        onLoginClick = { viewModel.login() }
+    )
+}
+
+@Composable
+fun LoginContent(
+    email: String,
+    password: String,
+    error: String,
+    loading: Boolean,
+    onEmailInput: (String) -> Unit,
+    onPasswordInput: (String) -> Unit,
+    onLoginClick: () -> Unit,
+) {
     Div({
         style {
             display(DisplayStyle.Flex)
@@ -54,7 +75,7 @@ fun LoginScreen(
                 }
             }) { Text("Admin Portaal") }
 
-            if (viewModel.error.isNotEmpty()) {
+            if (error.isNotEmpty()) {
                 Div({
                     style {
                         color(Styles.Error)
@@ -66,7 +87,7 @@ fun LoginScreen(
                         width(100.percent)
                         boxSizing("border-box")
                     }
-                }) { Text(viewModel.error) }
+                }) { Text(error) }
             }
 
             Div({
@@ -93,8 +114,8 @@ fun LoginScreen(
                         border(1.px, LineStyle.Solid, Styles.Border)
                         outline("none")
                     }
-                    value(viewModel.email)
-                    onInput { viewModel.email = it.value }
+                    value(email)
+                    onInput { onEmailInput(it.value) }
                 }
             }
 
@@ -122,32 +143,32 @@ fun LoginScreen(
                         border(1.px, LineStyle.Solid, Styles.Border)
                         outline("none")
                     }
-                    value(viewModel.password)
-                    onInput { viewModel.password = it.value }
+                    value(password)
+                    onInput { onPasswordInput(it.value) }
                 }
             }
 
             Button({
-                if (viewModel.loading) {
+                if (loading) {
                     disabled()
                 }
 
                 style {
                     width(100.percent)
                     padding(12.px)
-                    backgroundColor(if (viewModel.loading) Styles.Secondary else Styles.Primary)
+                    backgroundColor(if (loading) Styles.Secondary else Styles.Primary)
                     color(Color.white)
                     border(0.px)
                     borderRadius(8.px)
-                    cursor(if (viewModel.loading) "default" else "pointer")
+                    cursor(if (loading) "default" else "pointer")
                     fontWeight("600")
                     property("transition", "background-color 0.2s")
                 }
                 onClick {
-                    viewModel.login()
+                    onLoginClick()
                 }
             }) {
-                Text(if (viewModel.loading) "Bezig met inloggen..." else "Inloggen")
+                Text(if (loading) "Bezig met inloggen..." else "Inloggen")
             }
         }
     }

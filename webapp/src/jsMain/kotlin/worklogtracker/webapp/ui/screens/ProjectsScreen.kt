@@ -24,7 +24,42 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
         viewModel.refreshData()
     }
 
-    ErrorPopup(viewModel.error) { viewModel.clearError() }
+    ProjectsContent(
+        loading = viewModel.loading,
+        error = viewModel.error,
+        showCreateProject = viewModel.showCreateProject,
+        newProjectName = viewModel.newProjectName,
+        newProjectDesc = viewModel.newProjectDesc,
+        activeProjects = viewModel.activeProjects,
+        onToggleCreateProject = { viewModel.toggleCreateProject() },
+        onCreateProject = { viewModel.createProject() },
+        onUpdateNewProjectName = { viewModel.newProjectName = it },
+        onUpdateNewProjectDesc = { viewModel.newProjectDesc = it },
+        onClearError = { viewModel.clearError() },
+        onSeeProjectDetails = onSeeProjectDetails,
+        viewModel = viewModel,
+        scope = scope
+    )
+}
+
+@Composable
+fun ProjectsContent(
+    loading: Boolean,
+    error: String,
+    showCreateProject: Boolean,
+    newProjectName: String,
+    newProjectDesc: String,
+    activeProjects: List<worklogtracker.shared.dto.project.ProjectResponse>,
+    onToggleCreateProject: () -> Unit,
+    onCreateProject: () -> Unit,
+    onUpdateNewProjectName: (String) -> Unit,
+    onUpdateNewProjectDesc: (String) -> Unit,
+    onClearError: () -> Unit,
+    onSeeProjectDetails: (Int) -> Unit,
+    viewModel: ProjectsViewModel,
+    scope: kotlinx.coroutines.CoroutineScope
+) {
+    ErrorPopup(error) { onClearError() }
 
     Div({
         style {
@@ -42,7 +77,8 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
         }) { Text("Projecten & Beheer") }
 
         Button({
-            onClick { viewModel.toggleCreateProject() }
+            id("toggle-create-project")
+            onClick { onToggleCreateProject() }
             style {
                 padding(10.px, 20.px)
                 backgroundColor(Styles.Primary)
@@ -52,11 +88,12 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
                 cursor("pointer")
                 fontWeight("600")
             }
-        }) { Text(if (viewModel.showCreateProject) "Annuleren" else "+ Nieuw Project") }
+        }) { Text(if (showCreateProject) "Annuleren" else "+ Nieuw Project") }
     }
 
-    if (viewModel.showCreateProject) {
+    if (showCreateProject) {
         Div({
+            id("create-project-form")
             style {
                 backgroundColor(Styles.Surface)
                 padding(20.px)
@@ -67,9 +104,10 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
         }) {
             H3 { Text("Nieuw Project Aanmaken") }
             Input(InputType.Text) {
+                id("new-project-name")
                 placeholder("Projectnaam")
-                value(viewModel.newProjectName)
-                onInput { viewModel.newProjectName = it.value }
+                value(newProjectName)
+                onInput { onUpdateNewProjectName(it.value) }
                 style {
                     width(100.percent)
                     padding(8.px)
@@ -79,9 +117,10 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
                 }
             }
             TextArea {
+                id("new-project-desc")
                 placeholder("Beschrijving")
-                value(viewModel.newProjectDesc)
-                onInput { viewModel.newProjectDesc = it.value }
+                value(newProjectDesc)
+                onInput { onUpdateNewProjectDesc(it.value) }
                 style {
                     width(100.percent)
                     padding(8.px)
@@ -92,8 +131,9 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
                 }
             }
             Button({
+                id("save-project")
                 onClick {
-                    viewModel.createProject()
+                    onCreateProject()
                 }
                 style {
                     padding(8.px, 16.px)

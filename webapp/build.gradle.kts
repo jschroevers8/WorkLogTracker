@@ -44,6 +44,7 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-js"))
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.1")
+                implementation(compose.html.testUtils)
             }
         }
     }
