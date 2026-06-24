@@ -28,6 +28,7 @@ kotlin {
                 // Compose Web
                 implementation(compose.runtime)
                 implementation(compose.html.core)
+                implementation(compose.web.core)
 
                 // Ktor JS client
                 implementation("io.ktor:ktor-client-js:3.3.2")
