@@ -24,7 +24,6 @@ import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 
 class CreateProjectUseCaseTest {
-
     private val projectRepository = mockk<ProjectRepositoryInterface>()
     private val userRepository = mockk<UserRepositoryInterface>()
     private val projectFactory = mockk<ProjectFactory>()
@@ -34,27 +33,29 @@ class CreateProjectUseCaseTest {
     private val regularUserId = UserId(2)
     private val now = LocalDateTime.now()
 
-    private val adminUser = UserEntity(
-        id = adminUserId,
-        email = Email("admin@example.com"),
-        passwordHash = Password("hashed"),
-        firstName = "Admin",
-        lastName = "User",
-        role = UserRole.ADMIN,
-        createdAt = now,
-        updatedAt = now
-    )
+    private val adminUser =
+        UserEntity(
+            id = adminUserId,
+            email = Email("admin@example.com"),
+            passwordHash = Password("hashed"),
+            firstName = "Admin",
+            lastName = "User",
+            role = UserRole.ADMIN,
+            createdAt = now,
+            updatedAt = now,
+        )
 
-    private val regularUser = UserEntity(
-        id = regularUserId,
-        email = Email("user@example.com"),
-        passwordHash = Password("hashed"),
-        firstName = "Regular",
-        lastName = "User",
-        role = UserRole.EMPLOYEE,
-        createdAt = now,
-        updatedAt = now
-    )
+    private val regularUser =
+        UserEntity(
+            id = regularUserId,
+            email = Email("user@example.com"),
+            passwordHash = Password("hashed"),
+            firstName = "Regular",
+            lastName = "User",
+            role = UserRole.EMPLOYEE,
+            createdAt = now,
+            updatedAt = now,
+        )
 
     @Test
     fun `should create project successfully when user is admin`() {
@@ -65,17 +66,18 @@ class CreateProjectUseCaseTest {
             val startDate = LocalDate.now()
             val endDate = startDate.plusMonths(1)
 
-            val project = ProjectEntity(
-                id = ProjectId(1),
-                name = name,
-                description = description,
-                status = ProjectStatus.PLANNING,
-                startDate = startDate,
-                endDate = endDate,
-                createdById = adminUserId,
-                createdAt = now,
-                updatedAt = now
-            )
+            val project =
+                ProjectEntity(
+                    id = ProjectId(1),
+                    name = name,
+                    description = description,
+                    status = ProjectStatus.PLANNING,
+                    startDate = startDate,
+                    endDate = endDate,
+                    createdById = adminUserId,
+                    createdAt = now,
+                    updatedAt = now,
+                )
 
             coEvery { userRepository.findById(adminUserId) } returns adminUser
             every {
@@ -113,9 +115,10 @@ class CreateProjectUseCaseTest {
             coEvery { userRepository.findById(adminUserId) } returns null
 
             // Act & Assert
-            val exception = assertFailsWith<ProjectCreationFailedException> {
-                useCase.invoke(adminUserId, "Project", "Desc", null, null)
-            }
+            val exception =
+                assertFailsWith<ProjectCreationFailedException> {
+                    useCase.invoke(adminUserId, "Project", "Desc", null, null)
+                }
             assertEquals("User not found", exception.message)
         }
     }
@@ -125,16 +128,17 @@ class CreateProjectUseCaseTest {
         runBlocking {
             // Arrange
             val name = "Project"
-            val project = ProjectEntity(
-                name = name,
-                description = null,
-                status = ProjectStatus.PLANNING,
-                startDate = null,
-                endDate = null,
-                createdById = adminUserId,
-                createdAt = now,
-                updatedAt = now
-            )
+            val project =
+                ProjectEntity(
+                    name = name,
+                    description = null,
+                    status = ProjectStatus.PLANNING,
+                    startDate = null,
+                    endDate = null,
+                    createdById = adminUserId,
+                    createdAt = now,
+                    updatedAt = now,
+                )
 
             coEvery { userRepository.findById(adminUserId) } returns adminUser
             every {
@@ -143,9 +147,10 @@ class CreateProjectUseCaseTest {
             coEvery { projectRepository.save(project) } throws Exception("DB Error")
 
             // Act & Assert
-            val exception = assertFailsWith<ProjectCreationFailedException> {
-                useCase.invoke(adminUserId, name, null, null, null)
-            }
+            val exception =
+                assertFailsWith<ProjectCreationFailedException> {
+                    useCase.invoke(adminUserId, name, null, null, null)
+                }
             assertEquals("DB Error", exception.message)
         }
     }

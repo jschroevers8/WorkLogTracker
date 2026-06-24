@@ -24,7 +24,7 @@ fun LoginScreen(
         loading = viewModel.loading,
         onEmailInput = { viewModel.email = it },
         onPasswordInput = { viewModel.password = it },
-        onLoginClick = { viewModel.login() }
+        onLoginClick = { viewModel.login() },
     )
 }
 

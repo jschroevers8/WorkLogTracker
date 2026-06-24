@@ -38,7 +38,7 @@ fun ProjectsScreen(onSeeProjectDetails: (Int) -> Unit) {
         onClearError = { viewModel.clearError() },
         onSeeProjectDetails = onSeeProjectDetails,
         viewModel = viewModel,
-        scope = scope
+        scope = scope,
     )
 }
 
@@ -57,7 +57,7 @@ fun ProjectsContent(
     onClearError: () -> Unit,
     onSeeProjectDetails: (Int) -> Unit,
     viewModel: ProjectsViewModel,
-    scope: kotlinx.coroutines.CoroutineScope
+    scope: kotlinx.coroutines.CoroutineScope,
 ) {
     ErrorPopup(error) { onClearError() }
 

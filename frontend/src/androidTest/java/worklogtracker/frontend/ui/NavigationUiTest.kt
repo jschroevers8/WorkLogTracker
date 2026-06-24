@@ -1,6 +1,5 @@
 package worklogtracker.frontend.ui
 
-import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
@@ -14,7 +13,6 @@ import worklogtracker.frontend.presentation.user.login.LoginContent
 import worklogtracker.frontend.presentation.user.login.LoginUiState
 
 class NavigationUiTest {
-
     @get:Rule
     val composeTestRule = createComposeRule()
 
@@ -22,7 +20,7 @@ class NavigationUiTest {
     fun loginScreen_clickSignup_callsOnSignupClick() {
         val mockBackStack = mockk<NavBackStack<NavKey>>(relaxed = true)
         val onSignupClick = mockk<() -> Unit>(relaxed = true)
-        
+
         composeTestRule.setContent {
             LoginContent(
                 state = LoginUiState(),
@@ -30,7 +28,7 @@ class NavigationUiTest {
                 onPasswordChange = {},
                 onLoginClick = {},
                 onSignupClick = onSignupClick,
-                backStack = mockBackStack
+                backStack = mockBackStack,
             )
         }
 

@@ -9,9 +9,6 @@ plugins {
 group = "worklogtracker"
 version = "0.0.1"
 
-val exposedVersion = "1.3.0"
-val ktorVersion = "3.3.2"
-
 application {
     mainClass = "io.ktor.server.netty.EngineMain"
 }
@@ -21,37 +18,36 @@ dependencies {
     implementation(project(":shared"))
 
     // Backend
-    implementation("io.ktor:ktor-server-config-yaml:$ktorVersion")
-    implementation("io.ktor:ktor-server-cors-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
-    implementation("io.ktor:ktor-server-auth:$ktorVersion")
-    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
-    implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
-    implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-client-cio:$ktorVersion")
-    implementation("at.favre.lib:bcrypt:0.10.2")
+    implementation(libs.ktor.server.config.yaml)
+    implementation(libs.ktor.server.cors.jvm)
+    implementation(libs.ktor.server.core.jvm)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.core)
+    implementation(libs.ktor.server.netty)
+    implementation(libs.ktor.server.auth)
+    implementation(libs.ktor.server.auth.jwt)
+    implementation(libs.ktor.server.status.pages)
+    implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.ktor.server.content.negotiation)
+    implementation(libs.ktor.client.cio)
+    implementation(libs.bcrypt)
 
     // Logging
-    implementation("ch.qos.logback:logback-classic:1.5.21")
+    implementation(libs.logback.classic)
 
     // Database
-    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-kotlin-datetime:$exposedVersion")
-    implementation("mysql:mysql-connector-java:8.0.33")
-    implementation("com.h2database:h2:2.4.240")
+    implementation(libs.exposed.core)
+    implementation(libs.exposed.dao)
+    implementation(libs.exposed.jdbc)
+    implementation(libs.exposed.kotlin.datetime)
+    implementation(libs.mysql.connector.java)
+    implementation(libs.h2)
 
     // Utilities
-    implementation("io.github.cdimascio:dotenv-kotlin:6.5.1")
-    implementation("org.mindrot:jbcrypt:0.4")
+    implementation(libs.dotenv.kotlin)
+    implementation(libs.jbcrypt)
 
     // Testing
-    testImplementation("io.ktor:ktor-server-test-host:3.3.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit:2.2.21")
-    testImplementation("io.mockk:mockk:1.14.6")
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.mockk)
 }

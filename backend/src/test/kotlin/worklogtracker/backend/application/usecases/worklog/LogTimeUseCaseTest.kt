@@ -22,17 +22,17 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 class LogTimeUseCaseTest {
-
     private val timeEntryRepository = mockk<TimeEntryRepositoryInterface>(relaxed = true)
     private val taskAssignmentRepository = mockk<TaskAssignmentRepositoryInterface>(relaxed = true)
     private val taskRepository = mockk<TaskRepositoryInterface>(relaxed = true)
     private val generateAiDescriptionUseCase = mockk<GenerateAiDescriptionUseCase>()
-    private val useCase = LogTimeUseCase(
-        timeEntryRepository,
-        taskAssignmentRepository,
-        taskRepository,
-        generateAiDescriptionUseCase
-    )
+    private val useCase =
+        LogTimeUseCase(
+            timeEntryRepository,
+            taskAssignmentRepository,
+            taskRepository,
+            generateAiDescriptionUseCase,
+        )
 
     private val userId = UserId(1)
     private val taskId = TaskId(1)
@@ -48,24 +48,26 @@ class LogTimeUseCaseTest {
             val description = "Werk aan feature X"
             val aiDescription = "Professionele samenvatting van werk aan feature X"
 
-            val assignment = TaskAssignmentEntity(
-                id = assignmentId,
-                taskId = taskId,
-                userId = userId,
-                assignedAt = now,
-                status = TaskStatus.IN_PROGRESS
-            )
+            val assignment =
+                TaskAssignmentEntity(
+                    id = assignmentId,
+                    taskId = taskId,
+                    userId = userId,
+                    assignedAt = now,
+                    status = TaskStatus.IN_PROGRESS,
+                )
 
-            val task = TaskEntity(
-                id = taskId,
-                projectId = projectId,
-                title = "Taak 1",
-                description = "Beschrijving",
-                status = TaskStatus.IN_PROGRESS,
-                createdBy = userId,
-                createdAt = now,
-                updatedAt = now
-            )
+            val task =
+                TaskEntity(
+                    id = taskId,
+                    projectId = projectId,
+                    title = "Taak 1",
+                    description = "Beschrijving",
+                    status = TaskStatus.IN_PROGRESS,
+                    createdBy = userId,
+                    createdAt = now,
+                    updatedAt = now,
+                )
 
             coEvery { taskAssignmentRepository.findById(assignmentId) } returns assignment
             coEvery { taskRepository.findById(taskId) } returns task
@@ -77,23 +79,29 @@ class LogTimeUseCaseTest {
             // Assert
             assertTrue(result)
             coVerify {
-                timeEntryRepository.save(match {
-                    it.userId == userId &&
-                    it.taskAssignmentId == assignmentId &&
-                    it.hours == hours &&
-                    it.description == description &&
-                    it.aiDescription == aiDescription
-                })
+                timeEntryRepository.save(
+                    match {
+                        it.userId == userId &&
+                            it.taskAssignmentId == assignmentId &&
+                            it.hours == hours &&
+                            it.description == description &&
+                            it.aiDescription == aiDescription
+                    },
+                )
             }
             coVerify {
-                taskRepository.update(match {
-                    it.id == taskId && it.status == TaskStatus.COMPLETED
-                })
+                taskRepository.update(
+                    match {
+                        it.id == taskId && it.status == TaskStatus.COMPLETED
+                    },
+                )
             }
             coVerify {
-                taskAssignmentRepository.update(match {
-                    it.id == assignmentId && it.status == TaskStatus.COMPLETED
-                })
+                taskAssignmentRepository.update(
+                    match {
+                        it.id == assignmentId && it.status == TaskStatus.COMPLETED
+                    },
+                )
             }
         }
     }
@@ -105,12 +113,13 @@ class LogTimeUseCaseTest {
             coEvery { taskAssignmentRepository.findById(assignmentId) } returns null
 
             // Act & Assert
-            val exception = try {
-                useCase.invoke(userId, assignmentId, BigDecimal("1"), null)
-                null
-            } catch (e: Exception) {
-                e
-            }
+            val exception =
+                try {
+                    useCase.invoke(userId, assignmentId, BigDecimal("1"), null)
+                    null
+                } catch (e: Exception) {
+                    e
+                }
 
             assertEquals("Task assignment not found", exception?.message)
         }
@@ -120,23 +129,25 @@ class LogTimeUseCaseTest {
     fun `should throw exception when task not found`() {
         runBlocking {
             // Arrange
-            val assignment = TaskAssignmentEntity(
-                id = assignmentId,
-                taskId = taskId,
-                userId = userId,
-                assignedAt = now,
-                status = TaskStatus.IN_PROGRESS
-            )
+            val assignment =
+                TaskAssignmentEntity(
+                    id = assignmentId,
+                    taskId = taskId,
+                    userId = userId,
+                    assignedAt = now,
+                    status = TaskStatus.IN_PROGRESS,
+                )
             coEvery { taskAssignmentRepository.findById(assignmentId) } returns assignment
             coEvery { taskRepository.findById(taskId) } returns null
 
             // Act & Assert
-            val exception = try {
-                useCase.invoke(userId, assignmentId, BigDecimal("1"), null)
-                null
-            } catch (e: Exception) {
-                e
-            }
+            val exception =
+                try {
+                    useCase.invoke(userId, assignmentId, BigDecimal("1"), null)
+                    null
+                } catch (e: Exception) {
+                    e
+                }
 
             assertEquals("Task not found", exception?.message)
         }
